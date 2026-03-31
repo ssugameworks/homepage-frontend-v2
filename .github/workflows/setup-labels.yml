@@ -1,0 +1,72 @@
+name: Setup Labels
+
+on:
+  workflow_dispatch: # 수동 실행으로 초기 라벨 세팅
+
+permissions:
+  issues: write
+
+jobs:
+  setup-labels:
+    name: Create labels
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create labels
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const labels = [
+              // Type labels
+              { name: 'type: feature',     color: '0075ca', description: '새로운 기능' },
+              { name: 'type: bug fix',     color: 'd73a4a', description: '버그 수정' },
+              { name: 'type: docs',        color: '0075ca', description: '문서 변경' },
+              { name: 'type: style',       color: 'e4e669', description: '코드 스타일 변경 (포매팅 등)' },
+              { name: 'type: refactor',    color: 'cfd3d7', description: '리팩토링' },
+              { name: 'type: performance', color: 'e4e669', description: '성능 개선' },
+              { name: 'type: test',        color: '0e8a16', description: '테스트 추가/수정' },
+              { name: 'type: chore',       color: 'cfd3d7', description: '기타 작업' },
+              { name: 'type: ci/cd',       color: '006b75', description: 'CI/CD 설정 변경' },
+              { name: 'type: revert',      color: 'b60205', description: '이전 커밋 되돌리기' },
+              // Area labels
+              { name: 'area: frontend',    color: '1d76db', description: '프론트엔드 변경' },
+              { name: 'area: backend',     color: '5319e7', description: '백엔드 변경' },
+              { name: 'area: config',      color: 'f9d0c4', description: '설정 파일 변경' },
+              { name: 'area: ci/cd',       color: '006b75', description: 'CI/CD 파일 변경' },
+              { name: 'area: styles',      color: 'fef2c0', description: 'CSS/스타일 변경' },
+              { name: 'area: build',       color: 'bfd4f2', description: '빌드 설정 변경' },
+              // Size labels
+              { name: 'size: small',       color: '0e8a16', description: '변경 라인 50줄 이하' },
+              { name: 'size: medium',      color: 'fbca04', description: '변경 라인 51~250줄' },
+              { name: 'size: large',       color: 'd93f0b', description: '변경 라인 251줄 이상' },
+              // Status labels
+              { name: 'WIP',               color: 'fef2c0', description: '작업 진행 중' },
+              { name: 'breaking change',   color: 'b60205', description: '하위 호환성 깨는 변경' },
+            ];
+
+            for (const label of labels) {
+              try {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                  color: label.color,
+                  description: label.description,
+                });
+                console.log(`Created: ${label.name}`);
+              } catch (err) {
+                if (err.status === 422) {
+                  // 이미 존재하면 업데이트
+                  await github.rest.issues.updateLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name: label.name,
+                    color: label.color,
+                    description: label.description,
+                  });
+                  console.log(`Updated: ${label.name}`);
+                } else {
+                  throw err;
+                }
+              }
+            }

@@ -1,0 +1,57 @@
+# PR 라벨링 규칙 설정
+# actions/labeler v5 형식
+
+"area: frontend":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/**/*.tsx"
+          - "src/**/*.jsx"
+          - "src/**/*.css"
+          - "src/**/*.html"
+
+"area: backend":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/index.ts"
+          - "src/api/**"
+          - "src/routes/**"
+          - "src/middleware/**"
+
+"area: config":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "*.json"
+          - "*.toml"
+          - "*.ts"
+          - "tsconfig*.json"
+          - "bunfig.toml"
+          - "package.json"
+
+"area: ci/cd":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+
+"area: styles":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/**/*.css"
+          - "src/**/*.scss"
+          - "tailwind.config.*"
+
+"area: build":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "build.ts"
+          - "bunfig.toml"
+          - "bun.lock"
+
+"size: small":
+  - max-lines: 50
+
+"size: medium":
+  - min-lines: 51
+  - max-lines: 250
+
+"size: large":
+  - min-lines: 251
