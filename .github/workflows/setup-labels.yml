@@ -42,6 +42,7 @@ jobs:
               // Status labels
               { name: 'WIP',               color: 'fef2c0', description: '작업 진행 중' },
               { name: 'breaking change',   color: 'b60205', description: '하위 호환성 깨는 변경' },
+              { name: 'task',              color: '0075ca', description: '개발 작업 또는 리팩토링' },
             ];
 
             for (const label of labels) {
