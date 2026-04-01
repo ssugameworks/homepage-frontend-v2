@@ -4,17 +4,26 @@
   :root {
     font-synthesis: none;
     text-rendering: optimizeLegibility;
+    /* macOS/iOS에서 폰트 계단 현상 제거 */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  *,
-  ::before,
-  ::after {
-    box-sizing: border-box;
+    scroll-behavior: smooth;
   }
 
   body {
     @apply m-0 min-h-screen;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
   }
 }
