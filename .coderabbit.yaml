@@ -1,7 +1,6 @@
 language: "ko-KR"
 
 reviews:
-  profile: "assertive"
   high_level_summary: true
   poem: false
   review_status: true
