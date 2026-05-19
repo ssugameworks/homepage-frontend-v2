@@ -1,0 +1,61 @@
+name: Preview URL Comment
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  comment:
+    name: Post Preview URL
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Post Cloudflare Pages preview URL
+        uses: actions/github-script@v7
+        env:
+          BRANCH: ${{ github.head_ref }}
+        with:
+          script: |
+            const branch = process.env.BRANCH;
+            const normalized = branch
+              .toLowerCase()
+              .replace(/[^a-z0-9-]/g, '-')
+              .replace(/-+/g, '-')
+              .replace(/^-|-$/g, '')
+              .slice(0, 28);
+            const url = `https://${normalized}.gameworks-v2.pages.dev`;
+            const marker = '<!-- cf-pages-preview -->';
+            const body = [
+              marker,
+              '## ☁️ Cloudflare Pages Preview',
+              '',
+              `**Branch preview:** ${url}`,
+              '',
+              '_배포 완료까지 1~2분 소요될 수 있습니다._',
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c => c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
