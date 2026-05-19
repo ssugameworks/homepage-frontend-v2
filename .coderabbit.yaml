@@ -1,7 +1,6 @@
 language: "ko-KR"
 
 reviews:
-  profile: "assertive"
   high_level_summary: true
   poem: false
   review_status: true
@@ -9,6 +8,27 @@ reviews:
   auto_review:
     enabled: true
     drafts: false
+  labeling_instructions:
+    - label: "type: feature"
+      instructions: "새로운 기능을 추가하는 PR (feat 커밋 포함)"
+    - label: "type: bug fix"
+      instructions: "버그를 수정하는 PR (fix 커밋 포함)"
+    - label: "type: docs"
+      instructions: "문서만 변경하는 PR (docs 커밋 포함)"
+    - label: "type: style"
+      instructions: "코드 동작에 영향 없는 포매팅/스타일 변경 PR (style 커밋 포함)"
+    - label: "type: refactor"
+      instructions: "기능 추가나 버그 수정 없는 리팩토링 PR (refactor 커밋 포함)"
+    - label: "type: performance"
+      instructions: "성능을 개선하는 PR (perf 커밋 포함)"
+    - label: "type: test"
+      instructions: "테스트 추가 또는 수정 PR (test 커밋 포함)"
+    - label: "type: chore"
+      instructions: "빌드 프로세스, 의존성, 설정 등 기타 작업 PR (chore 커밋 포함)"
+    - label: "type: ci/cd"
+      instructions: "CI/CD 설정 파일 변경 PR (ci 커밋 포함)"
+    - label: "type: revert"
+      instructions: "이전 커밋을 되돌리는 PR (revert 커밋 포함)"
   path_filters:
     - "!bun.lock"
     - "!package.json"
