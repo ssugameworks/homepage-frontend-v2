@@ -1,0 +1,34 @@
+language: "ko-KR"
+
+reviews:
+  profile: "assertive"
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "!bun.lock"
+    - "!package.json"
+    - "!src/assets/**"
+  path_instructions:
+    - path: "src/**/*.{ts,tsx}"
+      instructions: |
+        이 프로젝트는 게임웍스 홈페이지 v2 (React 19 + TypeScript + Tailwind CSS 4 + Bun) 입니다.
+
+        다음 기준으로 리뷰해주세요:
+        - 반응형: 모바일 375px / 데스크탑 1280px 기준. 가로 스크롤 발생 금지.
+        - TypeScript: any 사용, 타입 단언(!), 불필요한 타입 캐스팅을 지적해주세요.
+        - 성능: 불필요한 리렌더링, 큰 번들 임포트, 이미지 최적화 누락을 확인해주세요.
+        - 린터/포매터는 Biome 사용 중입니다. ESLint/Prettier 관련 제안은 불필요합니다.
+        - 우선순위 P1 기능은 반드시 구현되어야 하며, P2/P3는 선택 사항입니다.
+    - path: "src/**/*.css"
+      instructions: |
+        - 가로 스크롤 발생 가능성을 확인해주세요.
+        - 모바일(375px) / 데스크탑(1280px) 반응형 기준 준수 여부를 확인해주세요.
+        - Tailwind CSS 4 사용 중입니다.
+
+chat:
+  auto_reply: true
