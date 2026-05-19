@@ -9,6 +9,13 @@ reviews:
   auto_review:
     enabled: true
     drafts: false
+  labeling_instructions:
+    - label: "size: small"
+      instructions: "변경된 라인(추가+삭제)이 50줄 이하인 PR"
+    - label: "size: medium"
+      instructions: "변경된 라인(추가+삭제)이 51줄 이상 250줄 이하인 PR"
+    - label: "size: large"
+      instructions: "변경된 라인(추가+삭제)이 251줄 이상인 PR"
   path_filters:
     - "!bun.lock"
     - "!package.json"
