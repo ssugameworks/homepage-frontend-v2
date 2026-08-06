@@ -6,8 +6,8 @@ import LogoMarkMenu from "@/assets/icons/logo-mark-menu.svg?react";
 import LogoMarkMobile from "@/assets/icons/logo-mark-mobile.svg?react";
 import MenuBar from "@/assets/icons/menu-bar.svg?react";
 import MenuClose from "@/assets/icons/menu-close.svg?react";
+import type { HeaderProps, NavItemId } from "@/components";
 import { ROUTES } from "@/router/routes";
-import type { HeaderProps, NavItemId } from "./Header.types";
 
 const NAV_ITEMS: { id: NavItemId; label: string; to: string }[] = [
   { id: "introduce", label: "소개", to: ROUTES.INTRODUCE },

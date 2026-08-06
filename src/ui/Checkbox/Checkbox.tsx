@@ -20,12 +20,12 @@ export function Checkbox({ label, className, ...rest }: CheckboxProps) {
             "pointer-events-none absolute inset-0 overflow-clip rounded-[0.1875rem]",
             "border border-solid border-gray-300 bg-transparent",
             "peer-checked:border-transparent peer-checked:bg-primary-600",
-            "peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-600",
+            "peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-600",
           ].join(" ")}
         />
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-[22%_17%_26%_17%] hidden overflow-clip peer-checked:block"
+          className="pointer-events-none absolute inset-[22%_17%_26%_17%] hidden overflow-clip"
         >
           <Checkmark aria-hidden className="absolute inset-0 block size-full max-w-none" />
         </span>
