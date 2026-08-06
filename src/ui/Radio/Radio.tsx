@@ -1,7 +1,7 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
-import radioChecked from "@/assets/icons/register/radio-checked.svg";
-import radioDefault from "@/assets/icons/register/radio-default.svg";
-import radioDot from "@/assets/icons/register/radio-dot.svg";
+import RadioChecked from "@/assets/icons/register/radio-checked.svg?react";
+import RadioDefault from "@/assets/icons/register/radio-default.svg?react";
+import RadioDot from "@/assets/icons/register/radio-dot.svg?react";
 
 export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
   label: ReactNode;
@@ -19,15 +19,11 @@ export function Radio({ label, className, ...rest }: RadioProps) {
     >
       <span className="relative size-5 shrink-0">
         <input type="radio" className="peer sr-only" {...rest} />
-        <img
-          src={radioDefault}
-          alt=""
+        <RadioDefault
           aria-hidden
           className="pointer-events-none absolute inset-0 block size-full max-w-none peer-checked:hidden peer-focus-visible:opacity-90"
         />
-        <img
-          src={radioChecked}
-          alt=""
+        <RadioChecked
           aria-hidden
           className="pointer-events-none absolute inset-0 hidden size-full max-w-none peer-checked:block"
         />
@@ -35,9 +31,8 @@ export function Radio({ label, className, ...rest }: RadioProps) {
           aria-hidden
           className="pointer-events-none absolute inset-1/4 hidden overflow-clip peer-checked:block"
         >
-          <img
-            src={radioDot}
-            alt=""
+          <RadioDot
+            aria-hidden
             className="absolute inset-0 block size-full max-w-none"
           />
         </span>

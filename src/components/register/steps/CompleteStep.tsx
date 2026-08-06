@@ -1,12 +1,11 @@
-import iconCheckCircle from "@/assets/icons/register/icon-check-circle.svg";
+import IconCheckCircle from "@/assets/icons/register/icon-check-circle.svg?react";
 
 export function CompleteStep() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-[1.9375rem] py-10 text-center">
       <span className="relative size-[4.625rem] shrink-0 overflow-clip">
-        <img
-          src={iconCheckCircle}
-          alt=""
+        <IconCheckCircle
+          aria-hidden
           className="absolute inset-0 block size-full max-w-none"
         />
       </span>

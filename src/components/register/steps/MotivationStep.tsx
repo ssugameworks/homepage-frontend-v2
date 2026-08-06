@@ -1,6 +1,6 @@
-import iconWarning from "@/assets/icons/register/icon-warning.svg";
+import IconWarning from "@/assets/icons/register/icon-warning.svg?react";
 import type { RegisterForm } from "../types";
-import { isValidMotivation } from "../types";
+import { isValidMotivation } from "../validation";
 
 const MAX_LENGTH = 150;
 const MIN_LENGTH = 50;
@@ -44,9 +44,8 @@ export function MotivationStep({ form, onChange }: MotivationStepProps) {
           {isError ? (
             <>
               <span className="relative size-6 shrink-0 overflow-clip">
-                <img
-                  src={iconWarning}
-                  alt=""
+                <IconWarning
+                  aria-hidden
                   className="absolute inset-0 block size-full max-w-none"
                 />
               </span>

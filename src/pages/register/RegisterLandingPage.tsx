@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import iconArrowBack from "@/assets/icons/register/icon-arrow-back.svg";
+import IconArrowBack from "@/assets/icons/register/icon-arrow-back.svg?react";
 import { ActivityInfoCard } from "@/components/register";
 import { ROUTES } from "@/router/routes";
 import { Button } from "@/ui";
@@ -70,9 +70,8 @@ export default function RegisterLandingPage() {
           className="inline-flex items-center gap-2 rounded-2xl border-2 border-solid border-primary-600 px-4 py-2"
         >
           <span className="relative flex size-[1.125rem] shrink-0 rotate-90 items-center justify-center overflow-clip">
-            <img
-              src={iconArrowBack}
-              alt=""
+            <IconArrowBack
+              aria-hidden
               className="absolute inset-0 block size-full max-w-none"
             />
           </span>

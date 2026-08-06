@@ -1,5 +1,5 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
-import checkmark from "@/assets/icons/register/checkmark.svg";
+import Checkmark from "@/assets/icons/register/checkmark.svg?react";
 
 export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
   label: ReactNode;
@@ -30,9 +30,8 @@ export function Checkbox({ label, className, ...rest }: CheckboxProps) {
           aria-hidden
           className="pointer-events-none absolute inset-[22%_17%_26%_17%] hidden overflow-clip peer-checked:block"
         >
-          <img
-            src={checkmark}
-            alt=""
+          <Checkmark
+            aria-hidden
             className="absolute inset-0 block size-full max-w-none"
           />
         </span>

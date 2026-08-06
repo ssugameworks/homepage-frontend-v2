@@ -7,9 +7,11 @@ export {
   INITIAL_REGISTER_FORM,
   MAJOR_OPTIONS,
   PART_OPTIONS,
+} from "./constants";
+export {
   isValidMotivation,
   isValidName,
   isValidPhone,
   isValidUrl,
   validateRegisterField,
-} from "./types";
+} from "./validation";

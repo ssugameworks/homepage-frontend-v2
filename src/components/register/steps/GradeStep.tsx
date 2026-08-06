@@ -1,5 +1,5 @@
 import type { RegisterForm } from "../types";
-import { GRADE_OPTIONS } from "../types";
+import { GRADE_OPTIONS } from "../constants";
 import { Radio } from "@/ui";
 
 type GradeStepProps = {

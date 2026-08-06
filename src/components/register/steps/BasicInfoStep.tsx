@@ -1,5 +1,5 @@
 import type { RegisterForm } from "../types";
-import { isValidName, isValidPhone } from "../types";
+import { isValidName, isValidPhone } from "../validation";
 import { TextField } from "@/ui";
 
 type BasicInfoStepProps = {

@@ -1,5 +1,5 @@
 import type { RegisterForm } from "../types";
-import { isValidUrl } from "../types";
+import { isValidUrl } from "../validation";
 import { TextField } from "@/ui";
 
 type PortfolioStepProps = {

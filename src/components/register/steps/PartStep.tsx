@@ -1,5 +1,5 @@
 import type { RegisterForm } from "../types";
-import { PART_OPTIONS } from "../types";
+import { PART_OPTIONS } from "../constants";
 import { Checkbox } from "@/ui";
 
 type PartStepProps = {

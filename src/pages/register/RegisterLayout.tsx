@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 import { Header } from "@/components/layout";
-import logoMarkDark from "@/assets/icons/register/logo-mark-dark.svg";
+import LogoMarkDark from "@/assets/icons/register/logo-mark-dark.svg?react";
 import { ROUTES } from "@/router/routes";
 
 export default function RegisterLayout() {
@@ -20,9 +20,8 @@ export default function RegisterLayout() {
             className="flex shrink-0 items-center overflow-hidden px-1 py-1.5"
           >
             <span className="relative size-[1.625rem] shrink-0 overflow-clip">
-              <img
-                src={logoMarkDark}
-                alt=""
+              <LogoMarkDark
+                aria-hidden
                 className="absolute inset-0 block size-full max-w-none"
               />
             </span>

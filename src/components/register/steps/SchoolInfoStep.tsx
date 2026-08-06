@@ -1,8 +1,8 @@
 import { useEffect, useId, useRef, useState } from "react";
-import selectChevron from "@/assets/icons/register/select-chevron.svg";
-import selectChevronUp from "@/assets/icons/register/select-chevron-up.svg";
+import SelectChevron from "@/assets/icons/register/select-chevron.svg?react";
+import SelectChevronUp from "@/assets/icons/register/select-chevron-up.svg?react";
 import type { RegisterForm } from "../types";
-import { MAJOR_OPTIONS } from "../types";
+import { MAJOR_OPTIONS } from "../constants";
 import { TextField } from "@/ui";
 
 type SchoolInfoStepProps = {
@@ -88,9 +88,8 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
           >
             <span>{form.major || "학과를 입력해주세요"}</span>
             <span className="relative h-[0.67rem] w-[0.8125rem] shrink-0 overflow-clip">
-              <img
-                src={selectChevron}
-                alt=""
+              <SelectChevron
+                aria-hidden
                 className="absolute inset-0 block size-full max-w-none"
               />
             </span>
@@ -114,9 +113,8 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
                   학과
                 </span>
                 <span className="relative h-[0.67rem] w-[0.8125rem] shrink-0 overflow-clip">
-                  <img
-                    src={selectChevronUp}
-                    alt=""
+                  <SelectChevronUp
+                    aria-hidden
                     className="absolute inset-0 block size-full max-w-none -scale-y-100"
                   />
                 </span>

@@ -1,11 +1,11 @@
 import { useEffect, useId, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import chevronRight from "@/assets/icons/chevron-right.svg";
-import logoMark from "@/assets/icons/logo-mark.svg";
-import logoMarkMenu from "@/assets/icons/logo-mark-menu.svg";
-import logoMarkMobile from "@/assets/icons/logo-mark-mobile.svg";
-import menuBar from "@/assets/icons/menu-bar.svg";
-import menuClose from "@/assets/icons/menu-close.svg";
+import ChevronRight from "@/assets/icons/chevron-right.svg?react";
+import LogoMark from "@/assets/icons/logo-mark.svg?react";
+import LogoMarkMenu from "@/assets/icons/logo-mark-menu.svg?react";
+import LogoMarkMobile from "@/assets/icons/logo-mark-mobile.svg?react";
+import MenuBar from "@/assets/icons/menu-bar.svg?react";
+import MenuClose from "@/assets/icons/menu-close.svg?react";
 import { ROUTES } from "@/router/routes";
 import type { HeaderProps, NavItemId } from "./Header.types";
 
@@ -52,7 +52,10 @@ export function Header({ className, activeItem }: HeaderProps) {
       <div className="mx-auto hidden w-full max-w-[1440px] items-center justify-between px-20 py-[15px] lg:flex">
         <Link to={ROUTES.HOME} className="flex shrink-0 items-center overflow-hidden px-1 py-1.5">
           <span className="relative size-[26px] shrink-0 overflow-clip">
-            <img src={logoMark} alt="" className="absolute inset-0 block size-full max-w-none" />
+            <LogoMark
+              aria-hidden
+              className="absolute inset-0 block size-full max-w-none"
+            />
           </span>
           <span className="flex flex-col justify-center text-center font-bold text-[32px] leading-[1.3] text-logo whitespace-nowrap">
             AMEWORKS
@@ -86,9 +89,8 @@ export function Header({ className, activeItem }: HeaderProps) {
       <div className="flex h-[45px] w-full items-center justify-between px-5 py-[15px] lg:hidden">
         <Link to={ROUTES.HOME} className="flex items-center overflow-hidden px-1 py-1.5">
           <span className="relative size-[14px] shrink-0 overflow-clip">
-            <img
-              src={logoMarkMobile}
-              alt=""
+            <LogoMarkMobile
+              aria-hidden
               className="absolute inset-0 block size-full max-w-none"
             />
           </span>
@@ -105,7 +107,7 @@ export function Header({ className, activeItem }: HeaderProps) {
           aria-controls={menuId}
           onClick={() => setMenuOpen(true)}
         >
-          <img src={menuBar} alt="" className="absolute inset-0 block size-full max-w-none" />
+          <MenuBar aria-hidden className="absolute inset-0 block size-full max-w-none" />
         </button>
       </div>
 
@@ -121,12 +123,12 @@ export function Header({ className, activeItem }: HeaderProps) {
           <div className="flex h-[26px] w-full items-center justify-between">
             <Link
               to={ROUTES.HOME}
+              aria-label="GAMEWORKS"
               className="relative block h-[26px] w-[22px] shrink-0"
               onClick={() => setMenuOpen(false)}
             >
-              <img
-                src={logoMarkMenu}
-                alt="GAMEWORKS"
+              <LogoMarkMenu
+                aria-hidden
                 className="absolute inset-0 block size-full max-w-none"
               />
             </Link>
@@ -136,7 +138,7 @@ export function Header({ className, activeItem }: HeaderProps) {
               aria-label="메뉴 닫기"
               onClick={() => setMenuOpen(false)}
             >
-              <img src={menuClose} alt="" className="absolute inset-0 block size-full max-w-none" />
+              <MenuClose aria-hidden className="absolute inset-0 block size-full max-w-none" />
             </button>
           </div>
 
@@ -152,7 +154,7 @@ export function Header({ className, activeItem }: HeaderProps) {
                   {item.label}
                 </span>
                 <span className="relative flex h-[9px] w-[5px] shrink-0 items-center justify-center">
-                  <img src={chevronRight} alt="" className="block size-full max-w-none" />
+                  <ChevronRight aria-hidden className="block size-full max-w-none" />
                 </span>
               </Link>
             ))}
