@@ -1,106 +1,98 @@
 
-Default to using Bun instead of Node.js.
+Default to using npm instead of other package managers.
 
-- Use `bun <file>` instead of `node <file>` or `ts-node <file>`
-- Use `bun test` instead of `jest` or `vitest`
-- Use `bun build <file.html|file.ts|file.css>` instead of `webpack` or `esbuild`
-- Use `bun install` instead of `npm install` or `yarn install` or `pnpm install`
-- Use `bun run <script>` instead of `npm run <script>` or `yarn run <script>` or `pnpm run <script>`
-- Use `bunx <package> <command>` instead of `npx <package> <command>`
-- Bun automatically loads .env, so don't use dotenv.
+- Use `node <file>` to run Node.js files
+- Use `npm test` instead of `bun test`
+- Use `npm install` instead of `bun install` or `yarn install` or `pnpm install`
+- Use `npm run <script>` instead of `bun run <script>` or `yarn run <script>` or `pnpm run <script>`
+- Use `npx <package> <command>` instead of `bunx <package> <command>`
+- Use `dotenv` package for .env file handling
 
 ## APIs
 
-- `Bun.serve()` supports WebSockets, HTTPS, and routes. Don't use `express`.
-- `bun:sqlite` for SQLite. Don't use `better-sqlite3`.
-- `Bun.redis` for Redis. Don't use `ioredis`.
-- `Bun.sql` for Postgres. Don't use `pg` or `postgres.js`.
-- `WebSocket` is built-in. Don't use `ws`.
-- Prefer `Bun.file` over `node:fs`'s readFile/writeFile
-- Bun.$`ls` instead of execa.
+- Use `express` for server setup with WebSockets and routes.
+- Use `better-sqlite3` for SQLite.
+- Use `ioredis` for Redis.
+- Use `pg` or `postgres.js` for Postgres.
+- Use `ws` package for WebSocket support.
+- Use `node:fs` for file operations (readFile/writeFile).
+- Use `child_process` for shell command execution.
 
 ## Testing
 
-Use `bun test` to run tests.
+Use `npm test` to run tests with Jest or Vitest.
 
 ```ts#index.test.ts
-import { test, expect } from "bun:test";
+import { describe, it, expect } from "vitest";
 
-test("hello world", () => {
-  expect(1).toBe(1);
+describe("hello world", () => {
+  it("should pass", () => {
+    expect(1).toBe(1);
+  });
 });
 ```
 
 ## Frontend
 
-Use HTML imports with `Bun.serve()`. Don't use `vite`. HTML imports fully support React, CSS, Tailwind.
+Use `vite` as the bundler and dev server for React. It provides fast HMR (Hot Module Replacement) and optimized builds.
 
-Server:
+Installation:
 
-```ts#index.ts
-import index from "./index.html"
-
-Bun.serve({
-  routes: {
-    "/": index,
-    "/api/users/:id": {
-      GET: (req) => {
-        return new Response(JSON.stringify({ id: req.params.id }));
-      },
-    },
-  },
-  // optional websocket support
-  websocket: {
-    open: (ws) => {
-      ws.send("Hello, world!");
-    },
-    message: (ws, message) => {
-      ws.send(message);
-    },
-    close: (ws) => {
-      // handle close
-    }
-  },
-  development: {
-    hmr: true,
-    console: true,
-  }
-})
+```sh
+npm install -D vite @vitejs/plugin-react
 ```
 
-HTML files can import .tsx, .jsx or .js files directly and Bun's bundler will transpile & bundle automatically. `<link>` tags can point to stylesheets and Bun's CSS bundler will bundle.
+Vite config:
+
+```ts#vite.config.ts
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 3000,
+    open: true,
+  },
+});
+```
+
+HTML entry point:
 
 ```html#index.html
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage</title>
+  </head>
   <body>
-    <h1>Hello, world!</h1>
-    <script type="module" src="./frontend.tsx"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
 ```
 
-With the following `frontend.tsx`:
+React entry point:
 
-```tsx#frontend.tsx
-import React from "react";
-import { createRoot } from "react-dom/client";
+```tsx#src/main.tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './styles/globals.css';
 
-// import .css files directly and it works
-import './index.css';
-
-const root = createRoot(document.body);
-
-export default function Frontend() {
-  return <h1>Hello, world!</h1>;
-}
-
-root.render(<Frontend />);
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
 ```
 
-Then, run index.ts
+Then run:
 
 ```sh
-bun --hot ./index.ts
+npm run dev
 ```
 
 For more information, read the Bun API docs in `node_modules/bun-types/docs/**.mdx`.
