@@ -48,6 +48,10 @@
   --color-border: var(--color-border);
   --color-overlay: var(--color-overlay);
 
+  --color-accent-green: var(--color-accent-green);
+  --color-accent-red: var(--color-accent-red);
+  --color-icon-primary: var(--color-icon-primary);
+
   --text-hero: var(--font-size-hero);
   --text-hero--line-height: var(--line-height-tight);
   --text-heading1: var(--font-size-heading1);

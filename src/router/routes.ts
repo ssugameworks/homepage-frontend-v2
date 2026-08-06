@@ -3,7 +3,8 @@ export const ROUTES = {
   INTRODUCE: "/introduce",
   ACTIVITIES: "/activities",
   MEMBERS: "/members",
-  JOIN: "/join",
+  REGISTER: "/register",
+  REGISTER_APPLY: "/register/apply",
   CONTACT: "/contact",
 } as const;
 

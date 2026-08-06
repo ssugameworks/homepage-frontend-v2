@@ -69,4 +69,11 @@
   --color-button-solid-hover: var(--color-primary-600);
   --color-button-outline: rgba(43, 132, 255, 0.97);
   --color-button-disabled-text: rgba(255, 255, 255, 0.4);
+
+  /* Accent — form validation */
+  --color-accent-green: #228738;
+  --color-accent-red: #de3412;
+
+  /* Icon */
+  --color-icon-primary: #256ef4;
 }
