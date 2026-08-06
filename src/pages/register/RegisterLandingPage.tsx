@@ -6,7 +6,7 @@ import { Button } from "@/ui";
 
 /** Mock activity data — replace with API later. */
 const MOCK_ACTIVITY = {
-  applyPeriod: "2026.08.01 ~ 2026.08.02",
+  applyPeriod: "2026.08.01 ~ 2026.08.31",
   activityPeriod: "2026.08.11 ~ 2026.08.12",
   location: "정보과학관",
   description:
@@ -16,8 +16,24 @@ const MOCK_ACTIVITY = {
 const mobileCtaClass =
   "max-md:h-auto max-md:min-h-0 max-md:rounded-[0.625rem] max-md:px-6 max-md:py-[0.5625rem] max-md:text-[length:var(--font-size-body1)] max-md:font-bold max-md:leading-[1.5]";
 
+/** Parses `YYYY.MM.DD` as local end-of-day. */
+function parseDotDateEndOfDay(value: string) {
+  const [year, month, day] = value.split(".").map(Number);
+  if (!year || !month || !day) return null;
+  return new Date(year, month - 1, day, 23, 59, 59, 999);
+}
+
+function isApplyPeriodOpen(applyPeriod: string, now = new Date()) {
+  const endRaw = applyPeriod.split("~")[1]?.trim();
+  if (!endRaw) return true;
+  const end = parseDotDateEndOfDay(endRaw);
+  if (!end) return true;
+  return now.getTime() <= end.getTime();
+}
+
 export default function RegisterLandingPage() {
   const navigate = useNavigate();
+  const applyOpen = isApplyPeriodOpen(MOCK_ACTIVITY.applyPeriod);
 
   return (
     <div className="flex flex-1 flex-col items-center px-5 py-16 md:px-6 md:py-[5.5rem]">
@@ -38,9 +54,13 @@ export default function RegisterLandingPage() {
               size="xl"
               fullWidth
               className={mobileCtaClass}
-              onClick={() => navigate(ROUTES.REGISTER_APPLY)}
+              disabled={!applyOpen}
+              onClick={() => {
+                if (!applyOpen) return;
+                navigate(ROUTES.REGISTER_APPLY);
+              }}
             >
-              다음
+              {applyOpen ? "다음" : "신청 마감"}
             </Button>
           }
         />

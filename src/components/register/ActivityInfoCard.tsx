@@ -16,7 +16,7 @@ const labelClass =
   "shrink-0 text-[length:var(--font-size-body1)] font-bold leading-[1.5] text-primary-950 md:text-[length:var(--font-size-heading3)]";
 
 const valueClass =
-  "text-[length:var(--font-size-body1)] font-light leading-[1.5] text-gray-700 md:text-[length:var(--font-size-heading3)]";
+  "min-w-0 break-words text-[length:var(--font-size-body1)] font-light leading-[1.5] text-gray-700 md:text-[length:var(--font-size-heading3)]";
 
 export function ActivityInfoCard({ activity, actions }: ActivityInfoCardProps) {
   return (

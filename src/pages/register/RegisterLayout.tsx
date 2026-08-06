@@ -16,6 +16,7 @@ export default function RegisterLayout() {
         <div className="mx-auto flex w-full max-w-[90rem] items-center px-6 py-[0.9375rem] md:px-20">
           <Link
             to={ROUTES.HOME}
+            aria-label="GAMEWORKS"
             className="flex shrink-0 items-center overflow-hidden px-1 py-1.5"
           >
             <span className="relative size-[1.625rem] shrink-0 overflow-clip">
@@ -25,7 +26,10 @@ export default function RegisterLayout() {
                 className="absolute inset-0 block size-full max-w-none"
               />
             </span>
-            <span className="flex flex-col justify-center text-center text-[2rem] font-bold leading-[1.3] text-black whitespace-nowrap">
+            <span
+              aria-hidden
+              className="flex flex-col justify-center text-center text-[2rem] font-bold leading-[1.3] text-black whitespace-nowrap"
+            >
               AMEWORKS
             </span>
           </Link>

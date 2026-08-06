@@ -65,7 +65,8 @@ export function isValidName(name: string) {
 
 export function isValidPhone(phone: string) {
   const digits = phone.replace(/\D/g, "");
-  return digits.length >= 10 && digits.length <= 11;
+  // 01x (010/011/016/017/018/019) + 7~8자리
+  return /^01[016789]\d{7,8}$/.test(digits);
 }
 
 export function isValidMotivation(text: string) {

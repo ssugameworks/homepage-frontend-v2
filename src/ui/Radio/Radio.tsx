@@ -7,7 +7,7 @@ export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
   label: ReactNode;
 };
 
-export function Radio({ label, className, checked, ...rest }: RadioProps) {
+export function Radio({ label, className, ...rest }: RadioProps) {
   return (
     <label
       className={[
@@ -17,27 +17,34 @@ export function Radio({ label, className, checked, ...rest }: RadioProps) {
         .filter(Boolean)
         .join(" ")}
     >
-      <span className="relative size-5 shrink-0 overflow-clip">
-        <input
-          type="radio"
-          className="peer sr-only"
-          checked={checked}
-          {...rest}
+      <span className="relative size-5 shrink-0">
+        <input type="radio" className="peer sr-only" {...rest} />
+        <img
+          src={radioDefault}
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute inset-0 block size-full max-w-none peer-checked:hidden peer-focus-visible:opacity-90"
         />
         <img
-          src={checked ? radioChecked : radioDefault}
+          src={radioChecked}
           alt=""
-          className="absolute inset-0 block size-full max-w-none"
+          aria-hidden
+          className="pointer-events-none absolute inset-0 hidden size-full max-w-none peer-checked:block"
         />
-        {checked ? (
-          <span className="absolute inset-1/4 overflow-clip">
-            <img
-              src={radioDot}
-              alt=""
-              className="absolute inset-0 block size-full max-w-none"
-            />
-          </span>
-        ) : null}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-1/4 hidden overflow-clip peer-checked:block"
+        >
+          <img
+            src={radioDot}
+            alt=""
+            className="absolute inset-0 block size-full max-w-none"
+          />
+        </span>
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-full peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-600"
+        />
       </span>
       <span className="typo-body1 typo-light tracking-[-0.03em] text-black whitespace-nowrap">
         {label}

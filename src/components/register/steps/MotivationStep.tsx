@@ -12,7 +12,7 @@ type MotivationStepProps = {
 
 export function MotivationStep({ form, onChange }: MotivationStepProps) {
   const length = form.motivation.length;
-  const isError = length < MIN_LENGTH;
+  const isError = !isValidMotivation(form.motivation);
 
   return (
     <div className="flex flex-col">

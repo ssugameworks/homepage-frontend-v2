@@ -5,7 +5,7 @@ export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> 
   label: ReactNode;
 };
 
-export function Checkbox({ label, className, checked, ...rest }: CheckboxProps) {
+export function Checkbox({ label, className, ...rest }: CheckboxProps) {
   return (
     <label
       className={[
@@ -15,29 +15,27 @@ export function Checkbox({ label, className, checked, ...rest }: CheckboxProps) 
         .filter(Boolean)
         .join(" ")}
     >
-      <span
-        className={[
-          "relative size-[1.125rem] shrink-0 overflow-clip rounded-[0.1875rem]",
-          checked
-            ? "bg-primary-600"
-            : "border border-solid border-gray-300 bg-transparent",
-        ].join(" ")}
-      >
-        <input
-          type="checkbox"
-          className="peer sr-only"
-          checked={checked}
-          {...rest}
+      <span className="relative size-[1.125rem] shrink-0">
+        <input type="checkbox" className="peer sr-only" {...rest} />
+        <span
+          aria-hidden
+          className={[
+            "pointer-events-none absolute inset-0 overflow-clip rounded-[0.1875rem]",
+            "border border-solid border-gray-300 bg-transparent",
+            "peer-checked:border-transparent peer-checked:bg-primary-600",
+            "peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-600",
+          ].join(" ")}
         />
-        {checked ? (
-          <span className="absolute inset-[22%_17%_26%_17%] overflow-clip">
-            <img
-              src={checkmark}
-              alt=""
-              className="absolute inset-0 block size-full max-w-none"
-            />
-          </span>
-        ) : null}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-[22%_17%_26%_17%] hidden overflow-clip peer-checked:block"
+        >
+          <img
+            src={checkmark}
+            alt=""
+            className="absolute inset-0 block size-full max-w-none"
+          />
+        </span>
       </span>
       <span className="typo-body1 typo-light tracking-[-0.03em] text-black whitespace-nowrap">
         {label}

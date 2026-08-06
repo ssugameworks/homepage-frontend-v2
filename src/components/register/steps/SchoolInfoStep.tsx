@@ -13,11 +13,15 @@ type SchoolInfoStepProps = {
 export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const listId = useId();
+  const labelId = useId();
   const showStudentId = Boolean(form.major);
 
   useEffect(() => {
     if (!open) return;
+
+    closeButtonRef.current?.focus();
 
     const onPointerDown = (event: PointerEvent) => {
       if (!rootRef.current?.contains(event.target as Node)) {
@@ -52,7 +56,10 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
       </p>
 
       <div className="flex w-full flex-col items-start">
-        <span className="px-2 py-1 typo-caption typo-medium text-primary-950 md:typo-body1">
+        <span
+          id={labelId}
+          className="px-2 py-1 typo-caption typo-medium text-primary-950 md:typo-body1"
+        >
           학과
         </span>
 
@@ -60,9 +67,13 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
           <button
             type="button"
             id="major"
+            aria-labelledby={labelId}
             aria-haspopup="listbox"
             aria-expanded={open}
             aria-controls={listId}
+            tabIndex={open ? -1 : undefined}
+            aria-hidden={open}
+            inert={open}
             onClick={() => setOpen((prev) => !prev)}
             className={[
               "flex w-full cursor-pointer items-center justify-between bg-surface-white text-left outline-none",
@@ -89,12 +100,13 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
             <div
               id={listId}
               role="listbox"
-              aria-label="학과"
+              aria-labelledby={labelId}
               className="absolute top-0 left-0 z-30 w-full overflow-hidden rounded-[0.625rem] border border-solid border-gray-200 bg-surface-white shadow-[0_8px_24px_rgba(0,0,0,0.12)] md:rounded-2xl md:border-2"
             >
               <button
+                ref={closeButtonRef}
                 type="button"
-                aria-expanded="true"
+                aria-label="학과 목록 닫기"
                 onClick={() => setOpen(false)}
                 className="flex h-auto w-full cursor-pointer items-center justify-between px-2 py-1.5 md:h-[3.1875rem] md:px-[1.0625rem] md:py-0"
               >
