@@ -1,29 +1,67 @@
 @import "tailwindcss";
+@import "./styles/tokens/colors.css";
+@import "./styles/tokens/typography.css";
+@import "./styles/typography.css";
+@import "./styles/base.css";
 
-@layer base {
-  :root {
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    /* macOS/iOS에서 폰트 계단 현상 제거 */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    scroll-behavior: smooth;
-  }
+/**
+ * Tailwind v4 theme bridge
+ * → bg-primary-950, text-gray-700, text-text-primary 등으로 사용
+ */
+@theme {
+  --font-sans: var(--font-family-sans);
 
-  body {
-    @apply m-0 min-h-screen;
-  }
+  --color-gray-950: var(--color-gray-950);
+  --color-gray-900: var(--color-gray-900);
+  --color-gray-800: var(--color-gray-800);
+  --color-gray-700: var(--color-gray-700);
+  --color-gray-600: var(--color-gray-600);
+  --color-gray-500: var(--color-gray-500);
+  --color-gray-400: var(--color-gray-400);
+  --color-gray-300: var(--color-gray-300);
+  --color-gray-200: var(--color-gray-200);
+  --color-gray-100: var(--color-gray-100);
 
-  img,
-  video {
-    max-width: 100%;
-    height: auto;
-  }
+  --color-primary-950: var(--color-primary-950);
+  --color-primary-900: var(--color-primary-900);
+  --color-primary-800: var(--color-primary-800);
+  --color-primary-700: var(--color-primary-700);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-500: var(--color-primary-500);
+  --color-primary-400: var(--color-primary-400);
+  --color-primary-300: var(--color-primary-300);
+  --color-primary-200: var(--color-primary-200);
+  --color-primary-100: var(--color-primary-100);
+  --color-primary: var(--color-primary);
 
-  button,
-  input,
-  select,
-  textarea {
-    font: inherit;
-  }
+  --color-logo: var(--color-logo);
+  --color-surface-white: var(--color-surface-white);
+  --color-white: var(--color-white);
+  --color-black: var(--color-black);
+
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-tertiary: var(--color-text-tertiary);
+
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-border: var(--color-border);
+  --color-overlay: var(--color-overlay);
+
+  --text-hero: var(--font-size-hero);
+  --text-hero--line-height: var(--line-height-tight);
+  --text-heading1: var(--font-size-heading1);
+  --text-heading1--line-height: var(--line-height-tight);
+  --text-heading2: var(--font-size-heading2);
+  --text-heading2--line-height: var(--line-height-tight);
+  --text-heading3: var(--font-size-heading3);
+  --text-heading3--line-height: var(--line-height-tight);
+  --text-subheading: var(--font-size-subheading);
+  --text-subheading--line-height: var(--line-height-relaxed);
+  --text-body1: var(--font-size-body1);
+  --text-body1--line-height: var(--line-height-relaxed);
+  --text-body2: var(--font-size-body2);
+  --text-body2--line-height: var(--line-height-relaxed);
+  --text-caption: var(--font-size-caption);
+  --text-caption--line-height: var(--line-height-relaxed);
 }

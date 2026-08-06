@@ -1,0 +1,33 @@
+/**
+ * Gameworks Design Tokens — Typography
+ * Figma: TYPESTYLE
+ *
+ * SIZE / LINE / LETTER (letter-spacing -3% = -0.03em)
+ * Hero~Heading3: line-height 130%
+ * Subheading~Caption: line-height 140%
+ */
+
+:root {
+  --font-family-sans: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --font-weight-light: 300;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Font sizes — TYPESTYLE SIZE column */
+  --font-size-hero: 50px;
+  --font-size-heading1: 38px;
+  --font-size-heading2: 28px;
+  --font-size-heading3: 22px;
+  --font-size-subheading: 18px;
+  --font-size-body1: 16px;
+  --font-size-body2: 14px;
+  --font-size-caption: 12px;
+
+  /* Line heights */
+  --line-height-tight: 1.3;
+  --line-height-relaxed: 1.4;
+
+  /* Letter spacing */
+  --letter-spacing-tight: -0.03em;
+}
