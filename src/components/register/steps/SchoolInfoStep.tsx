@@ -44,7 +44,7 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
   const selectMajor = (major: string) => {
     onChange({
       major,
-      school: major === form.major ? form.school : "",
+      studentId: major === form.major ? form.studentId : "",
     });
     setOpen(false);
   };
@@ -156,10 +156,10 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
       {showStudentId ? (
         <TextField
           label="학번"
-          name="school"
+          name="studentId"
           placeholder="학번을 입력해주세요"
-          value={form.school}
-          onChange={(e) => onChange({ school: e.target.value })}
+          value={form.studentId}
+          onChange={(e) => onChange({ studentId: e.target.value })}
         />
       ) : null}
     </div>
@@ -167,5 +167,5 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
 }
 
 export function canProceedSchoolInfo(form: RegisterForm) {
-  return Boolean(form.major.trim()) && form.school.trim().length >= 4;
+  return Boolean(form.major.trim()) && form.studentId.trim().length >= 4;
 }

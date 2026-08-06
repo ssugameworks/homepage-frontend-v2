@@ -2,7 +2,7 @@ export type RegisterForm = {
   name: string;
   phone: string;
   /** 학번 */
-  school: string;
+  studentId: string;
   /** 학과 */
   major: string;
   grade: string | null;
@@ -15,7 +15,7 @@ export type RegisterForm = {
 export const INITIAL_REGISTER_FORM: RegisterForm = {
   name: "",
   phone: "",
-  school: "",
+  studentId: "",
   major: "",
   grade: null,
   parts: [],
