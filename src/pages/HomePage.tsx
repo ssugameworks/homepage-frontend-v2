@@ -2,8 +2,10 @@ import { Footer } from "@/components/layout";
 
 export default function HomePage() {
   return (
-    <>
-      <h1>홈 페이지입니다.</h1>
+     <>
+      <div className="px-5 py-16 text-center lg:px-20">
+        <h1 className="typo-heading2 text-foreground">홈</h1>
+      </div>
       <Footer />
     </>
   );

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["bun", "react"],
+    "types": ["vite/client", "react"],
     "lib": ["ESNext", "DOM"],
     "target": "ESNext",
     "module": "Preserve",
@@ -13,6 +13,7 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
+    "baseUrl": ".",
 
     // Best practices
     "strict": true,

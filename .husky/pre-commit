@@ -1,1 +1,14 @@
-bun lint-staged
+branch=$(git rev-parse --abbrev-ref HEAD)
+protected_branches="^(main|develop)$"
+pattern="^(feat|fix|chore|refactor|docs|test|style|perf)/[0-9]+-[a-z][a-zA-Z0-9]*$"
+
+if ! echo "$branch" | grep -Eq "$protected_branches"; then
+  if ! echo "$branch" | grep -Eq "$pattern"; then
+    echo "브랜치 이름이 컨벤션을 따르지 않습니다: $branch"
+    echo "형식: (feat|fix|chore|refactor|docs|test|style|perf)/(이슈번호)-(camelCase)"
+    echo "예: feat/123-loginPage"
+    exit 1
+  fi
+fi
+
+npx lint-staged

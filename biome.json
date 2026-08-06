@@ -6,7 +6,8 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": ["**", "!src/assets/**", "!src/styles/reset.css"]
   },
   "formatter": {
     "enabled": true,
