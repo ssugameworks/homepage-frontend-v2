@@ -13,7 +13,7 @@ const NAV_ITEMS: { id: NavItemId; label: string; to: string }[] = [
   { id: "introduce", label: "소개", to: ROUTES.INTRODUCE },
   { id: "activities", label: "활동", to: ROUTES.ACTIVITIES },
   { id: "members", label: "임원진", to: ROUTES.MEMBERS },
-  { id: "join", label: "가입", to: ROUTES.JOIN },
+  { id: "join", label: "가입", to: ROUTES.REGISTER },
   { id: "contact", label: "문의", to: ROUTES.CONTACT },
 ];
 
