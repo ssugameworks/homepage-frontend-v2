@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["bun", "react"],
+    "types": ["vite/client", "react"],
     "lib": ["ESNext", "DOM"],
     "target": "ESNext",
     "module": "Preserve",
