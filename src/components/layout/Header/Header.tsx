@@ -70,7 +70,7 @@ export function Header({ className, activeItem }: HeaderProps) {
                 key={item.id}
                 to={item.to}
                 className={[
-                  "flex items-center justify-center rounded-full px-6 font-medium text-subheading leading-[1.3] tracking-[-0.72px] whitespace-nowrap transition-colors",
+                  "flex items-center justify-center rounded-full px-6 font-medium text-subheading leading-[1.3] tracking-dense whitespace-nowrap transition-colors",
                   isActive ? "text-primary-200" : "text-white hover:text-primary-200",
                 ].join(" ")}
                 aria-current={isActive ? "page" : undefined}
@@ -92,7 +92,7 @@ export function Header({ className, activeItem }: HeaderProps) {
               className="absolute inset-0 block size-full max-w-none"
             />
           </span>
-          <span className="flex flex-col justify-center text-center font-bold text-body2 leading-[1.4] tracking-dense text-logo whitespace-nowrap">
+          <span className="flex flex-col justify-center text-center font-bold text-body2 tracking-dense text-logo whitespace-nowrap">
             AMEWORKS
           </span>
         </Link>
