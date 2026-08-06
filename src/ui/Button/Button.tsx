@@ -58,7 +58,7 @@ export function Button({
         "disabled:cursor-not-allowed",
         sizeClass[size],
         variantClass[variant],
-        fullWidth && "w-full max-w-none",
+        fullWidth && "w-full max-w-none min-w-0",
         className
       )}
       {...rest}
