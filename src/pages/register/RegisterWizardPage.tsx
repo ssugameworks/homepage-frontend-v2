@@ -126,8 +126,8 @@ export default function RegisterWizardPage() {
     );
 
   return (
-    <div className="flex flex-1 flex-col items-center px-5 py-16 md:px-6 md:py-[5.5rem]">
-      <div className="flex w-full max-w-[20.5rem] flex-col items-center gap-6 md:max-w-[32.5rem] md:gap-[1.6875rem]">
+    <div className="flex flex-1 flex-col items-center justify-center px-5 py-16 short:md:py-8 md:px-6 md:py-[5.5rem]">
+      <div className="flex w-full max-w-[20.5rem] flex-col items-center gap-6 short:md:gap-4 md:max-w-[32.5rem] md:gap-[1.6875rem]">
         <h1 className="text-center font-bold text-primary-950">
           <span className="typo-heading3 md:hidden">GAMEWORKS에 지원하기</span>
           <span className="hidden flex-wrap items-center justify-center md:flex">

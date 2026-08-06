@@ -13,7 +13,7 @@ export default function RegisterLayout() {
 
       {/* Desktop: logo-only light header */}
       <header className="hidden w-full bg-surface-white md:block">
-        <div className="mx-auto flex w-full max-w-[90rem] items-center px-6 py-[0.9375rem] md:px-20">
+        <div className="mx-auto flex w-full max-w-[90rem] items-center px-6 py-[0.9375rem] short:py-2 md:px-20">
           <Link
             to={ROUTES.HOME}
             aria-label="GAMEWORKS"
@@ -46,7 +46,7 @@ export default function RegisterLayout() {
           className="pointer-events-none absolute inset-0 hidden md:block"
           style={{
             backgroundImage:
-              "radial-gradient(ellipse 45rem 35rem at 50% 50%, var(--color-primary-200) 0%, var(--color-surface-white) 70%)",
+              "radial-gradient(ellipse 45rem 30rem at 50% 50%, var(--color-primary-200) 0%, var(--color-surface-white) 70%)",
           }}
           aria-hidden
         />

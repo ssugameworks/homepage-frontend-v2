@@ -32,6 +32,7 @@ export function MotivationStep({ form, onChange }: MotivationStepProps) {
           "text-[length:var(--font-size-caption)] font-medium leading-[1.5] text-primary-950",
           "placeholder:font-medium placeholder:text-gray-400",
           "md:h-[15.375rem] md:rounded-2xl md:border-2 md:px-[1.0625rem] md:py-[0.6875rem]",
+          "short:md:h-[12.5rem]",
           "md:text-[length:var(--font-size-subheading)]",
           isError && length > 0
             ? "border-accent-red"

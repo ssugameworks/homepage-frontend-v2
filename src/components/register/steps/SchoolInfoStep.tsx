@@ -120,7 +120,7 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
                 </span>
               </button>
 
-              <ul className="m-0 max-h-[19.5rem] list-none overflow-y-auto p-0">
+              <ul className="m-0 max-h-[max(6rem,min(19.5rem,calc(100dvh-450px)))] list-none overflow-y-auto p-0">
                 {MAJOR_OPTIONS.map((option) => {
                   const selected = form.major === option;
                   return (
