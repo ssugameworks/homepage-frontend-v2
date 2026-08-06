@@ -20,18 +20,16 @@ export default function Footer() {
       <div className="flex w-full flex-col items-start gap-4">
         <div className="flex w-full flex-col items-start gap-7.5 md:flex-row md:items-center md:justify-between">
           <div className="flex w-full flex-col items-start gap-2.5 text-white md:w-93.75">
-            <p className="w-full text-body1 font-light leading-normal tracking-[-0.48px] md:text-subheading md:tracking-[-0.54px]">
+            <p className="w-full text-body1 font-light leading-normal tracking-dense md:text-subheading md:tracking-dense">
               글로벌미디어학부 대표 학술 소모임
             </p>
-            <p className="w-full text-[24px] font-bold leading-normal md:text-heading1">
-              GAMEWORKS
-            </p>
+            <p className="w-full text-2xl font-bold leading-normal md:text-heading1">GAMEWORKS</p>
           </div>
 
           <div className="flex w-full flex-col items-start gap-4 md:w-70.5 md:items-end">
             <button
               type="button"
-              className="order-2 inline-flex shrink-0 items-center justify-center gap-2.5 rounded-full border border-white/5 bg-white/5 px-5 py-2.5 text-body1 font-light tracking-[-0.48px] text-white md:order-1 md:text-subheading md:tracking-[-0.54px]"
+              className="order-2 inline-flex shrink-0 items-center justify-center gap-2.5 rounded-full border border-white/5 bg-white/5 px-5 py-2.5 text-body1 font-light tracking-dense text-white md:order-1 md:text-subheading md:tracking-dense"
             >
               <img src={chatFillIcon} alt="" className="size-4" />
               문의하기
@@ -54,7 +52,7 @@ export default function Footer() {
 
         <div className="h-px w-full bg-gray-200" />
 
-        <div className="w-full text-center text-body2 font-light leading-normal tracking-[-0.42px] text-white">
+        <div className="w-full text-center text-body2 font-light leading-normal tracking-dense text-white">
           <p>© 2026 GAMEWORKS, All rights reserved.</p>
           <p>26년의 역사를 이어온 종합 학술 소모임, GAMEWORKS</p>
         </div>

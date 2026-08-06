@@ -92,7 +92,7 @@ export function Header({ className, activeItem }: HeaderProps) {
               className="absolute inset-0 block size-full max-w-none"
             />
           </span>
-          <span className="flex flex-col justify-center text-center font-bold text-body2 leading-[1.4] tracking-[-0.42px] text-logo whitespace-nowrap">
+          <span className="flex flex-col justify-center text-center font-bold text-body2 leading-[1.4] tracking-dense text-logo whitespace-nowrap">
             AMEWORKS
           </span>
         </Link>
