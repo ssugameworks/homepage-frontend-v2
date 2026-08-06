@@ -6,9 +6,7 @@
 
 ```
 ui/
-├── Button/
-├── Input/
-└── Badge/
+└── Button/
 ```
 
 ## Button

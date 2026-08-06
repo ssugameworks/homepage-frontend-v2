@@ -22,12 +22,12 @@ const variantClass: Record<ButtonVariant, string> = {
     "disabled:text-[color:var(--color-button-disabled-text)]",
   ].join(" "),
   primarySolid: [
-    "border-0 bg-button-solid text-white",
-    "hover:enabled:bg-button-solid-hover",
+    "border-0 bg-[var(--color-button-solid)] text-white",
+    "hover:enabled:bg-[var(--color-button-solid-hover)]",
     "disabled:bg-gray-600 disabled:text-white",
   ].join(" "),
   outline: [
-    "border-2 border-solid border-button-outline bg-transparent text-button-outline",
+    "border-2 border-solid border-[color:var(--color-button-outline)] bg-transparent text-[color:var(--color-button-outline)]",
     "hover:enabled:border-transparent hover:enabled:text-white",
     "hover:enabled:[background-image:var(--color-button-primary-hover)]",
     "disabled:border-transparent disabled:[background-image:var(--color-button-disabled)]",
