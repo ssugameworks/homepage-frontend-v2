@@ -48,6 +48,11 @@
   --color-border: var(--color-border);
   --color-overlay: var(--color-overlay);
 
+  --color-button-outline: var(--color-button-outline);
+  --color-button-solid: var(--color-button-solid);
+  --color-button-solid-hover: var(--color-button-solid-hover);
+  --color-button-disabled-text: var(--color-button-disabled-text);
+
   --text-hero: var(--font-size-hero);
   --text-hero--line-height: var(--line-height-tight);
   --text-heading1: var(--font-size-heading1);
