@@ -2,15 +2,15 @@ import type { ButtonProps, ButtonSize, ButtonVariant } from "./Button.types";
 
 const sizeClass: Record<ButtonSize, string> = {
   // 활동 mobile — caption Bold, radius 4, width 70
-  xs: "h-auto min-h-0 w-[70px] rounded px-1 py-1 text-[length:var(--font-size-caption)] font-bold leading-[1.5]",
+  xs: "h-auto min-h-0 w-[4.375rem] rounded px-1 py-1 text-[length:var(--font-size-caption)] font-bold leading-[1.5]",
   // overlay / 지원하기 ver2 — body1 Bold, radius 10
-  sm: "h-10 min-w-[180px] rounded-[10px] px-6 py-2 text-[length:var(--font-size-body1)] font-bold leading-[1.5]",
+  sm: "h-10 min-w-[11.25rem] rounded-[0.625rem] px-6 py-2 text-[length:var(--font-size-body1)] font-bold leading-[1.5]",
   // 활동 web — subheading Bold, radius 10, ~100×48
-  md: "h-12 min-w-[100px] rounded-[10px] px-2.5 py-2 text-[length:var(--font-size-subheading)] font-bold leading-[1.5]",
+  md: "h-12 min-w-[6.25rem] rounded-[0.625rem] px-2.5 py-2 text-[length:var(--font-size-subheading)] font-bold leading-[1.5]",
   // 지원하기 ver3/4 — subheading Medium, radius 16, ~200×56
-  lg: "h-14 w-[200px] rounded-2xl px-8 py-3.5 text-[length:var(--font-size-subheading)] font-medium leading-[1.5]",
+  lg: "h-14 w-[12.5rem] rounded-2xl px-8 py-3.5 text-[length:var(--font-size-subheading)] font-medium leading-[1.5]",
   // 지원하기 ver1 — heading3 Medium, radius 16, tall CTA
-  xl: "h-14 w-full max-w-[418px] rounded-2xl px-8 py-3.5 text-[length:var(--font-size-heading3)] font-medium leading-[1.5]",
+  xl: "h-14 w-full max-w-[26.125rem] rounded-2xl px-8 py-3.5 text-[length:var(--font-size-heading3)] font-medium leading-[1.5]",
 };
 
 const variantClass: Record<ButtonVariant, string> = {
