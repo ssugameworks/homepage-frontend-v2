@@ -28,14 +28,12 @@ export function MotivationStep({ form, onChange }: MotivationStepProps) {
         onChange={(e) => onChange({ motivation: e.target.value })}
         className={[
           "w-full resize-none bg-transparent outline-none",
-          "h-[10rem] rounded-[0.625rem] border border-solid px-2 py-1.5",
-          "text-[length:var(--font-size-caption)] font-medium leading-[1.5] text-primary-950",
+          "h-40 rounded-[0.625rem] border border-solid px-2 py-1.5",
+          "typo-caption text-primary-950",
           "placeholder:font-medium placeholder:text-gray-400",
-          "md:h-[15.375rem] md:rounded-2xl md:border-2 md:px-[1.0625rem] md:py-[0.6875rem]",
-          "md:text-[length:var(--font-size-subheading)]",
-          isError && length > 0
-            ? "border-accent-red"
-            : "border-gray-200 focus:border-[color:var(--color-button-outline)]",
+          "md:h-61.5 md:rounded-2xl md:border-2 md:px-4.25 md:py-2.75",
+          "md:typo-subheading md:typo-medium",
+          isError && length > 0 ? "border-accent-red" : "border-gray-200",
         ].join(" ")}
       />
 
@@ -46,13 +44,13 @@ export function MotivationStep({ form, onChange }: MotivationStepProps) {
               <span className="relative size-6 shrink-0 overflow-clip">
                 <IconWarning aria-hidden className="absolute inset-0 block size-full max-w-none" />
               </span>
-              <p className="typo-body2 typo-light tracking-[-0.03em] text-accent-red">
+              <p className="typo-body2 typo-light text-accent-red">
                 지원 계기를 최소 {MIN_LENGTH}자 이상 작성해주세요
               </p>
             </>
           ) : null}
         </div>
-        <p className="shrink-0 typo-body2 typo-light tracking-[-0.03em] text-primary-600">
+        <p className="shrink-0 typo-body2 typo-light text-primary-600">
           {length}/{MAX_LENGTH}
         </p>
       </div>

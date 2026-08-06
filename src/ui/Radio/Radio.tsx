@@ -10,7 +10,7 @@ export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
 export function Radio({ label, className, ...rest }: RadioProps) {
   return (
     <label
-      className={["inline-flex cursor-pointer items-center gap-[0.6875rem]", className]
+      className={["inline-flex cursor-pointer items-center gap-2.75", className]
         .filter(Boolean)
         .join(" ")}
     >
@@ -35,9 +35,7 @@ export function Radio({ label, className, ...rest }: RadioProps) {
           className="pointer-events-none absolute inset-0 rounded-full peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-600"
         />
       </span>
-      <span className="typo-body1 typo-light tracking-[-0.03em] text-black whitespace-nowrap">
-        {label}
-      </span>
+      <span className="typo-body1 typo-light text-black whitespace-nowrap">{label}</span>
     </label>
   );
 }

@@ -21,7 +21,7 @@ export function PartStep({ form, onChange }: PartStepProps) {
         경험해보고 싶은 파트를 모두 선택해 주세요
       </p>
 
-      <div className="flex flex-col gap-[1.6875rem]">
+      <div className="flex flex-col gap-6.75">
         {PART_OPTIONS.map((option) => (
           <Checkbox
             key={option}

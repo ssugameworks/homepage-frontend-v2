@@ -8,11 +8,11 @@ export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> 
 export function Checkbox({ label, className, ...rest }: CheckboxProps) {
   return (
     <label
-      className={["inline-flex cursor-pointer items-center gap-[0.6875rem]", className]
+      className={["inline-flex cursor-pointer items-center gap-2.75", className]
         .filter(Boolean)
         .join(" ")}
     >
-      <span className="relative size-[1.125rem] shrink-0">
+      <span className="relative size-4.5 shrink-0">
         <input type="checkbox" className="peer sr-only" {...rest} />
         <span
           aria-hidden
@@ -30,9 +30,7 @@ export function Checkbox({ label, className, ...rest }: CheckboxProps) {
           <Checkmark aria-hidden className="absolute inset-0 block size-full max-w-none" />
         </span>
       </span>
-      <span className="typo-body1 typo-light tracking-[-0.03em] text-black whitespace-nowrap">
-        {label}
-      </span>
+      <span className="typo-body1 typo-light text-black whitespace-nowrap">{label}</span>
     </label>
   );
 }

@@ -78,16 +78,16 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
             className={[
               "flex w-full cursor-pointer items-center justify-between bg-surface-white text-left outline-none",
               "h-auto rounded-[0.625rem] border border-solid border-gray-200 px-2 py-1.5",
-              "text-[length:var(--font-size-caption)] font-medium leading-[1.5]",
-              "md:h-[3.1875rem] md:rounded-2xl md:border-2 md:px-[1.0625rem] md:py-0",
-              "md:text-[length:var(--font-size-subheading)]",
-              "focus:border-[color:var(--color-button-outline)]",
+              "typo-caption",
+              "md:h-12.75 md:rounded-2xl md:border-2 md:px-4.25 md:py-0",
+              "md:typo-subheading md:typo-medium",
+              "focus:border-(--color-button-outline)",
               !form.major ? "text-gray-400" : "text-primary-950",
               open ? "invisible" : "",
             ].join(" ")}
           >
             <span>{form.major || "학과를 입력해주세요"}</span>
-            <span className="relative h-[0.67rem] w-[0.8125rem] shrink-0 overflow-clip">
+            <span className="relative h-[0.67rem] w-3.25 shrink-0 overflow-clip">
               <SelectChevron aria-hidden className="absolute inset-0 block size-full max-w-none" />
             </span>
           </button>
@@ -104,12 +104,12 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
                 type="button"
                 aria-label="학과 목록 닫기"
                 onClick={() => setOpen(false)}
-                className="flex h-auto w-full cursor-pointer items-center justify-between px-2 py-1.5 md:h-[3.1875rem] md:px-[1.0625rem] md:py-0"
+                className="flex h-auto w-full cursor-pointer items-center justify-between px-2 py-1.5 md:h-12.75 md:px-4.25 md:py-0"
               >
-                <span className="text-[length:var(--font-size-caption)] font-medium leading-[1.5] text-gray-400 md:text-[length:var(--font-size-subheading)]">
+                <span className="typo-caption text-gray-400 md:typo-subheading md:typo-medium">
                   학과
                 </span>
-                <span className="relative h-[0.67rem] w-[0.8125rem] shrink-0 overflow-clip">
+                <span className="relative h-[0.67rem] w-3.25 shrink-0 overflow-clip">
                   <SelectChevronUp
                     aria-hidden
                     className="absolute inset-0 block size-full max-w-none -scale-y-100"
@@ -117,7 +117,7 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
                 </span>
               </button>
 
-              <ul className="m-0 max-h-[19.5rem] list-none overflow-y-auto p-0">
+              <ul className="m-0 max-h-78 list-none overflow-y-auto p-0">
                 {MAJOR_OPTIONS.map((option) => {
                   const selected = form.major === option;
                   return (
@@ -129,8 +129,8 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
                         onClick={() => selectMajor(option)}
                         className={[
                           "flex h-auto w-full cursor-pointer items-center px-2 py-1.5 text-left",
-                          "text-[length:var(--font-size-caption)] font-medium leading-[1.5]",
-                          "md:h-[3.25rem] md:px-[1.1875rem] md:text-[length:var(--font-size-subheading)]",
+                          "typo-caption",
+                          "md:h-13 md:px-4.75 md:typo-subheading md:typo-medium",
                           selected ? "bg-gray-100 text-primary-950" : "bg-white text-gray-400",
                           "hover:bg-gray-100 hover:text-primary-950",
                         ].join(" ")}

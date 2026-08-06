@@ -26,10 +26,10 @@ import { ROUTES } from "@/router/routes";
 import { Button } from "@/ui";
 
 const mobileCtaClass =
-  "max-md:h-auto max-md:min-h-0 max-md:w-full max-md:rounded-[0.625rem] max-md:px-6 max-md:py-[0.5625rem] max-md:text-[length:var(--font-size-body1)] max-md:font-bold max-md:leading-[1.5]";
+  "max-md:h-auto max-md:min-h-0 max-md:w-full max-md:rounded-[0.625rem] max-md:px-6 max-md:py-2.25 max-md:typo-body1 max-md:typo-bold";
 
 const mobilePairClass =
-  "max-md:h-auto max-md:min-h-0 max-md:w-auto max-md:flex-1 max-md:rounded-[0.625rem] max-md:px-4 max-md:py-[0.5625rem] max-md:text-[length:var(--font-size-body1)] max-md:font-bold max-md:leading-[1.5]";
+  "max-md:h-auto max-md:min-h-0 max-md:w-auto max-md:flex-1 max-md:rounded-[0.625rem] max-md:px-4 max-md:py-2.25 max-md:typo-body1 max-md:typo-bold";
 
 function canProceed(step: RegisterStep, form: RegisterForm) {
   switch (step) {
@@ -116,19 +116,19 @@ export default function RegisterWizardPage() {
     );
 
   return (
-    <div className="flex flex-1 flex-col items-center px-5 py-16 md:px-6 md:py-[5.5rem]">
-      <div className="flex w-full max-w-[20.5rem] flex-col items-center gap-6 md:max-w-[32.5rem] md:gap-[1.6875rem]">
+    <div className="flex flex-1 flex-col items-center px-5 py-16 md:px-6 md:py-22">
+      <div className="flex w-full max-w-82 flex-col items-center gap-6 md:max-w-130 md:gap-6.75">
         <h1 className="text-center font-bold text-primary-950">
           <span className="typo-heading3 md:hidden">GAMEWORKS에 지원하기</span>
           <span className="hidden flex-wrap items-center justify-center md:flex">
             <span className="typo-heading1">GAMEWORKS</span>
-            <span className="text-[2.25rem] leading-[1.5]">에 지원하기</span>
+            <span className="text-4xl leading-normal">에 지원하기</span>
           </span>
         </h1>
 
         <FormCard
           footer={footer}
-          className={step === "complete" ? "min-h-[20rem] md:h-[28rem] md:min-h-0" : undefined}
+          className={step === "complete" ? "min-h-80 md:h-112 md:min-h-0" : undefined}
         >
           {step !== "complete" ? <StepIndicator step={step} className="mb-4 md:mb-6" /> : null}
 

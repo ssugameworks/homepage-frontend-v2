@@ -14,7 +14,7 @@ export function GradeStep({ form, onChange }: GradeStepProps) {
         현재 해당하시는 학년을 선택해 주세요
       </p>
 
-      <div className="flex flex-col gap-[1.6875rem]">
+      <div className="flex flex-col gap-6.75">
         {GRADE_OPTIONS.map((option) => (
           <Radio
             key={option}

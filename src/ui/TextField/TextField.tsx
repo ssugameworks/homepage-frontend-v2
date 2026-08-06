@@ -29,10 +29,7 @@ export function TextField({
   return (
     <div className={cx("flex w-full flex-col items-start", className)}>
       {label ? (
-        <label
-          htmlFor={fieldId}
-          className="px-2 py-1 text-[length:var(--font-size-caption)] font-medium leading-[1.5] text-primary-950 md:text-[length:var(--font-size-body1)]"
-        >
+        <label htmlFor={fieldId} className="px-2 py-1 typo-caption text-primary-950 md:typo-body1">
           {label}
         </label>
       ) : null}
@@ -40,11 +37,11 @@ export function TextField({
         id={fieldId}
         className={cx(
           "w-full border-solid bg-transparent outline-none",
-          "text-[length:var(--font-size-caption)] font-medium leading-[1.5] text-primary-950",
+          "typo-caption text-primary-950",
           "placeholder:font-medium placeholder:text-gray-400",
           "h-auto rounded-[0.625rem] border px-2 py-1.5",
-          "md:h-[3.1875rem] md:rounded-2xl md:border-2 md:px-[1.0625rem] md:py-0",
-          "md:text-[length:var(--font-size-subheading)]",
+          "md:h-12.75 md:rounded-2xl md:border-2 md:px-4.25 md:py-0",
+          "md:typo-subheading md:typo-medium",
           borderClass
         )}
         {...rest}
@@ -52,7 +49,7 @@ export function TextField({
       {hint ? (
         <p
           className={cx(
-            "mt-1 px-2 text-[length:var(--font-size-body2)] font-light leading-[1.5] tracking-[-0.03em]",
+            "mt-1 px-2 typo-body2 typo-light",
             state === "error" ? "text-accent-red" : "text-primary-600"
           )}
         >

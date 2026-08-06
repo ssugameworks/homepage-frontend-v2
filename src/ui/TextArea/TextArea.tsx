@@ -52,10 +52,7 @@ export function TextArea({
   return (
     <div className={cx("flex w-full flex-col items-start", className)}>
       {label ? (
-        <label
-          htmlFor={fieldId}
-          className="mb-4 text-[length:var(--font-size-subheading)] font-medium leading-[1.5] text-primary-950"
-        >
+        <label htmlFor={fieldId} className="mb-4 typo-subheading typo-medium text-primary-950">
           {label}
         </label>
       ) : null}
@@ -65,15 +62,15 @@ export function TextArea({
         defaultValue={defaultValue}
         onChange={handleChange}
         className={cx(
-          "h-[15.375rem] w-full resize-none rounded-2xl border-2 border-solid bg-transparent px-[1.0625rem] py-[0.6875rem]",
-          "text-[length:var(--font-size-subheading)] font-medium leading-[1.5] text-primary-950 outline-none",
+          "h-61.5 w-full resize-none rounded-2xl border-2 border-solid bg-transparent px-4.25 py-2.75",
+          "typo-subheading typo-medium text-primary-950 outline-none",
           "placeholder:font-medium placeholder:text-gray-400",
           borderClass
         )}
         {...rest}
       />
       {typeof maxLengthDisplay === "number" ? (
-        <p className="mt-1 self-end px-2.5 py-1 text-[length:var(--font-size-body2)] font-light leading-[1.5] tracking-[-0.03em] text-primary-600">
+        <p className="mt-1 self-end px-2.5 py-1 typo-body2 typo-light text-primary-600">
           {length}/{maxLengthDisplay}
         </p>
       ) : null}

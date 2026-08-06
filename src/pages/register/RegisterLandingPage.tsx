@@ -14,7 +14,7 @@ const MOCK_ACTIVITY = {
 };
 
 const mobileCtaClass =
-  "max-md:h-auto max-md:min-h-0 max-md:rounded-[0.625rem] max-md:px-6 max-md:py-[0.5625rem] max-md:text-[length:var(--font-size-body1)] max-md:font-bold max-md:leading-[1.5]";
+  "max-md:h-auto max-md:min-h-0 max-md:rounded-[0.625rem] max-md:px-6 max-md:py-2.25 max-md:typo-body1 max-md:typo-bold";
 
 /** Parses `YYYY.MM.DD` as local end-of-day. */
 function parseDotDateEndOfDay(value: string) {
@@ -36,13 +36,13 @@ export default function RegisterLandingPage() {
   const applyOpen = isApplyPeriodOpen(MOCK_ACTIVITY.applyPeriod);
 
   return (
-    <div className="flex flex-1 flex-col items-center px-5 py-16 md:px-6 md:py-[5.5rem]">
-      <div className="flex w-full max-w-[20.5rem] flex-col items-center gap-6 md:max-w-[32.5rem] md:gap-[1.6875rem]">
+    <div className="flex flex-1 flex-col items-center px-5 py-16 md:px-6 md:py-22">
+      <div className="flex w-full max-w-82 flex-col items-center gap-6 md:max-w-130 md:gap-6.75">
         <h1 className="text-center font-bold text-primary-950">
           <span className="typo-heading3 md:hidden">GAMEWORKS에 지원하기</span>
           <span className="hidden flex-wrap items-center justify-center md:flex">
             <span className="typo-heading1">GAMEWORKS</span>
-            <span className="text-[2.25rem] leading-[1.5]">에 지원하기</span>
+            <span className="text-4xl leading-normal">에 지원하기</span>
           </span>
         </h1>
 
@@ -69,7 +69,7 @@ export default function RegisterLandingPage() {
           to={ROUTES.ACTIVITIES}
           className="inline-flex items-center gap-2 rounded-2xl border-2 border-solid border-primary-600 px-4 py-2"
         >
-          <span className="relative flex size-[1.125rem] shrink-0 rotate-90 items-center justify-center overflow-clip">
+          <span className="relative flex size-4.5 shrink-0 rotate-90 items-center justify-center overflow-clip">
             <IconArrowBack aria-hidden className="absolute inset-0 block size-full max-w-none" />
           </span>
           <span className="typo-body2 typo-medium text-[color:var(--color-button-outline)]">

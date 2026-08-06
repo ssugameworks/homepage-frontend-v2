@@ -13,13 +13,13 @@ export default function RegisterLayout() {
 
       {/* Desktop: logo-only light header */}
       <header className="hidden w-full bg-surface-white md:block">
-        <div className="mx-auto flex w-full max-w-[90rem] items-center px-6 py-[0.9375rem] md:px-20">
+        <div className="mx-auto flex w-full max-w-360 items-center px-6 py-3.75 md:px-20">
           <Link
             to={ROUTES.HOME}
             aria-label="GAMEWORKS"
             className="flex shrink-0 items-center overflow-hidden px-1 py-1.5"
           >
-            <span className="relative size-[1.625rem] shrink-0 overflow-clip">
+            <span className="relative size-6.5 shrink-0 overflow-clip">
               <LogoMarkDark aria-hidden className="absolute inset-0 block size-full max-w-none" />
             </span>
             <span
@@ -35,7 +35,7 @@ export default function RegisterLayout() {
       <main
         className={[
           "relative flex flex-1 flex-col",
-          "bg-gradient-to-b from-surface-white from-50% via-[#d6e7fd] via-[66%] to-primary-200",
+          "bg-gradient-to-b from-surface-white from-50% via-[#d6e7fd] via-66% to-primary-200",
           "md:bg-none",
         ].join(" ")}
       >
@@ -47,7 +47,7 @@ export default function RegisterLayout() {
           }}
           aria-hidden
         />
-        <div className="relative z-[1] flex flex-1 flex-col">
+        <div className="relative z-1 flex flex-1 flex-col">
           <Outlet />
         </div>
       </main>
