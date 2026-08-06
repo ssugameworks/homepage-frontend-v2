@@ -61,7 +61,7 @@ export function Header({ className, activeItem }: HeaderProps) {
 
         <nav
           aria-label="주요 메뉴"
-          className="flex shrink-0 items-start rounded-[50px] border border-solid border-border bg-overlay p-2.5"
+          className="flex shrink-0 items-start rounded-full border border-solid border-border bg-overlay p-2.5"
         >
           {NAV_ITEMS.map((item) => {
             const isActive = currentActive === item.id;
@@ -70,7 +70,7 @@ export function Header({ className, activeItem }: HeaderProps) {
                 key={item.id}
                 to={item.to}
                 className={[
-                  "flex items-center justify-center rounded-[100px] px-6 font-medium text-subheading leading-[1.3] tracking-[-0.72px] whitespace-nowrap transition-colors",
+                  "flex items-center justify-center rounded-full px-6 font-medium text-subheading leading-[1.3] tracking-[-0.72px] whitespace-nowrap transition-colors",
                   isActive ? "text-primary-200" : "text-white hover:text-primary-200",
                 ].join(" ")}
                 aria-current={isActive ? "page" : undefined}
