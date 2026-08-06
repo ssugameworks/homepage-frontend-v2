@@ -6,7 +6,19 @@
 
 ```
 ui/
-├── Button/
-├── Input/
-└── Badge/
+└── Button/
 ```
+
+## Button
+
+```tsx
+import { Button } from "@/ui";
+
+<Button size="md">신청하기</Button>
+<Button variant="primarySolid" size="sm">신청하기</Button>
+<Button variant="outline" size="lg">이전</Button>
+<Button size="xl" fullWidth disabled>다음</Button>
+```
+
+- `variant`: `primary` | `primarySolid` | `outline`
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`
