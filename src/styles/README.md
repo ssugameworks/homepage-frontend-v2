@@ -20,7 +20,7 @@ styles/
 | Gray | `gray-950` … `gray-100` |
 | Primary (Blue) | `primary-950` … `primary-100` |
 | Text on white | `text-primary` / `text-secondary` / `text-tertiary` (`#777`보다 진함) |
-| Button | `button-primary` / `button-primary-hover` / `button-disabled` / `button-solid` / `button-outline` |
+| Button | `button-primary` / `button-primary-hover` / `button-disabled` / `button-solid` / `button-solid-hover` / `button-outline` / `button-disabled-text` |
 
 ```tsx
 <div className="bg-primary-950 text-primary-200" />
