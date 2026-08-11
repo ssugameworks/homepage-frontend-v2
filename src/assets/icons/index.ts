@@ -13,7 +13,6 @@ export { default as IconCheckCircle } from "./register/check-circle.svg?react";
 export { default as IconCheckmark } from "./register/checkmark.svg?react";
 export { default as IconLogoMarkDark } from "./register/logo-mark-dark.svg?react";
 export { default as IconRadioChecked } from "./register/radio-checked.svg?react";
-export { default as IconRadioDefault } from "./register/radio-default.svg?react";
 export { default as IconRadioDot } from "./register/radio-dot.svg?react";
 export { default as IconSelectChevron } from "./register/select-chevron.svg?react";
 export { default as IconWarning } from "./register/warning.svg?react";

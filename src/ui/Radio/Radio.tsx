@@ -1,5 +1,5 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
-import { IconRadioChecked, IconRadioDefault, IconRadioDot } from "@/assets/icons";
+import { IconRadioChecked, IconRadioDot } from "@/assets/icons";
 import { cx } from "@/utils";
 
 export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "name"> & {
@@ -18,13 +18,13 @@ export function Radio({ label, className, ...rest }: RadioProps) {
     >
       <span className="relative size-5 shrink-0">
         <input type="radio" className="peer sr-only" {...rest} />
-        <IconRadioDefault
+        <span
           aria-hidden
-          className="pointer-events-none absolute inset-0 block size-full max-w-none text-gray-300 peer-checked:hidden peer-focus-visible:opacity-90"
+          className="pointer-events-none absolute inset-0 rounded-full border border-solid border-gray-300 peer-checked:hidden"
         />
         <IconRadioChecked
           aria-hidden
-          className="pointer-events-none absolute inset-0 hidden size-full max-w-none peer-checked:block"
+          className="pointer-events-none absolute inset-0 !hidden size-full max-w-none peer-checked:!block"
         />
         <span
           aria-hidden
