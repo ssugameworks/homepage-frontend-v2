@@ -7,13 +7,13 @@ export default function RegisterLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-surface-white">
       {/* Mobile: shared dark header */}
-      <div className="md:hidden">
+      <div className="lg:hidden">
         <Header />
       </div>
 
       {/* Desktop: logo-only light header */}
-      <header className="hidden w-full bg-surface-white md:block">
-        <div className="mx-auto flex w-full max-w-360 items-center px-6 py-3.75 md:px-20">
+      <header className="hidden w-full bg-surface-white lg:block">
+        <div className="mx-auto flex w-full max-w-360 items-center px-6 py-3.75 lg:px-20">
           <Link
             to={ROUTES.HOME}
             aria-label="GAMEWORKS"
@@ -39,11 +39,11 @@ export default function RegisterLayout() {
         className={[
           "relative flex flex-1 flex-col",
           "bg-gradient-to-b from-surface-white from-50% via-[#d6e7fd] via-66% to-primary-200",
-          "md:bg-none",
+          "lg:bg-none",
         ].join(" ")}
       >
         <div
-          className="pointer-events-none absolute inset-0 hidden md:block"
+          className="pointer-events-none absolute inset-0 hidden lg:block"
           style={{
             backgroundImage:
               "radial-gradient(ellipse 45rem 35rem at 50% 50%, var(--color-primary-200) 0%, var(--color-surface-white) 70%)",

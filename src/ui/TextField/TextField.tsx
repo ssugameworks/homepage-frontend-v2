@@ -1,4 +1,5 @@
-import type { InputHTMLAttributes } from "react";
+import { type InputHTMLAttributes, useId } from "react";
+import { cx } from "@/utils";
 
 export type TextFieldState = "default" | "error";
 
@@ -8,10 +9,6 @@ export type TextFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size">
   hint?: string;
 };
 
-function cx(...parts: Array<string | false | null | undefined>) {
-  return parts.filter(Boolean).join(" ");
-}
-
 export function TextField({
   label,
   state = "default",
@@ -20,7 +17,9 @@ export function TextField({
   id,
   ...rest
 }: TextFieldProps) {
-  const fieldId = id ?? (label ? `field-${label}` : undefined);
+  const generatedId = useId();
+  const fieldId = id ?? generatedId;
+  const hintId = hint ? `${fieldId}-hint` : undefined;
   const borderClass =
     state === "error"
       ? "border-accent-red"
@@ -35,6 +34,8 @@ export function TextField({
       ) : null}
       <input
         id={fieldId}
+        aria-invalid={state === "error" || undefined}
+        aria-describedby={hintId}
         className={cx(
           "w-full border-solid bg-transparent outline-none",
           "typo-caption text-primary-950",
@@ -48,6 +49,7 @@ export function TextField({
       />
       {hint ? (
         <p
+          id={hintId}
           className={cx(
             "mt-1 px-2 typo-body2 typo-light",
             state === "error" ? "text-accent-red" : "text-primary-600"

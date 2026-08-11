@@ -5,7 +5,12 @@ export const ROUTES = {
   MEMBERS: "/members",
   REGISTER: "/register",
   REGISTER_APPLY: "/register/apply",
+  APPLY_FORM: "/apply/:slug",
   CONTACT: "/contact",
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];
+
+export function applyFormPath(slug: string) {
+  return `/apply/${slug}`;
+}

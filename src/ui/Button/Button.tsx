@@ -1,4 +1,5 @@
-import type { ButtonProps, ButtonSize, ButtonVariant } from "@/ui";
+import { cx } from "@/utils";
+import type { ButtonProps, ButtonSize, ButtonVariant } from "./Button.types";
 
 const sizeClass: Record<ButtonSize, string> = {
   xs: "h-auto min-h-0 w-17.5 rounded px-1 py-1 text-caption font-bold leading-normal",
@@ -30,10 +31,6 @@ const variantClass: Record<ButtonVariant, string> = {
   ].join(" "),
 };
 
-function cx(...parts: Array<string | false | null | undefined>) {
-  return parts.filter(Boolean).join(" ");
-}
-
 export function Button({
   variant = "primary",
   size = "md",
@@ -51,6 +48,7 @@ export function Button({
       className={cx(
         "inline-flex shrink-0 cursor-pointer items-center justify-center whitespace-nowrap transition-colors",
         "disabled:cursor-not-allowed",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600",
         sizeClass[size],
         variantClass[variant],
         fullWidth && "w-full max-w-none min-w-0",

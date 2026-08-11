@@ -4,7 +4,6 @@ export { default as IconDiscord } from "./discord.svg?react";
 export { default as IconGithub } from "./github.svg?react";
 export { default as IconInstagram } from "./instagram.svg?react";
 export { default as IconLogoMark } from "./logo-mark.svg?react";
-export { default as IconLogoMarkMenu } from "./logo-mark-menu.svg?react";
 export { default as IconMail } from "./mail.svg?react";
 export { default as IconMenuBar } from "./menu-bar.svg?react";
 export { default as IconMenuClose } from "./menu-close.svg?react";
@@ -17,5 +16,4 @@ export { default as IconRadioChecked } from "./register/radio-checked.svg?react"
 export { default as IconRadioDefault } from "./register/radio-default.svg?react";
 export { default as IconRadioDot } from "./register/radio-dot.svg?react";
 export { default as IconSelectChevron } from "./register/select-chevron.svg?react";
-export { default as IconSelectChevronUp } from "./register/select-chevron-up.svg?react";
 export { default as IconWarning } from "./register/warning.svg?react";

@@ -5,13 +5,19 @@ export {
   MAJOR_OPTIONS,
   PART_OPTIONS,
 } from "./constants";
-export { FormCard } from "./FormCard";
-export { StepIndicator } from "./StepIndicator";
-export type { RegisterForm, RegisterStep } from "./types";
+export type { RegisterForm } from "./types";
+export type { RegisterFormApi } from "./useRegisterForm";
+export { useRegisterForm } from "./useRegisterForm";
 export {
   isValidMotivation,
   isValidName,
   isValidPhone,
+  isValidStudentId,
   isValidUrl,
+  motivationSchema,
+  nameSchema,
+  phoneSchema,
+  studentIdSchema,
+  urlSchema,
   validateRegisterField,
 } from "./validation";

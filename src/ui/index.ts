@@ -4,6 +4,8 @@ export type { CheckboxProps } from "./Checkbox";
 export { Checkbox } from "./Checkbox";
 export type { RadioProps } from "./Radio";
 export { Radio } from "./Radio";
+export type { SelectProps } from "./Select";
+export { Select } from "./Select";
 export type { TextAreaProps, TextAreaState } from "./TextArea";
 export { TextArea } from "./TextArea";
 export type { TextFieldProps, TextFieldState } from "./TextField";

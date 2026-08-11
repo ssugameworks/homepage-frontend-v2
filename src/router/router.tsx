@@ -52,4 +52,14 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: ROUTES.APPLY_FORM,
+    lazy: () => import("@/pages/register/RegisterLayout").then((m) => ({ Component: m.default })),
+    children: [
+      {
+        index: true,
+        lazy: () => import("@/pages/apply/NotionFormPage").then((m) => ({ Component: m.default })),
+      },
+    ],
+  },
 ]);

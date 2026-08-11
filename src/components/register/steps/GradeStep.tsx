@@ -1,31 +1,34 @@
+import { useId } from "react";
 import { Radio } from "@/ui";
 import { GRADE_OPTIONS } from "../constants";
 import type { RegisterForm } from "../types";
+import type { RegisterFormApi } from "../useRegisterForm";
 
-type GradeStepProps = {
-  form: RegisterForm;
-  onChange: (patch: Partial<RegisterForm>) => void;
-};
+export function GradeStep({ form }: { form: RegisterFormApi }) {
+  const labelId = useId();
 
-export function GradeStep({ form, onChange }: GradeStepProps) {
   return (
     <div className="flex flex-col gap-6">
-      <p className="typo-body1 typo-medium text-primary-950 md:typo-subheading">
+      <p id={labelId} className="typo-body1 typo-medium text-primary-950 md:typo-subheading">
         현재 해당하시는 학년을 선택해 주세요
       </p>
 
-      <div className="flex flex-col gap-6.75">
-        {GRADE_OPTIONS.map((option) => (
-          <Radio
-            key={option}
-            name="grade"
-            value={option}
-            label={option}
-            checked={form.grade === option}
-            onChange={() => onChange({ grade: option })}
-          />
-        ))}
-      </div>
+      <form.Field name="grade">
+        {(field) => (
+          <div role="radiogroup" aria-labelledby={labelId} className="flex flex-col gap-6.75">
+            {GRADE_OPTIONS.map((option) => (
+              <Radio
+                key={option}
+                name="grade"
+                value={option}
+                label={option}
+                checked={field.state.value === option}
+                onChange={() => field.handleChange(option)}
+              />
+            ))}
+          </div>
+        )}
+      </form.Field>
     </div>
   );
 }

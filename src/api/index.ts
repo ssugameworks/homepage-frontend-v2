@@ -1,1 +1,2 @@
-// API 함수 barrel export
+export type { NotionFieldSpec, NotionFormSchema } from "./notion";
+export { fetchFormSchema } from "./notion";
