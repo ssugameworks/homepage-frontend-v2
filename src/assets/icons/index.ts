@@ -1,7 +1,6 @@
 export { default as IconChatFill } from "./chat-fill.svg?react";
 export { default as IconChevronRight } from "./chevron-right.svg?react";
 export { default as IconDiscord } from "./discord.svg?react";
-export { default as IconDividerLine } from "./divider-line.svg?react";
 export { default as IconGithub } from "./github.svg?react";
 export { default as IconInstagram } from "./instagram.svg?react";
 export { default as IconLogoMark } from "./logo-mark.svg?react";
