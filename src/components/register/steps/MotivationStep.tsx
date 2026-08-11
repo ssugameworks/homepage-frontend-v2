@@ -1,4 +1,4 @@
-import IconWarning from "@/assets/icons/register/icon-warning.svg?react";
+import { IconWarning } from "@/assets/icons";
 import type { RegisterForm } from "../types";
 import { isValidMotivation } from "../validation";
 
@@ -41,7 +41,7 @@ export function MotivationStep({ form, onChange }: MotivationStepProps) {
         <div className="flex min-w-0 items-center gap-2.5">
           {isError ? (
             <>
-              <span className="relative size-6 shrink-0 overflow-clip">
+              <span className="relative size-6 shrink-0 overflow-clip text-accent-red">
                 <IconWarning aria-hidden className="absolute inset-0 block size-full max-w-none" />
               </span>
               <p className="typo-body2 typo-light text-accent-red">

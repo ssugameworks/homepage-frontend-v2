@@ -1,4 +1,4 @@
-import IconCheckCircle from "@/assets/icons/register/icon-check-circle.svg?react";
+import { IconCheckCircle } from "@/assets/icons";
 
 export function CompleteStep() {
   return (

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import IconArrowBack from "@/assets/icons/register/icon-arrow-back.svg?react";
+import { IconArrowBack } from "@/assets/icons";
 import { ActivityInfoCard } from "@/components/register";
 import { ROUTES } from "@/router/routes";
 import { Button } from "@/ui";

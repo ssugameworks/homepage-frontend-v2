@@ -1,6 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
-import SelectChevron from "@/assets/icons/register/select-chevron.svg?react";
-import SelectChevronUp from "@/assets/icons/register/select-chevron-up.svg?react";
+import { IconSelectChevron, IconSelectChevronUp } from "@/assets/icons";
 import { TextField } from "@/ui";
 import { MAJOR_OPTIONS } from "../constants";
 import type { RegisterForm } from "../types";
@@ -87,8 +86,11 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
             ].join(" ")}
           >
             <span>{form.major || "학과를 입력해주세요"}</span>
-            <span className="relative h-[0.67rem] w-3.25 shrink-0 overflow-clip">
-              <SelectChevron aria-hidden className="absolute inset-0 block size-full max-w-none" />
+            <span className="relative h-[0.67rem] w-3.25 shrink-0 overflow-clip text-gray-400">
+              <IconSelectChevron
+                aria-hidden
+                className="absolute inset-0 block size-full max-w-none"
+              />
             </span>
           </button>
 
@@ -109,8 +111,8 @@ export function SchoolInfoStep({ form, onChange }: SchoolInfoStepProps) {
                 <span className="typo-caption text-gray-400 md:typo-subheading md:typo-medium">
                   학과
                 </span>
-                <span className="relative h-[0.67rem] w-3.25 shrink-0 overflow-clip">
-                  <SelectChevronUp
+                <span className="relative h-[0.67rem] w-3.25 shrink-0 overflow-clip text-gray-400">
+                  <IconSelectChevronUp
                     aria-hidden
                     className="absolute inset-0 block size-full max-w-none -scale-y-100"
                   />

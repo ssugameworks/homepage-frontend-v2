@@ -1,11 +1,12 @@
 import { useEffect, useId, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import ChevronRight from "@/assets/icons/chevron-right.svg?react";
-import LogoMark from "@/assets/icons/logo-mark.svg?react";
-import LogoMarkMenu from "@/assets/icons/logo-mark-menu.svg?react";
-import LogoMarkMobile from "@/assets/icons/logo-mark-mobile.svg?react";
-import MenuBar from "@/assets/icons/menu-bar.svg?react";
-import MenuClose from "@/assets/icons/menu-close.svg?react";
+import {
+  IconChevronRight,
+  IconLogoMark,
+  IconLogoMarkMenu,
+  IconMenuBar,
+  IconMenuClose,
+} from "@/assets/icons";
 import type { HeaderProps, NavItemId } from "@/components";
 import { ROUTES } from "@/router/routes";
 
@@ -51,8 +52,8 @@ export function Header({ className, activeItem }: HeaderProps) {
       {/* Desktop */}
       <div className="mx-auto hidden w-full max-w-360 items-center justify-between px-20 py-3.75 lg:flex">
         <Link to={ROUTES.HOME} className="flex shrink-0 items-center overflow-hidden px-1 py-1.5">
-          <span className="relative size-6.5 shrink-0 overflow-clip">
-            <LogoMark aria-hidden className="absolute inset-0 block size-full max-w-none" />
+          <span className="relative size-6.5 shrink-0 overflow-clip text-logo">
+            <IconLogoMark aria-hidden className="absolute inset-0 block size-full max-w-none" />
           </span>
           <span className="flex flex-col justify-center text-center font-bold text-[32px] leading-[1.3] text-logo whitespace-nowrap">
             AMEWORKS
@@ -85,8 +86,8 @@ export function Header({ className, activeItem }: HeaderProps) {
       {/* Mobile bar */}
       <div className="flex h-11.25 w-full items-center justify-between px-5 py-3.75 lg:hidden">
         <Link to={ROUTES.HOME} className="flex items-center overflow-hidden px-1 py-1.5">
-          <span className="relative size-3.5 shrink-0 overflow-clip">
-            <LogoMarkMobile aria-hidden className="absolute inset-0 block size-full max-w-none" />
+          <span className="relative size-3.5 shrink-0 overflow-clip text-logo">
+            <IconLogoMark aria-hidden className="absolute inset-0 block size-full max-w-none" />
           </span>
           <span className="flex flex-col justify-center text-center font-bold text-body2 tracking-dense text-logo whitespace-nowrap">
             AMEWORKS
@@ -101,7 +102,7 @@ export function Header({ className, activeItem }: HeaderProps) {
           aria-controls={menuId}
           onClick={() => setMenuOpen(true)}
         >
-          <MenuBar aria-hidden className="absolute inset-0 block size-full max-w-none" />
+          <IconMenuBar aria-hidden className="absolute inset-0 block size-full max-w-none" />
         </button>
       </div>
 
@@ -118,10 +119,13 @@ export function Header({ className, activeItem }: HeaderProps) {
             <Link
               to={ROUTES.HOME}
               aria-label="GAMEWORKS"
-              className="relative block h-6.5 w-5.5 shrink-0"
+              className="relative block h-6.5 w-5.5 shrink-0 text-logo"
               onClick={() => setMenuOpen(false)}
             >
-              <LogoMarkMenu aria-hidden className="absolute inset-0 block size-full max-w-none" />
+              <IconLogoMarkMenu
+                aria-hidden
+                className="absolute inset-0 block size-full max-w-none"
+              />
             </Link>
             <button
               type="button"
@@ -129,7 +133,7 @@ export function Header({ className, activeItem }: HeaderProps) {
               aria-label="메뉴 닫기"
               onClick={() => setMenuOpen(false)}
             >
-              <MenuClose aria-hidden className="absolute inset-0 block size-full max-w-none" />
+              <IconMenuClose aria-hidden className="absolute inset-0 block size-full max-w-none" />
             </button>
           </div>
 
@@ -144,8 +148,8 @@ export function Header({ className, activeItem }: HeaderProps) {
                 <span className="absolute top-0 right-0 left-0 font-bold text-body2 leading-normal text-surface-white">
                   {item.label}
                 </span>
-                <span className="relative flex h-2.25 w-1.25 shrink-0 items-center justify-center">
-                  <ChevronRight aria-hidden className="block size-full max-w-none" />
+                <span className="relative flex h-2.25 w-1.25 shrink-0 items-center justify-center text-gray-700">
+                  <IconChevronRight aria-hidden className="block size-full max-w-none" />
                 </span>
               </Link>
             ))}

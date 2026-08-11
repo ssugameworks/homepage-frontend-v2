@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import LogoMarkDark from "@/assets/icons/register/logo-mark-dark.svg?react";
+import { IconLogoMarkDark } from "@/assets/icons";
 import { Header } from "@/components/layout";
 import { ROUTES } from "@/router/routes";
 
@@ -19,8 +19,11 @@ export default function RegisterLayout() {
             aria-label="GAMEWORKS"
             className="flex shrink-0 items-center overflow-hidden px-1 py-1.5"
           >
-            <span className="relative size-6.5 shrink-0 overflow-clip">
-              <LogoMarkDark aria-hidden className="absolute inset-0 block size-full max-w-none" />
+            <span className="relative size-6.5 shrink-0 overflow-clip text-black">
+              <IconLogoMarkDark
+                aria-hidden
+                className="absolute inset-0 block size-full max-w-none"
+              />
             </span>
             <span
               aria-hidden

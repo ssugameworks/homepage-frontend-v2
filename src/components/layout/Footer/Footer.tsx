@@ -1,17 +1,19 @@
-import chatFillIcon from "@/assets/icons/chat-fill.svg";
-import discordIcon from "@/assets/icons/discord.svg";
-import githubIcon from "@/assets/icons/github.svg";
-import instagramIcon from "@/assets/icons/instagram.svg";
-import mailIcon from "@/assets/icons/mail.svg";
-import youtubeIcon from "@/assets/icons/youtube.svg";
+import {
+  IconChatFill,
+  IconDiscord,
+  IconGithub,
+  IconInstagram,
+  IconMail,
+  IconYoutube,
+} from "@/assets/icons";
 import type { SocialLink } from "./Footer.types";
 
 const SOCIAL_LINKS: SocialLink[] = [
-  { name: "GitHub", href: "#", icon: githubIcon },
-  { name: "Mail", href: "#", icon: mailIcon },
-  { name: "YouTube", href: "#", icon: youtubeIcon },
-  { name: "Discord", href: "#", icon: discordIcon },
-  { name: "Instagram", href: "#", icon: instagramIcon },
+  { name: "GitHub", href: "#", icon: IconGithub },
+  { name: "Mail", href: "#", icon: IconMail },
+  { name: "YouTube", href: "#", icon: IconYoutube },
+  { name: "Discord", href: "#", icon: IconDiscord },
+  { name: "Instagram", href: "#", icon: IconInstagram },
 ];
 
 export default function Footer() {
@@ -31,21 +33,24 @@ export default function Footer() {
               type="button"
               className="order-2 inline-flex shrink-0 items-center justify-center gap-2.5 rounded-full border border-white/5 bg-white/5 px-5 py-2.5 text-body1 font-light tracking-dense text-white md:order-1 md:text-subheading md:tracking-dense"
             >
-              <img src={chatFillIcon} alt="" className="size-4" />
+              <IconChatFill aria-hidden className="size-4" />
               문의하기
             </button>
 
             <div className="order-1 flex w-46 items-center justify-between md:order-2 md:w-auto md:gap-4">
-              {SOCIAL_LINKS.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  aria-label={link.name}
-                  className="flex size-6 shrink-0 items-center justify-center md:size-8"
-                >
-                  <img src={link.icon} alt="" className="size-full" />
-                </a>
-              ))}
+              {SOCIAL_LINKS.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    aria-label={link.name}
+                    className="flex size-6 shrink-0 items-center justify-center md:size-8"
+                  >
+                    <Icon aria-hidden className="size-full text-gray-200" />
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
