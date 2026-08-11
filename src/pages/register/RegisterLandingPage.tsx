@@ -56,7 +56,7 @@ export default function RegisterLandingPage() {
               className={mobileCtaClass}
               disabled={!applyOpen}
               onClick={() => {
-                if (!applyOpen) return;
+                if (!isApplyPeriodOpen(MOCK_ACTIVITY.applyPeriod)) return;
                 navigate(ROUTES.REGISTER_APPLY);
               }}
             >

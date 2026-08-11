@@ -15,11 +15,12 @@ const stepTextVariants = {
 };
 
 export function StepIndicator({ step, total, direction = 1, className }: StepIndicatorProps) {
-  const progress = Math.min(Math.max(step / total, 0), 1);
+  const safeTotal = total > 0 ? total : 1;
+  const progress = Math.min(Math.max(step / safeTotal, 0), 1);
 
   return (
     <div className={cx("flex w-full flex-col items-start", className)}>
-      <div className="hidden flex-col items-center justify-center py-1 md:flex">
+      <div className="sr-only flex-col items-center justify-center py-1 md:not-sr-only md:flex">
         <p className="flex typo-subheading text-(--color-button-outline)">
           <span className="overflow-hidden">
             <AnimatePresence mode="wait" custom={direction}>
@@ -40,7 +41,14 @@ export function StepIndicator({ step, total, direction = 1, className }: StepInd
           /{total}
         </p>
       </div>
-      <div className="relative h-0.5 w-full max-w-60 overflow-hidden rounded-full bg-gray-200 md:h-1">
+      <div
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={total}
+        aria-valuenow={step}
+        aria-valuetext={`${step}/${total}`}
+        className="relative h-0.5 w-full max-w-60 overflow-hidden rounded-full bg-gray-200 md:h-1"
+      >
         <div
           className="absolute inset-y-0 left-0 rounded-full bg-(--color-button-outline) transition-[width] duration-200 ease-out"
           style={{ width: `${progress * 100}%` }}

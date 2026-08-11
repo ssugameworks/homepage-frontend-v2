@@ -21,6 +21,7 @@ export function MotivationStep({ form }: MotivationStepProps) {
           const length = field.state.value.length;
           const message = field.state.meta.errors[0]?.message;
           const hasError = length > 0 && Boolean(message);
+          const errorId = "motivation-error";
 
           return (
             <>
@@ -30,6 +31,8 @@ export function MotivationStep({ form }: MotivationStepProps) {
                 maxLength={MAX_LENGTH}
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
+                aria-invalid={hasError}
+                aria-describedby={hasError ? errorId : undefined}
                 className={[
                   "w-full resize-none bg-transparent outline-none",
                   "h-40 rounded-[0.625rem] border border-solid px-2 py-1.5",
@@ -51,7 +54,13 @@ export function MotivationStep({ form }: MotivationStepProps) {
                           className="absolute inset-0 block size-full max-w-none"
                         />
                       </span>
-                      <p className="typo-body2 typo-light text-accent-red">{message}</p>
+                      <p
+                        id={errorId}
+                        role="alert"
+                        className="typo-body2 typo-light text-accent-red"
+                      >
+                        {message}
+                      </p>
                     </>
                   ) : null}
                 </div>
