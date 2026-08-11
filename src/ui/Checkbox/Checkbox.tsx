@@ -10,7 +10,7 @@ export function Checkbox({ label, className, ...rest }: CheckboxProps) {
   return (
     <label
       className={cx(
-        "inline-flex cursor-pointer items-center gap-2.75",
+        "group inline-flex cursor-pointer items-center gap-2.75",
         "has-disabled:cursor-not-allowed has-disabled:opacity-50",
         className
       )}
@@ -20,8 +20,9 @@ export function Checkbox({ label, className, ...rest }: CheckboxProps) {
         <span
           aria-hidden
           className={[
-            "pointer-events-none absolute inset-0 overflow-clip rounded-[0.1875rem]",
+            "pointer-events-none absolute inset-0 overflow-clip rounded-[0.1875rem] transition-colors duration-150",
             "border border-solid border-gray-300 bg-transparent",
+            "group-hover:border-primary-600",
             "peer-checked:border-transparent peer-checked:bg-primary-600",
             "peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-600",
           ].join(" ")}

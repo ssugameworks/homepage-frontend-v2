@@ -76,11 +76,11 @@ export function Select({
           onClick={() => setOpen((prev) => !prev)}
           className={cx(
             "flex w-full cursor-pointer items-center justify-between bg-surface-white text-left outline-none",
-            "h-auto rounded-[0.625rem] border border-solid border-gray-200 px-2 py-1.5",
+            "h-auto rounded-[0.625rem] border border-solid border-gray-200 px-2 py-1.5 transition-colors duration-150",
             "typo-caption",
             "md:h-12.75 md:rounded-2xl md:border-2 md:px-4.25 md:py-0",
             "md:typo-subheading md:typo-medium",
-            "focus:border-(--color-button-outline)",
+            "hover:border-(--color-button-outline)/50 focus:border-(--color-button-outline)",
             !value ? "text-gray-400" : "text-primary-950",
             open ? "invisible" : ""
           )}

@@ -31,29 +31,27 @@ export function SchoolInfoStep({ form }: SchoolInfoStepProps) {
               }}
             />
 
-            {majorField.state.value ? (
-              <form.Field name="studentId" validators={{ onChange: studentIdSchema }}>
-                {(studentIdField) => {
-                  const message = studentIdField.state.meta.errors[0]?.message;
-                  const hasError = studentIdField.state.value !== "" && Boolean(message);
-                  return (
-                    <TextField
-                      label="학번"
-                      name="studentId"
-                      inputMode="numeric"
-                      maxLength={8}
-                      placeholder="학번 8자리를 입력해주세요"
-                      value={studentIdField.state.value}
-                      onChange={(e) =>
-                        studentIdField.handleChange(e.target.value.replace(/\D/g, "").slice(0, 8))
-                      }
-                      hint={hasError ? message : undefined}
-                      state={hasError ? "error" : "default"}
-                    />
-                  );
-                }}
-              </form.Field>
-            ) : null}
+            <form.Field name="studentId" validators={{ onChange: studentIdSchema }}>
+              {(studentIdField) => {
+                const message = studentIdField.state.meta.errors[0]?.message;
+                const hasError = studentIdField.state.value !== "" && Boolean(message);
+                return (
+                  <TextField
+                    label="학번"
+                    name="studentId"
+                    inputMode="numeric"
+                    maxLength={8}
+                    placeholder="학번 8자리를 입력해주세요"
+                    value={studentIdField.state.value}
+                    onChange={(e) =>
+                      studentIdField.handleChange(e.target.value.replace(/\D/g, "").slice(0, 8))
+                    }
+                    hint={hasError ? message : undefined}
+                    state={hasError ? "error" : "default"}
+                  />
+                );
+              }}
+            </form.Field>
           </>
         )}
       </form.Field>

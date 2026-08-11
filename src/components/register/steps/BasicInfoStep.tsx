@@ -45,33 +45,27 @@ export function BasicInfoStep({ form }: BasicInfoStepProps) {
         }}
       </form.Field>
 
-      <form.Subscribe selector={(state) => state.values.name}>
-        {(name) =>
-          isValidName(name) ? (
-            <form.Field name="phone" validators={{ onChange: phoneSchema }}>
-              {(field) => {
-                const message = field.state.meta.errors[0]?.message;
-                const hasError = field.state.value !== "" && Boolean(message);
-                return (
-                  <TextField
-                    label="휴대폰 번호"
-                    name="phone"
-                    type="tel"
-                    inputMode="numeric"
-                    autoComplete="tel"
-                    maxLength={13}
-                    placeholder="휴대폰 번호를 입력해주세요"
-                    value={field.state.value}
-                    onChange={(e) => field.handleChange(formatPhoneInput(e.target.value))}
-                    hint={hasError ? message : undefined}
-                    state={hasError ? "error" : "default"}
-                  />
-                );
-              }}
-            </form.Field>
-          ) : null
-        }
-      </form.Subscribe>
+      <form.Field name="phone" validators={{ onChange: phoneSchema }}>
+        {(field) => {
+          const message = field.state.meta.errors[0]?.message;
+          const hasError = field.state.value !== "" && Boolean(message);
+          return (
+            <TextField
+              label="휴대폰 번호"
+              name="phone"
+              type="tel"
+              inputMode="numeric"
+              autoComplete="tel"
+              maxLength={13}
+              placeholder="휴대폰 번호를 입력해주세요"
+              value={field.state.value}
+              onChange={(e) => field.handleChange(formatPhoneInput(e.target.value))}
+              hint={hasError ? message : undefined}
+              state={hasError ? "error" : "default"}
+            />
+          );
+        }}
+      </form.Field>
     </div>
   );
 }

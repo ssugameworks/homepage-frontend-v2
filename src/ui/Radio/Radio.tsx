@@ -11,7 +11,7 @@ export function Radio({ label, className, ...rest }: RadioProps) {
   return (
     <label
       className={cx(
-        "inline-flex cursor-pointer items-center gap-2.75",
+        "group inline-flex cursor-pointer items-center gap-2.75",
         "has-disabled:cursor-not-allowed has-disabled:opacity-50",
         className
       )}
@@ -20,7 +20,7 @@ export function Radio({ label, className, ...rest }: RadioProps) {
         <input type="radio" className="peer sr-only" {...rest} />
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-full border border-solid border-gray-300 peer-checked:hidden"
+          className="pointer-events-none absolute inset-0 rounded-full border border-solid border-gray-300 transition-colors duration-150 group-hover:border-primary-600 peer-checked:hidden"
         />
         <IconRadioChecked
           aria-hidden

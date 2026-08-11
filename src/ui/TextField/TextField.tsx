@@ -1,5 +1,6 @@
 import { type InputHTMLAttributes, useId } from "react";
 import { cx } from "@/utils";
+import { FieldHint } from "../FieldHint";
 
 export type TextFieldState = "default" | "error";
 
@@ -22,8 +23,8 @@ export function TextField({
   const hintId = hint ? `${fieldId}-hint` : undefined;
   const borderClass =
     state === "error"
-      ? "border-accent-red"
-      : "border-gray-200 focus:border-[color:var(--color-button-outline)]";
+      ? "border-accent-red hover:border-accent-red/70"
+      : "border-gray-200 hover:border-[color:var(--color-button-outline)]/50 focus:border-[color:var(--color-button-outline)]";
 
   return (
     <div className={cx("flex w-full flex-col items-start", className)}>
@@ -37,7 +38,7 @@ export function TextField({
         aria-invalid={state === "error" || undefined}
         aria-describedby={hintId}
         className={cx(
-          "w-full border-solid bg-transparent outline-none",
+          "w-full border-solid bg-transparent outline-none transition-colors duration-150",
           "typo-caption text-primary-950",
           "placeholder:font-medium placeholder:text-gray-400",
           "h-auto rounded-[0.625rem] border px-2 py-1.5",
@@ -47,17 +48,9 @@ export function TextField({
         )}
         {...rest}
       />
-      {hint ? (
-        <p
-          id={hintId}
-          className={cx(
-            "mt-1 px-2 typo-body2 typo-light",
-            state === "error" ? "text-accent-red" : "text-primary-600"
-          )}
-        >
-          {hint}
-        </p>
-      ) : null}
+      <FieldHint id={hintId} state={state}>
+        {hint}
+      </FieldHint>
     </div>
   );
 }

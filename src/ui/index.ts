@@ -2,6 +2,8 @@ export type { ButtonProps, ButtonSize, ButtonVariant } from "./Button";
 export { Button } from "./Button";
 export type { CheckboxProps } from "./Checkbox";
 export { Checkbox } from "./Checkbox";
+export type { FieldHintProps, FieldHintState } from "./FieldHint";
+export { FieldHint } from "./FieldHint";
 export type { RadioProps } from "./Radio";
 export { Radio } from "./Radio";
 export type { SelectProps } from "./Select";

@@ -1,5 +1,6 @@
 import { type ChangeEvent, type TextareaHTMLAttributes, useId, useState } from "react";
 import { cx } from "@/utils";
+import { FieldHint } from "../FieldHint";
 
 export type TextAreaState = "default" | "error";
 
@@ -44,8 +45,8 @@ export function TextArea({
   const length = isControlled ? initialLength(value, undefined) : uncontrolledLength;
   const borderClass =
     state === "error"
-      ? "border-accent-red"
-      : "border-gray-200 focus:border-[color:var(--color-button-outline)]";
+      ? "border-accent-red hover:border-accent-red/70"
+      : "border-gray-200 hover:border-[color:var(--color-button-outline)]/50 focus:border-[color:var(--color-button-outline)]";
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     if (!isControlled) {
@@ -70,23 +71,15 @@ export function TextArea({
         aria-describedby={describedBy}
         className={cx(
           "h-61.5 w-full resize-none rounded-2xl border-2 border-solid bg-transparent px-4.25 py-2.75",
-          "typo-subheading typo-medium text-primary-950 outline-none",
+          "typo-subheading typo-medium text-primary-950 outline-none transition-colors duration-150",
           "placeholder:font-medium placeholder:text-gray-400",
           borderClass
         )}
         {...rest}
       />
-      {hint ? (
-        <p
-          id={hintId}
-          className={cx(
-            "mt-1 px-2 typo-body2 typo-light",
-            state === "error" ? "text-accent-red" : "text-primary-600"
-          )}
-        >
-          {hint}
-        </p>
-      ) : null}
+      <FieldHint id={hintId} state={state}>
+        {hint}
+      </FieldHint>
       {typeof counterMax === "number" ? (
         <p
           id={counterId}
