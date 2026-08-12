@@ -10,23 +10,12 @@ export const INITIAL_REGISTER_FORM: RegisterForm = {
   motivation: "",
   portfolioUrl: "",
   githubUrl: "",
+  turnstileToken: "",
 };
 
-export const GRADE_OPTIONS = [
-  "1학년",
-  "2학년",
-  "3학년",
-  "4학년 이상",
-  "휴학",
-] as const;
+export const GRADE_OPTIONS = ["1학년", "2학년", "3학년", "4학년 이상", "휴학"] as const;
 
-export const PART_OPTIONS = [
-  "기획",
-  "UX/UI 디자인",
-  "프론트엔드",
-  "백엔드",
-  "기타",
-] as const;
+export const PART_OPTIONS = ["기획", "UX/UI 디자인", "프론트엔드", "백엔드", "기타"] as const;
 
 export const MAJOR_OPTIONS = [
   "글로벌미디어학부",

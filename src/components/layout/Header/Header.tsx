@@ -1,13 +1,9 @@
-import { useEffect, useId, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import ChevronRight from "@/assets/icons/chevron-right.svg?react";
-import LogoMark from "@/assets/icons/logo-mark.svg?react";
-import LogoMarkMenu from "@/assets/icons/logo-mark-menu.svg?react";
-import LogoMarkMobile from "@/assets/icons/logo-mark-mobile.svg?react";
-import MenuBar from "@/assets/icons/menu-bar.svg?react";
-import MenuClose from "@/assets/icons/menu-close.svg?react";
+import { IconChevronRight, IconLogoMark, IconMenuBar, IconMenuClose } from "@/assets/icons";
+import type { HeaderProps, NavItemId } from "@/components";
 import { ROUTES } from "@/router/routes";
-import type { HeaderProps, NavItemId } from "./Header.types";
 
 const NAV_ITEMS: { id: NavItemId; label: string; to: string }[] = [
   { id: "introduce", label: "소개", to: ROUTES.INTRODUCE },
@@ -30,6 +26,31 @@ export function Header({ className, activeItem }: HeaderProps) {
   const menuId = useId();
   const currentActive = activeItem ?? resolveActiveItem(location.pathname);
 
+  const barRef = useRef<HTMLElement>(null);
+  const [barHeight, setBarHeight] = useState(0);
+  const [scrolledPastFirstScreen, setScrolledPastFirstScreen] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const desktopVisible = !scrolledPastFirstScreen || isHovering;
+
+  useLayoutEffect(() => {
+    const el = barRef.current;
+    if (!el) return;
+
+    const updateHeight = () => setBarHeight(el.offsetHeight);
+    updateHeight();
+
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolledPastFirstScreen(window.scrollY > window.innerHeight);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   useEffect(() => {
     if (!menuOpen) return;
 
@@ -37,130 +58,156 @@ export function Header({ className, activeItem }: HeaderProps) {
       if (event.key === "Escape") setMenuOpen(false);
     };
 
+    const scrollY = window.scrollY;
     document.addEventListener("keydown", onKeyDown);
-    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      window.scrollTo(0, scrollY);
     };
   }, [menuOpen]);
 
   return (
-    <header className={["relative w-full bg-primary-950", className].filter(Boolean).join(" ")}>
-      {/* Desktop */}
-      <div className="mx-auto hidden w-full max-w-[1440px] items-center justify-between px-20 py-[15px] lg:flex">
-        <Link to={ROUTES.HOME} className="flex shrink-0 items-center overflow-hidden px-1 py-1.5">
-          <span className="relative size-[26px] shrink-0 overflow-clip">
-            <LogoMark
-              aria-hidden
-              className="absolute inset-0 block size-full max-w-none"
-            />
-          </span>
-          <span className="flex flex-col justify-center text-center font-bold text-[32px] leading-[1.3] text-logo whitespace-nowrap">
-            AMEWORKS
-          </span>
-        </Link>
-
-        <nav
-          aria-label="주요 메뉴"
-          className="flex shrink-0 items-start rounded-[50px] border border-solid border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.05)] p-2.5"
+    <>
+      <div aria-hidden style={{ height: barHeight }} />
+      <header
+        ref={barRef}
+        className={["fixed inset-x-0 top-0 z-40 w-full bg-primary-950", className]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        {/* Desktop */}
+        <motion.div
+          animate={{ opacity: desktopVisible ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+          className="mx-auto hidden w-full max-w-360 items-center justify-between px-20 py-3.75 lg:flex"
         >
-          {NAV_ITEMS.map((item) => {
-            const isActive = currentActive === item.id;
-            return (
-              <Link
-                key={item.id}
-                to={item.to}
-                className={[
-                  "flex items-center justify-center rounded-[100px] px-6 font-medium text-[18px] leading-[1.3] tracking-[-0.72px] whitespace-nowrap transition-colors",
-                  isActive ? "text-primary-200" : "text-white hover:text-primary-200",
-                ].join(" ")}
-                aria-current={isActive ? "page" : undefined}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-      </div>
+          <Link to={ROUTES.HOME} className="flex shrink-0 items-center overflow-hidden px-1 py-1.5">
+            <span className="relative size-6.5 shrink-0 overflow-clip text-logo">
+              <IconLogoMark aria-hidden className="absolute inset-0 block size-full max-w-none" />
+            </span>
+            <span className="flex flex-col justify-center text-center font-bold text-[32px] leading-[1.3] text-logo whitespace-nowrap">
+              AMEWORKS
+            </span>
+          </Link>
 
-      {/* Mobile bar */}
-      <div className="flex h-[45px] w-full items-center justify-between px-5 py-[15px] lg:hidden">
-        <Link to={ROUTES.HOME} className="flex items-center overflow-hidden px-1 py-1.5">
-          <span className="relative size-[14px] shrink-0 overflow-clip">
-            <LogoMarkMobile
-              aria-hidden
-              className="absolute inset-0 block size-full max-w-none"
-            />
-          </span>
-          <span className="flex flex-col justify-center text-center font-bold text-[14px] leading-[1.4] tracking-[-0.42px] text-logo whitespace-nowrap">
-            AMEWORKS
-          </span>
-        </Link>
-
-        <button
-          type="button"
-          className="relative size-[25px] shrink-0 cursor-pointer border-0 bg-transparent p-0"
-          aria-label="메뉴 열기"
-          aria-expanded={menuOpen}
-          aria-controls={menuId}
-          onClick={() => setMenuOpen(true)}
-        >
-          <MenuBar aria-hidden className="absolute inset-0 block size-full max-w-none" />
-        </button>
-      </div>
-
-      {/* Mobile menu overlay */}
-      {menuOpen ? (
-        <div
-          id={menuId}
-          className="fixed inset-0 z-50 flex flex-col bg-primary-950 px-[25px] py-[14px] lg:hidden"
-          role="dialog"
-          aria-modal="true"
-          aria-label="모바일 메뉴"
-        >
-          <div className="flex h-[26px] w-full items-center justify-between">
-            <Link
-              to={ROUTES.HOME}
-              aria-label="GAMEWORKS"
-              className="relative block h-[26px] w-[22px] shrink-0"
-              onClick={() => setMenuOpen(false)}
-            >
-              <LogoMarkMenu
-                aria-hidden
-                className="absolute inset-0 block size-full max-w-none"
-              />
-            </Link>
-            <button
-              type="button"
-              className="relative size-3 shrink-0 cursor-pointer border-0 bg-transparent p-0"
-              aria-label="메뉴 닫기"
-              onClick={() => setMenuOpen(false)}
-            >
-              <MenuClose aria-hidden className="absolute inset-0 block size-full max-w-none" />
-            </button>
-          </div>
-
-          <nav aria-label="모바일 주요 메뉴" className="mt-[25px] flex w-full flex-col gap-3">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.id}
-                to={item.to}
-                className="relative flex h-5 w-full items-center justify-end px-[9px] py-[5px]"
-                onClick={() => setMenuOpen(false)}
-              >
-                <span className="absolute top-0 right-0 left-0 font-bold text-[14px] leading-[1.5] text-surface-white">
+          <nav
+            aria-label="주요 메뉴"
+            className="flex shrink-0 items-start rounded-full border border-solid border-border bg-overlay p-2.5"
+          >
+            {NAV_ITEMS.map((item) => {
+              const isActive = currentActive === item.id;
+              return (
+                <Link
+                  key={item.id}
+                  to={item.to}
+                  className={[
+                    "flex items-center justify-center rounded-full px-6 font-medium text-subheading leading-[1.3] tracking-dense whitespace-nowrap transition-colors",
+                    isActive ? "text-primary-200" : "text-white hover:text-primary-200",
+                  ].join(" ")}
+                  aria-current={isActive ? "page" : undefined}
+                >
                   {item.label}
-                </span>
-                <span className="relative flex h-[9px] w-[5px] shrink-0 items-center justify-center">
-                  <ChevronRight aria-hidden className="block size-full max-w-none" />
-                </span>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </nav>
+        </motion.div>
+
+        {/* Mobile bar */}
+        <div className="flex h-16 w-full items-center justify-between px-6 lg:hidden">
+          <Link to={ROUTES.HOME} className="flex items-center overflow-hidden px-1 py-1.5">
+            <span className="relative size-5 shrink-0 overflow-clip text-logo">
+              <IconLogoMark aria-hidden className="absolute inset-0 block size-full max-w-none" />
+            </span>
+            <span className="flex flex-col justify-center text-center font-bold text-heading3 tracking-dense text-logo whitespace-nowrap">
+              AMEWORKS
+            </span>
+          </Link>
+
+          <button
+            type="button"
+            className="relative -m-1.5 flex size-11 shrink-0 cursor-pointer items-center justify-center border-0 bg-transparent p-0"
+            aria-label="메뉴 열기"
+            aria-expanded={menuOpen}
+            aria-controls={menuId}
+            onClick={() => setMenuOpen(true)}
+          >
+            <IconMenuBar aria-hidden className="block size-8 max-w-none" />
+          </button>
         </div>
-      ) : null}
-    </header>
+
+        {/* Mobile menu overlay */}
+        <AnimatePresence>
+          {menuOpen ? (
+            <motion.div
+              key="mobile-menu"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              id={menuId}
+              className="fixed inset-0 z-50 flex flex-col bg-primary-950 lg:hidden"
+              role="dialog"
+              aria-modal="true"
+              aria-label="모바일 메뉴"
+            >
+              <div className="flex h-16 w-full items-center justify-between px-6">
+                <Link
+                  to={ROUTES.HOME}
+                  aria-label="GAMEWORKS"
+                  className="flex items-center overflow-hidden px-1 py-1.5"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span className="relative size-5 shrink-0 overflow-clip text-logo">
+                    <IconLogoMark
+                      aria-hidden
+                      className="absolute inset-0 block size-full max-w-none"
+                    />
+                  </span>
+                </Link>
+                <button
+                  type="button"
+                  className="relative -m-1.5 flex size-11 shrink-0 cursor-pointer items-center justify-center border-0 bg-transparent p-0"
+                  aria-label="메뉴 닫기"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <IconMenuClose aria-hidden className="block size-4 max-w-none" />
+                </button>
+              </div>
+
+              <nav
+                aria-label="모바일 주요 메뉴"
+                className="mt-6.25 flex w-full flex-col gap-4 px-6 pb-6"
+              >
+                {NAV_ITEMS.map((item) => (
+                  <Link
+                    key={item.id}
+                    to={item.to}
+                    className="relative flex h-7 w-full items-center justify-end px-2.5 py-1.5"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <span className="absolute top-0 right-0 left-0 font-bold text-body1 leading-normal text-surface-white">
+                      {item.label}
+                    </span>
+                    <span className="relative flex h-3 w-1.75 shrink-0 items-center justify-center text-gray-700">
+                      <IconChevronRight aria-hidden className="block size-full max-w-none" />
+                    </span>
+                  </Link>
+                ))}
+              </nav>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      </header>
+    </>
   );
 }

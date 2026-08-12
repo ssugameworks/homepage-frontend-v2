@@ -1,4 +1,6 @@
-import type { InputHTMLAttributes } from "react";
+import { type InputHTMLAttributes, useId } from "react";
+import { cx } from "@/utils";
+import { FieldHint } from "../FieldHint";
 
 export type TextFieldState = "default" | "error";
 
@@ -8,10 +10,6 @@ export type TextFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size">
   hint?: string;
 };
 
-function cx(...parts: Array<string | false | null | undefined>) {
-  return parts.filter(Boolean).join(" ");
-}
-
 export function TextField({
   label,
   state = "default",
@@ -20,45 +18,39 @@ export function TextField({
   id,
   ...rest
 }: TextFieldProps) {
-  const fieldId = id ?? (label ? `field-${label}` : undefined);
+  const generatedId = useId();
+  const fieldId = id ?? generatedId;
+  const hintId = hint ? `${fieldId}-hint` : undefined;
   const borderClass =
     state === "error"
-      ? "border-accent-red"
-      : "border-gray-200 focus:border-[color:var(--color-button-outline)]";
+      ? "border-accent-red hover:border-accent-red/70"
+      : "border-gray-200 hover:border-[color:var(--color-button-outline)]/50 focus:border-[color:var(--color-button-outline)]";
 
   return (
     <div className={cx("flex w-full flex-col items-start", className)}>
       {label ? (
-        <label
-          htmlFor={fieldId}
-          className="px-2 py-1 text-[length:var(--font-size-caption)] font-medium leading-[1.5] text-primary-950 md:text-[length:var(--font-size-body1)]"
-        >
+        <label htmlFor={fieldId} className="px-2 py-1 typo-caption text-primary-950 md:typo-body1">
           {label}
         </label>
       ) : null}
       <input
         id={fieldId}
+        aria-invalid={state === "error" || undefined}
+        aria-describedby={hintId}
         className={cx(
-          "w-full border-solid bg-transparent outline-none",
-          "text-[length:var(--font-size-caption)] font-medium leading-[1.5] text-primary-950",
+          "w-full border-solid bg-transparent outline-none transition-colors duration-150",
+          "typo-caption text-primary-950",
           "placeholder:font-medium placeholder:text-gray-400",
           "h-auto rounded-[0.625rem] border px-2 py-1.5",
-          "md:h-[3.1875rem] md:rounded-2xl md:border-2 md:px-[1.0625rem] md:py-0",
-          "md:text-[length:var(--font-size-subheading)]",
+          "md:h-12.75 md:rounded-2xl md:border-2 md:px-4.25 md:py-0",
+          "md:typo-subheading md:typo-medium",
           borderClass
         )}
         {...rest}
       />
-      {hint ? (
-        <p
-          className={cx(
-            "mt-1 px-2 text-[length:var(--font-size-body2)] font-light leading-[1.5] tracking-[-0.03em]",
-            state === "error" ? "text-accent-red" : "text-primary-600"
-          )}
-        >
-          {hint}
-        </p>
-      ) : null}
+      <FieldHint id={hintId} state={state}>
+        {hint}
+      </FieldHint>
     </div>
   );
 }

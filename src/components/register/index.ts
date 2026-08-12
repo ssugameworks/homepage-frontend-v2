@@ -1,17 +1,23 @@
 export { ActivityInfoCard } from "./ActivityInfoCard";
-export { FormCard } from "./FormCard";
-export { StepIndicator } from "./StepIndicator";
-export type { RegisterForm, RegisterStep } from "./types";
 export {
   GRADE_OPTIONS,
   INITIAL_REGISTER_FORM,
   MAJOR_OPTIONS,
   PART_OPTIONS,
 } from "./constants";
+export type { RegisterForm } from "./types";
+export type { RegisterFormApi } from "./useRegisterForm";
+export { useRegisterForm } from "./useRegisterForm";
 export {
   isValidMotivation,
   isValidName,
   isValidPhone,
+  isValidStudentId,
   isValidUrl,
+  motivationSchema,
+  nameSchema,
+  phoneSchema,
+  studentIdSchema,
+  urlSchema,
   validateRegisterField,
 } from "./validation";

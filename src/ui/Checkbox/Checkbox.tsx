@@ -1,5 +1,6 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
-import Checkmark from "@/assets/icons/register/checkmark.svg?react";
+import { IconCheckmark } from "@/assets/icons";
+import { cx } from "@/utils";
 
 export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
   label: ReactNode;
@@ -8,37 +9,32 @@ export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> 
 export function Checkbox({ label, className, ...rest }: CheckboxProps) {
   return (
     <label
-      className={[
-        "inline-flex cursor-pointer items-center gap-[0.6875rem]",
-        className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      className={cx(
+        "group inline-flex cursor-pointer items-center gap-2.75",
+        "has-disabled:cursor-not-allowed has-disabled:opacity-50",
+        className
+      )}
     >
-      <span className="relative size-[1.125rem] shrink-0">
+      <span className="relative size-4.5 shrink-0">
         <input type="checkbox" className="peer sr-only" {...rest} />
         <span
           aria-hidden
           className={[
-            "pointer-events-none absolute inset-0 overflow-clip rounded-[0.1875rem]",
+            "pointer-events-none absolute inset-0 overflow-clip rounded-[0.1875rem] transition-colors duration-150",
             "border border-solid border-gray-300 bg-transparent",
+            "group-hover:border-primary-600",
             "peer-checked:border-transparent peer-checked:bg-primary-600",
-            "peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-600",
+            "peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-600",
           ].join(" ")}
         />
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-[22%_17%_26%_17%] hidden overflow-clip peer-checked:block"
+          className="pointer-events-none absolute inset-[22%_17%_26%_17%] scale-50 overflow-clip text-white opacity-0 transition-all duration-150 peer-checked:scale-100 peer-checked:opacity-100"
         >
-          <Checkmark
-            aria-hidden
-            className="absolute inset-0 block size-full max-w-none"
-          />
+          <IconCheckmark aria-hidden className="absolute inset-0 block size-full max-w-none" />
         </span>
       </span>
-      <span className="typo-body1 typo-light tracking-[-0.03em] text-black whitespace-nowrap">
-        {label}
-      </span>
+      <span className="typo-caption text-black md:typo-body1">{label}</span>
     </label>
   );
 }
