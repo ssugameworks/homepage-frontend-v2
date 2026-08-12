@@ -19,7 +19,10 @@ export function PartStep({ form }: PartStepProps) {
 
       <form.Field name="parts">
         {(field) => (
-          <fieldset aria-labelledby={labelId} className="m-0 flex flex-col gap-6.75 border-0 p-0">
+          <fieldset
+            aria-labelledby={labelId}
+            className="m-0 flex flex-col gap-4 border-0 p-0 md:gap-6.75"
+          >
             {PART_OPTIONS.map((option) => {
               const checked = field.state.value.includes(option);
               return (

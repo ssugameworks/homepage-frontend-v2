@@ -29,12 +29,12 @@ export function Checkbox({ label, className, ...rest }: CheckboxProps) {
         />
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-[22%_17%_26%_17%] hidden overflow-clip text-white peer-checked:block"
+          className="pointer-events-none absolute inset-[22%_17%_26%_17%] scale-50 overflow-clip text-white opacity-0 transition-all duration-150 peer-checked:scale-100 peer-checked:opacity-100"
         >
           <IconCheckmark aria-hidden className="absolute inset-0 block size-full max-w-none" />
         </span>
       </span>
-      <span className="typo-body1 typo-light text-black">{label}</span>
+      <span className="typo-caption text-black md:typo-body1">{label}</span>
     </label>
   );
 }

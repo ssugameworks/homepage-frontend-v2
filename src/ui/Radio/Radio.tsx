@@ -20,15 +20,15 @@ export function Radio({ label, className, ...rest }: RadioProps) {
         <input type="radio" className="peer sr-only" {...rest} />
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-full border border-solid border-gray-300 transition-colors duration-150 group-hover:border-primary-600 peer-checked:hidden"
+          className="pointer-events-none absolute inset-0 rounded-full border border-solid border-gray-300 transition-colors duration-150 group-hover:border-primary-600"
         />
         <IconRadioChecked
           aria-hidden
-          className="pointer-events-none absolute inset-0 !hidden size-full max-w-none peer-checked:!block"
+          className="pointer-events-none absolute inset-0 size-full max-w-none scale-75 opacity-0 transition-all duration-150 peer-checked:scale-100 peer-checked:opacity-100"
         />
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-1/4 hidden overflow-clip peer-checked:block"
+          className="pointer-events-none absolute inset-1/4 scale-50 overflow-clip opacity-0 transition-all duration-150 peer-checked:scale-100 peer-checked:opacity-100"
         >
           <IconRadioDot aria-hidden className="absolute inset-0 block size-full max-w-none" />
         </span>
@@ -37,7 +37,7 @@ export function Radio({ label, className, ...rest }: RadioProps) {
           className="pointer-events-none absolute inset-0 rounded-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-600"
         />
       </span>
-      <span className="typo-body1 typo-light text-black">{label}</span>
+      <span className="typo-caption text-black md:typo-body1">{label}</span>
     </label>
   );
 }

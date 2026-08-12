@@ -15,7 +15,11 @@ export function GradeStep({ form }: { form: RegisterFormApi }) {
 
       <form.Field name="grade">
         {(field) => (
-          <div role="radiogroup" aria-labelledby={labelId} className="flex flex-col gap-6.75">
+          <div
+            role="radiogroup"
+            aria-labelledby={labelId}
+            className="flex flex-col gap-4 md:gap-6.75"
+          >
             {GRADE_OPTIONS.map((option) => (
               <Radio
                 key={option}

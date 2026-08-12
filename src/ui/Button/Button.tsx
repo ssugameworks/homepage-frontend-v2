@@ -9,13 +9,21 @@ const sizeClass: Record<ButtonSize, string> = {
   xl: "h-14 w-full max-w-104.5 rounded-2xl px-8 py-3.5 text-heading3 font-medium leading-normal",
 };
 
+/** background-image은 transition이 안 붙어서 after 오버레이를 페이드시켜 흉내낸다. */
+const hoverFadeOverlay = [
+  "after:absolute after:-inset-0.5 after:-z-10 after:rounded-[inherit]",
+  "after:[background-image:var(--color-button-primary-hover)]",
+  "after:opacity-0 after:transition-opacity after:duration-150",
+  "hover:enabled:after:opacity-100",
+].join(" ");
+
 const variantClass: Record<ButtonVariant, string> = {
   primary: [
-    "box-border border-2 border-solid border-transparent text-white",
+    "relative isolate box-border border-2 border-solid border-transparent text-white",
     "[background-image:var(--color-button-primary)]",
-    "hover:enabled:[background-image:var(--color-button-primary-hover)]",
     "disabled:[background-image:var(--color-button-disabled)]",
     "disabled:text-[color:var(--color-button-disabled-text)]",
+    hoverFadeOverlay,
   ].join(" "),
   primarySolid: [
     "box-border border-2 border-solid border-transparent bg-[var(--color-button-solid)] text-white",
@@ -23,11 +31,11 @@ const variantClass: Record<ButtonVariant, string> = {
     "disabled:bg-gray-600 disabled:text-white",
   ].join(" "),
   outline: [
-    "box-border border-2 border-solid border-[color:var(--color-button-outline)] bg-transparent text-[color:var(--color-button-outline)]",
+    "relative isolate box-border border-2 border-solid border-[color:var(--color-button-outline)] bg-transparent text-[color:var(--color-button-outline)]",
     "hover:enabled:border-transparent hover:enabled:text-white",
-    "hover:enabled:[background-image:var(--color-button-primary-hover)]",
     "disabled:border-transparent disabled:[background-image:var(--color-button-disabled)]",
     "disabled:text-[color:var(--color-button-disabled-text)]",
+    hoverFadeOverlay,
   ].join(" "),
 };
 

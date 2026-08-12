@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 import { IconLogoMarkDark } from "@/assets/icons";
-import { Header } from "@/components/layout";
+import { Footer, Header } from "@/components/layout";
 import { ROUTES } from "@/router/routes";
 
 export default function RegisterLayout() {
@@ -38,7 +38,7 @@ export default function RegisterLayout() {
       <main
         className={[
           "relative flex flex-1 flex-col",
-          "bg-gradient-to-b from-surface-white from-50% via-[#d6e7fd] via-66% to-primary-200",
+          "bg-gradient-to-b from-surface-white from-50% to-primary-200",
           "lg:bg-none",
         ].join(" ")}
       >
@@ -54,6 +54,8 @@ export default function RegisterLayout() {
           <Outlet />
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }

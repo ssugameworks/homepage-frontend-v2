@@ -48,7 +48,7 @@ function singleChoiceRenderer(field: AnyFieldApi, spec: FieldSpec) {
       <p id={labelId} className="typo-body1 typo-medium text-primary-950 md:typo-subheading">
         {spec.label}
       </p>
-      <div role="radiogroup" aria-labelledby={labelId} className="flex flex-col gap-6.75">
+      <div role="radiogroup" aria-labelledby={labelId} className="flex flex-col gap-4 md:gap-6.75">
         {(spec.options ?? []).map((option) => (
           <Radio
             key={option}
@@ -79,7 +79,10 @@ function multiChoiceRenderer(field: AnyFieldApi, spec: FieldSpec) {
       <p id={labelId} className="typo-body1 typo-medium text-primary-950 md:typo-subheading">
         {spec.label}
       </p>
-      <fieldset aria-labelledby={labelId} className="m-0 flex flex-col gap-6.75 border-0 p-0">
+      <fieldset
+        aria-labelledby={labelId}
+        className="m-0 flex flex-col gap-4 border-0 p-0 md:gap-6.75"
+      >
         {(spec.options ?? []).map((option) => {
           const checked = values.includes(option);
           return (
