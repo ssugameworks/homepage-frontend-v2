@@ -1,9 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { FormWizard, type StepDefinition } from "@/components/forms";
+import { submitRegisterForm } from "@/api";
+import {
+  CompleteStep,
+  createCaptchaStep,
+  FormWizard,
+  type StepDefinition,
+} from "@/components/forms";
 import { type RegisterFormApi, useRegisterForm } from "@/components/register";
 import {
   BasicInfoStep,
-  CompleteStep,
   canProceedBasicInfo,
   canProceedGrade,
   canProceedMotivation,
@@ -17,6 +22,8 @@ import {
   SchoolInfoStep,
 } from "@/components/register/steps";
 import { ROUTES } from "@/router/routes";
+
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string;
 
 const REGISTER_STEPS: StepDefinition<RegisterFormApi>[] = [
   {
@@ -41,6 +48,7 @@ const REGISTER_STEPS: StepDefinition<RegisterFormApi>[] = [
     render: (form) => <PortfolioStep form={form} />,
     canProceed: canProceedPortfolio,
   },
+  createCaptchaStep<RegisterFormApi>(TURNSTILE_SITE_KEY),
 ];
 
 export default function RegisterWizardPage() {
@@ -51,6 +59,7 @@ export default function RegisterWizardPage() {
     <FormWizard
       form={form}
       steps={REGISTER_STEPS}
+      storageKey="register-form"
       title={
         <h1 className="text-center font-bold text-primary-950">
           <span className="typo-heading3 md:hidden">GAMEWORKS에 지원하기</span>
@@ -61,12 +70,9 @@ export default function RegisterWizardPage() {
         </h1>
       }
       completeSlot={<CompleteStep />}
-      onComplete={() => {
-        // Stub: submit to Notion / API later.
-        // await submitRegisterForm(form.state.values);
-      }}
+      onComplete={() => submitRegisterForm(form.state.values)}
       onFinish={() => navigate(ROUTES.ACTIVITIES)}
-      onExit={() => navigate(ROUTES.REGISTER)}
+      onExit={() => navigate(ROUTES.HOME)}
     />
   );
 }

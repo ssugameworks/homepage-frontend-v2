@@ -2,7 +2,7 @@ import { Select, TextField } from "@/ui";
 import { MAJOR_OPTIONS } from "../constants";
 import type { RegisterForm } from "../types";
 import type { RegisterFormApi } from "../useRegisterForm";
-import { isValidStudentId, studentIdSchema } from "../validation";
+import { formatStudentId, isValidStudentId, studentIdSchema } from "../validation";
 
 type SchoolInfoStepProps = {
   form: RegisterFormApi;
@@ -43,9 +43,7 @@ export function SchoolInfoStep({ form }: SchoolInfoStepProps) {
                     maxLength={8}
                     placeholder="학번 8자리를 입력해주세요"
                     value={studentIdField.state.value}
-                    onChange={(e) =>
-                      studentIdField.handleChange(e.target.value.replace(/\D/g, "").slice(0, 8))
-                    }
+                    onChange={(e) => studentIdField.handleChange(formatStudentId(e.target.value))}
                     hint={hasError ? message : undefined}
                     state={hasError ? "error" : "default"}
                   />

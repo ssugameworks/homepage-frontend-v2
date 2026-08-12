@@ -21,6 +21,10 @@ export const studentIdSchema = z
   .trim()
   .regex(/^\d{8}$/, "학번 8자리를 숫자로 입력해주세요");
 
+export function formatStudentId(value: string) {
+  return value.replace(/\D/g, "").slice(0, 8);
+}
+
 export const motivationSchema = z
   .string()
   .trim()
@@ -42,7 +46,7 @@ export const urlSchema = z
     { message: "올바른 URL을 입력해주세요" }
   );
 
-export const emailSchema = z.string().trim().pipe(z.email());
+export const emailSchema = z.string().trim().pipe(z.email("올바른 이메일을 입력해주세요"));
 
 export function isValidName(name: string) {
   return nameSchema.safeParse(name).success;

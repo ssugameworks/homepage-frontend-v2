@@ -39,13 +39,6 @@ export const router = createBrowserRouter([
       {
         index: true,
         lazy: () =>
-          import("@/pages/register/RegisterLandingPage").then((m) => ({
-            Component: m.default,
-          })),
-      },
-      {
-        path: "apply",
-        lazy: () =>
           import("@/pages/register/RegisterWizardPage").then((m) => ({
             Component: m.default,
           })),

@@ -10,6 +10,7 @@ export const INITIAL_REGISTER_FORM: RegisterForm = {
   motivation: "",
   portfolioUrl: "",
   githubUrl: "",
+  turnstileToken: "",
 };
 
 export const GRADE_OPTIONS = ["1학년", "2학년", "3학년", "4학년 이상", "휴학"] as const;

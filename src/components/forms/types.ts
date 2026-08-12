@@ -15,4 +15,7 @@ export type FieldSpec = {
   required: boolean;
   /** single_choice / multi_choice 전용 */
   options?: string[];
+  /** long_text 전용 */
+  minLength?: number;
+  maxLength?: number;
 };

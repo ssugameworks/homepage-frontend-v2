@@ -11,6 +11,8 @@ type FieldKindDef = {
 };
 
 function shortTextRenderer(field: AnyFieldApi, spec: FieldSpec) {
+  const message = field.state.meta.errors[0] as string | undefined;
+  const hasError = field.state.value !== "" && Boolean(message);
   return (
     <TextField
       label={spec.label}
@@ -18,7 +20,8 @@ function shortTextRenderer(field: AnyFieldApi, spec: FieldSpec) {
       placeholder="내용을 입력해 주세요"
       value={field.state.value ?? ""}
       onChange={(e) => field.handleChange(e.target.value)}
-      hint={spec.hint}
+      hint={hasError ? message : spec.hint}
+      state={hasError ? "error" : "default"}
     />
   );
 }
@@ -29,16 +32,26 @@ function shortTextSchema(spec: FieldSpec) {
 }
 
 function longTextRenderer(field: AnyFieldApi, spec: FieldSpec) {
+  const value: string = field.state.value ?? "";
+  const hasError = value.length > 0 && spec.minLength != null && value.length < spec.minLength;
   return (
     <TextArea
       label={spec.label}
       name={spec.id}
       placeholder="내용을 입력해 주세요"
-      value={field.state.value ?? ""}
+      value={value}
       onChange={(e) => field.handleChange(e.target.value)}
       hint={spec.hint}
+      state={hasError ? "error" : "default"}
+      maxLength={spec.maxLength}
     />
   );
+}
+
+function longTextSchema(spec: FieldSpec) {
+  const base = spec.minLength ? z.string().min(spec.minLength) : z.string();
+  if (!spec.required) return z.union([z.literal(""), base]);
+  return base;
 }
 
 function singleChoiceRenderer(field: AnyFieldApi, spec: FieldSpec) {
@@ -124,7 +137,7 @@ function emailFieldSchema(spec: FieldSpec) {
 
 export const FIELD_KINDS = {
   short_text: { render: shortTextRenderer, schema: shortTextSchema },
-  long_text: { render: longTextRenderer, schema: shortTextSchema },
+  long_text: { render: longTextRenderer, schema: longTextSchema },
   single_choice: { render: singleChoiceRenderer, schema: choiceSchema },
   multi_choice: { render: multiChoiceRenderer, schema: multiChoiceSchema },
   url: { render: shortTextRenderer, schema: urlFieldSchema },

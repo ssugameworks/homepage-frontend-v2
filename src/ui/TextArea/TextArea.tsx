@@ -83,7 +83,10 @@ export function TextArea({
       {typeof counterMax === "number" ? (
         <p
           id={counterId}
-          className="mt-1 self-end px-2.5 py-1 typo-body2 typo-light text-primary-600"
+          className={cx(
+            "mt-1 self-end px-2.5 py-1 typo-body2 typo-light",
+            state === "error" ? "text-accent-red" : "text-primary-600"
+          )}
         >
           {length}/{counterMax}
         </p>

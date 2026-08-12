@@ -1,10 +1,21 @@
 import { type AnyFormApi, useStore } from "@tanstack/react-form";
 import { AnimatePresence, motion } from "framer-motion";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { Button } from "@/ui";
 import { FormCard } from "./FormCard";
 import { StepIndicator } from "./StepIndicator";
 import type { StepDefinition } from "./types";
+
+type PersistedProgress = { stepIndex: number; values: unknown };
+
+function readProgress(storageKey: string): PersistedProgress | null {
+  try {
+    const raw = sessionStorage.getItem(storageKey);
+    return raw ? (JSON.parse(raw) as PersistedProgress) : null;
+  } catch {
+    return null;
+  }
+}
 
 const mobileCtaClass =
   "max-md:h-auto max-md:min-h-0 max-md:w-full max-md:rounded-[0.625rem] max-md:px-6 max-md:py-2.25 max-md:typo-body1 max-md:typo-bold";
@@ -25,8 +36,10 @@ type FormWizardProps<TFormApi extends AnyFormApi> = {
   completeSlot: ReactNode;
   submitLabel?: string;
   completeLabel?: string;
-  /** Called once, right before moving into the complete step. */
-  onComplete: () => void;
+  /** sessionStorage에 진행 상황(스텝+입력값)을 저장할 때 쓰는 키. 폼마다 고유해야 함. */
+  storageKey: string;
+  /** Called once, right before moving into the complete step. Throw to stay on the last step and show the error. */
+  onComplete: () => void | Promise<void>;
   /** Called when the primary button is clicked on the complete step. */
   onFinish: () => void;
   /** Called when "이전" is clicked on the first step. */
@@ -40,13 +53,32 @@ export function FormWizard<TFormApi extends AnyFormApi>({
   completeSlot,
   submitLabel = "제출하기",
   completeLabel = "다음",
+  storageKey,
   onComplete,
   onFinish,
   onExit,
 }: FormWizardProps<TFormApi>) {
-  const [stepIndex, setStepIndex] = useState<number | "complete">(0);
+  const [stepIndex, setStepIndex] = useState<number | "complete">(() => {
+    const saved = readProgress(storageKey);
+    if (!saved) return 0;
+    return Math.min(Math.max(saved.stepIndex, 0), steps.length - 1);
+  });
   const [direction, setDirection] = useState<1 | -1>(1);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const values = useStore(form.store, (state) => state.values);
+
+  // 저장된 입력값 복원 — 마운트 시 한 번만.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: 마운트 시 1회만 실행되어야 함
+  useEffect(() => {
+    const saved = readProgress(storageKey);
+    if (saved) form.reset(saved.values as never);
+  }, []);
+
+  useEffect(() => {
+    if (stepIndex === "complete") return;
+    sessionStorage.setItem(storageKey, JSON.stringify({ stepIndex, values }));
+  }, [storageKey, stepIndex, values]);
 
   const currentStep = stepIndex === "complete" ? null : steps[stepIndex];
   const isFirstStep = stepIndex === 0;
@@ -62,7 +94,7 @@ export function FormWizard<TFormApi extends AnyFormApi>({
     setStepIndex(stepIndex - 1);
   };
 
-  const goNext = () => {
+  const goNext = async () => {
     if (stepIndex === "complete") {
       onFinish();
       return;
@@ -72,16 +104,26 @@ export function FormWizard<TFormApi extends AnyFormApi>({
     setDirection(1);
 
     if (isLastStep) {
-      onComplete();
-      setStepIndex("complete");
+      setSubmitError(null);
+      setSubmitting(true);
+      try {
+        await onComplete();
+        sessionStorage.removeItem(storageKey);
+        setStepIndex("complete");
+      } catch (err) {
+        setSubmitError(err instanceof Error ? err.message : "제출에 실패했어요");
+      } finally {
+        setSubmitting(false);
+      }
       return;
     }
 
     setStepIndex(stepIndex + 1);
   };
 
-  const nextEnabled = stepIndex === "complete" || Boolean(currentStep?.canProceed(values));
-  const nextLabel = isLastStep ? submitLabel : "다음";
+  const nextEnabled =
+    stepIndex === "complete" || (Boolean(currentStep?.canProceed(values)) && !submitting);
+  const nextLabel = isLastStep ? (submitting ? "제출 중…" : submitLabel) : "다음";
 
   const footer =
     stepIndex === "complete" ? (
@@ -140,6 +182,12 @@ export function FormWizard<TFormApi extends AnyFormApi>({
               {stepIndex === "complete" ? completeSlot : currentStep?.render(form)}
             </motion.div>
           </AnimatePresence>
+
+          {submitError ? (
+            <p className="mt-4 typo-body2 text-accent-red" role="alert">
+              {submitError}
+            </p>
+          ) : null}
         </FormCard>
       </div>
     </div>

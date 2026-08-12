@@ -4,7 +4,6 @@ export const ROUTES = {
   ACTIVITIES: "/activities",
   MEMBERS: "/members",
   REGISTER: "/register",
-  REGISTER_APPLY: "/register/apply",
   APPLY_FORM: "/apply/:slug",
   CONTACT: "/contact",
 } as const;
