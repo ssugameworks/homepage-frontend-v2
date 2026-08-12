@@ -16,7 +16,8 @@ const stepTextVariants = {
 
 export function StepIndicator({ step, total, direction = 1, className }: StepIndicatorProps) {
   const safeTotal = total > 0 ? total : 1;
-  const progress = Math.min(Math.max(step / safeTotal, 0), 1);
+  const safeStep = Math.min(Math.max(step, 0), safeTotal);
+  const progress = safeStep / safeTotal;
 
   return (
     <div className={cx("flex w-full flex-col items-start", className)}>
@@ -25,7 +26,7 @@ export function StepIndicator({ step, total, direction = 1, className }: StepInd
           <span className="overflow-hidden">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.span
-                key={step}
+                key={safeStep}
                 custom={direction}
                 variants={stepTextVariants}
                 initial="enter"
@@ -34,19 +35,19 @@ export function StepIndicator({ step, total, direction = 1, className }: StepInd
                 transition={{ duration: 0.15, ease: "easeOut" }}
                 className="inline-block"
               >
-                {step}
+                {safeStep}
               </motion.span>
             </AnimatePresence>
           </span>
-          /{total}
+          /{safeTotal}
         </p>
       </div>
       <div
         role="progressbar"
         aria-valuemin={0}
-        aria-valuemax={total}
-        aria-valuenow={step}
-        aria-valuetext={`${step}/${total}`}
+        aria-valuemax={safeTotal}
+        aria-valuenow={safeStep}
+        aria-valuetext={`${safeStep}/${safeTotal}`}
         className="relative h-0.5 w-full max-w-60 overflow-hidden rounded-full bg-gray-200 md:h-1"
       >
         <div
