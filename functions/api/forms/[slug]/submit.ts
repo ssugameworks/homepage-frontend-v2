@@ -1,8 +1,11 @@
 import {
   createPage,
+  dateRange,
   type Env,
   findActivityBySlug,
+  isWithinDateRange,
   queryDataSource,
+  toRichText,
   updatePage,
 } from "../../_lib/notion";
 import { verifyTurnstile } from "../../_lib/turnstile";
@@ -18,7 +21,13 @@ type Context = { params: { slug: string }; env: Env; request: Request };
 export async function onRequestPost(context: Context) {
   const { env, request } = context;
   const { slug } = context.params;
-  const body = (await request.json()) as SubmitBody;
+
+  let body: SubmitBody;
+  try {
+    body = await request.json();
+  } catch {
+    return Response.json({ error: "요청 형식이 올바르지 않아요" }, { status: 400 });
+  }
 
   const studentId = body.studentId?.trim();
   if (!studentId || !body.answers || !body.turnstileToken) {
@@ -41,6 +50,14 @@ export async function onRequestPost(context: Context) {
   if (!activity) {
     return Response.json({ error: "폼을 찾을 수 없어요" }, { status: 404 });
   }
+  if (!isWithinDateRange(dateRange("신청기간", activity))) {
+    return Response.json({ error: "신청 기간이 아니에요" }, { status: 400 });
+  }
+
+  const answerRichText = toRichText(JSON.stringify(body.answers));
+  if (!answerRichText) {
+    return Response.json({ error: "답변이 너무 길어요" }, { status: 400 });
+  }
 
   const { results } = await queryDataSource(env, env.NOTION_RESPONSE_DATA_SOURCE_ID, {
     filter: {
@@ -52,7 +69,7 @@ export async function onRequestPost(context: Context) {
   });
 
   const properties = {
-    응답: { rich_text: [{ text: { content: JSON.stringify(body.answers) } }] },
+    응답: { rich_text: answerRichText },
     검토상태: { select: { name: "신규" } },
   };
 

@@ -18,7 +18,22 @@ type Context = { env: Env; request: Request };
 
 export async function onRequestPost(context: Context) {
   const { env, request } = context;
-  const body = (await request.json()) as SubmitBody;
+
+  let body: SubmitBody;
+  try {
+    body = await request.json();
+  } catch {
+    return Response.json({ error: "요청 형식이 올바르지 않아요" }, { status: 400 });
+  }
+
+  const isValid =
+    typeof body.studentId === "string" &&
+    typeof body.name === "string" &&
+    typeof body.turnstileToken === "string" &&
+    (body.parts === undefined || Array.isArray(body.parts));
+  if (!isValid) {
+    return Response.json({ error: "요청 형식이 올바르지 않아요" }, { status: 400 });
+  }
 
   const studentId = body.studentId?.trim();
   if (!studentId || !body.name || !body.turnstileToken) {

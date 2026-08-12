@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   IconChatFill,
   IconDiscord,
@@ -6,6 +7,7 @@ import {
   IconMail,
   IconYoutube,
 } from "@/assets/icons";
+import { ROUTES } from "@/router/routes";
 import type { SocialLink } from "./Footer.types";
 
 const SOCIAL_LINKS: SocialLink[] = [
@@ -29,13 +31,13 @@ export default function Footer() {
           </div>
 
           <div className="flex w-full flex-col items-start gap-4 md:w-70.5 md:items-end">
-            <button
-              type="button"
+            <Link
+              to={ROUTES.CONTACT}
               className="order-2 inline-flex shrink-0 items-center justify-center gap-2.5 rounded-full border border-white/5 bg-white/5 px-5 py-2.5 text-body1 font-light tracking-dense text-white md:order-1 md:text-subheading md:tracking-dense"
             >
               <IconChatFill aria-hidden className="size-4" />
               문의하기
-            </button>
+            </Link>
 
             <div className="order-1 flex w-46 items-center justify-between md:order-2 md:w-auto md:gap-4">
               {SOCIAL_LINKS.map((link) => {

@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export type Env = {
   NOTION_TOKEN: string;
   NOTION_ACTIVITY_DATA_SOURCE_ID: string;
@@ -107,10 +109,35 @@ export function dateRange(name: string, page: NotionPage): { start: string; end:
 }
 
 export function formatDateRange(range: { start: string; end: string | null }): string {
-  const toDots = (iso: string) => (iso ? iso.split("T")[0]?.replaceAll("-", ".") : "");
-  const start = toDots(range.start);
-  const end = range.end ? toDots(range.end) : start;
-  return start ? `${start} ~ ${end}` : "";
+  if (!range.start) return "";
+  const start = dayjs(range.start).format("YYYY.MM.DD");
+  const end = range.end ? dayjs(range.end).format("YYYY.MM.DD") : start;
+  return `${start} ~ ${end}`;
+}
+
+/** 신청기간(있으면) 안에 있는지 검사한다 — 시작일 이전, 종료일 이후 모두 막는다. */
+export function isWithinDateRange(
+  range: { start: string; end: string | null },
+  now = new Date()
+): boolean {
+  if (!range.start) return true;
+  const today = dayjs(now);
+  if (today.isBefore(dayjs(range.start))) return false;
+  if (!range.end) return true;
+  return !today.isAfter(dayjs(range.end).endOf("day"));
+}
+
+const RICH_TEXT_CHUNK_SIZE = 2000;
+const RICH_TEXT_MAX_ITEMS = 100;
+
+/** Notion rich_text 속성은 항목당 2000자, 배열 최대 100개 제한이 있다 — 길면 나눠 담고, 그래도 넘치면 null. */
+export function toRichText(content: string): { text: { content: string } }[] | null {
+  const chunks: string[] = [];
+  for (let i = 0; i < content.length; i += RICH_TEXT_CHUNK_SIZE) {
+    chunks.push(content.slice(i, i + RICH_TEXT_CHUNK_SIZE));
+  }
+  if (chunks.length > RICH_TEXT_MAX_ITEMS) return null;
+  return chunks.map((text) => ({ text: { content: text } }));
 }
 
 export async function findActivityBySlug(env: Env, slug: string): Promise<NotionPage | null> {
