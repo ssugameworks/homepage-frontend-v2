@@ -1,4 +1,9 @@
-import { getActivityFieldSpecs, validateActivityAnswers } from "../../_lib/activityForm";
+import {
+  type ActivityFieldSpec,
+  ActivityFormConfigError,
+  getActivityFieldSpecs,
+  validateActivityAnswers,
+} from "../../_lib/activityForm";
 import {
   createPage,
   type Env,
@@ -47,7 +52,15 @@ export async function onRequestPost(context: Context) {
     return Response.json({ error: "폼을 찾을 수 없어요" }, { status: 404 });
   }
 
-  const fields = await getActivityFieldSpecs(env, activity.id);
+  let fields: ActivityFieldSpec[];
+  try {
+    fields = await getActivityFieldSpecs(env, activity.id);
+  } catch (error) {
+    if (error instanceof ActivityFormConfigError) {
+      return Response.json({ error: error.message }, { status: 500 });
+    }
+    throw error;
+  }
   const validationError = validateActivityAnswers(fields, answers);
   if (validationError) {
     return Response.json({ error: validationError }, { status: 400 });

@@ -33,7 +33,8 @@ function shortTextSchema(spec: FieldSpec) {
 
 function longTextRenderer(field: AnyFieldApi, spec: FieldSpec) {
   const value: string = field.state.value ?? "";
-  const hasError = value.length > 0 && spec.minLength != null && value.length < spec.minLength;
+  const message = field.state.meta.errors[0] as string | undefined;
+  const hasError = value.length > 0 && Boolean(message);
   return (
     <TextArea
       label={spec.label}
@@ -41,7 +42,7 @@ function longTextRenderer(field: AnyFieldApi, spec: FieldSpec) {
       placeholder="내용을 입력해 주세요"
       value={value}
       onChange={(e) => field.handleChange(e.target.value)}
-      hint={spec.hint}
+      hint={hasError ? message : spec.hint}
       state={hasError ? "error" : "default"}
       maxLength={spec.maxLength}
     />
@@ -49,9 +50,29 @@ function longTextRenderer(field: AnyFieldApi, spec: FieldSpec) {
 }
 
 function longTextSchema(spec: FieldSpec) {
-  const base = spec.minLength ? z.string().min(spec.minLength) : z.string();
-  if (!spec.required) return z.union([z.literal(""), base]);
-  return base;
+  return z
+    .string()
+    .trim()
+    .superRefine((value, context) => {
+      if (value.length === 0) {
+        if (spec.required) {
+          context.addIssue({ code: "custom", message: "필수 질문이에요" });
+        }
+        return;
+      }
+      if (spec.minLength != null && value.length < spec.minLength) {
+        context.addIssue({
+          code: "custom",
+          message: `최소 ${spec.minLength}자 이상 입력해 주세요`,
+        });
+      }
+      if (spec.maxLength != null && value.length > spec.maxLength) {
+        context.addIssue({
+          code: "custom",
+          message: `최대 ${spec.maxLength}자까지 입력할 수 있어요`,
+        });
+      }
+    });
 }
 
 function singleChoiceRenderer(field: AnyFieldApi, spec: FieldSpec) {

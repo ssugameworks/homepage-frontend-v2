@@ -33,12 +33,22 @@ export type ActivityFieldSpec = {
   maxLength?: number;
 };
 
+export class ActivityFormConfigError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ActivityFormConfigError";
+  }
+}
+
 function isActivityFieldKind(value: string): value is ActivityFieldKind {
   return ACTIVITY_FIELD_KINDS.some((kind) => kind === value);
 }
 
 export function toActivityFieldSpec(row: NotionPage): ActivityFieldSpec {
-  const rawKind = select("타입", row) ?? "short_text";
+  const rawKind = select("타입", row);
+  if (!rawKind || !isActivityFieldKind(rawKind)) {
+    throw new ActivityFormConfigError(`지원하지 않는 질문 타입입니다: ${rawKind ?? "미설정"}`);
+  }
   const options = richText("옵션", row);
   const minLength = numberProp("최소글자수", row);
   const maxLength = numberProp("최대글자수", row);
@@ -48,7 +58,7 @@ export function toActivityFieldSpec(row: NotionPage): ActivityFieldSpec {
     label: title("라벨", row),
     hint: richText("힌트", row) || undefined,
     required: checkbox("필수여부", row),
-    kind: isActivityFieldKind(rawKind) ? rawKind : "short_text",
+    kind: rawKind,
     options: options
       ? options
           .split(",")
@@ -74,7 +84,11 @@ export async function getActivityFieldSpecs(
 }
 
 function isBlank(value: unknown) {
-  return value == null || value === "" || (Array.isArray(value) && value.length === 0);
+  return (
+    value == null ||
+    (typeof value === "string" && value.trim() === "") ||
+    (Array.isArray(value) && value.length === 0)
+  );
 }
 
 function isHttpUrl(value: string) {
@@ -99,11 +113,12 @@ function isValidFieldValue(field: ActivityFieldSpec, value: unknown) {
   if (typeof value !== "string") return false;
 
   if (field.kind === "single_choice") return (field.options ?? []).includes(value);
-  if (field.kind === "url") return isHttpUrl(value);
-  if (field.kind === "phone") return /^010\d{8}$/.test(value.replace(/\D/g, ""));
-  if (field.kind === "email") return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-  if (field.minLength != null && value.length < field.minLength) return false;
-  if (field.maxLength != null && value.length > field.maxLength) return false;
+  const normalizedValue = value.trim();
+  if (field.kind === "url") return isHttpUrl(normalizedValue);
+  if (field.kind === "phone") return /^010\d{8}$/.test(normalizedValue.replace(/\D/g, ""));
+  if (field.kind === "email") return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedValue);
+  if (field.minLength != null && normalizedValue.length < field.minLength) return false;
+  if (field.maxLength != null && normalizedValue.length > field.maxLength) return false;
 
   return true;
 }
