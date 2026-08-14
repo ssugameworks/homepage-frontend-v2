@@ -10,6 +10,5 @@ export type RegisterForm = {
   motivation: string;
   portfolioUrl: string;
   githubUrl: string;
+  turnstileToken: string;
 };
-
-export type RegisterStep = 1 | 2 | 3 | 4 | 5 | 6 | "complete";

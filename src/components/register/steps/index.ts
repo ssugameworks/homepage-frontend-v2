@@ -1,7 +1,6 @@
 export { BasicInfoStep, canProceedBasicInfo } from "./BasicInfoStep";
-export { SchoolInfoStep, canProceedSchoolInfo } from "./SchoolInfoStep";
-export { GradeStep, canProceedGrade } from "./GradeStep";
-export { PartStep, canProceedPart } from "./PartStep";
-export { MotivationStep, canProceedMotivation } from "./MotivationStep";
-export { PortfolioStep, canProceedPortfolio } from "./PortfolioStep";
-export { CompleteStep } from "./CompleteStep";
+export { canProceedGrade, GradeStep } from "./GradeStep";
+export { canProceedMotivation, MotivationStep } from "./MotivationStep";
+export { canProceedPart, PartStep } from "./PartStep";
+export { canProceedPortfolio, PortfolioStep } from "./PortfolioStep";
+export { canProceedSchoolInfo, SchoolInfoStep } from "./SchoolInfoStep";

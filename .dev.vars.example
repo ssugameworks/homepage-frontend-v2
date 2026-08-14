@@ -1,0 +1,8 @@
+# cp this to .dev.vars for local `wrangler pages dev`, and set the same keys
+# in the Cloudflare Pages dashboard (Settings > Environment variables) for prod.
+
+NOTION_TOKEN=secret_xxx
+NOTION_ACTIVITY_DATA_SOURCE_ID=acbc8584-c236-4220-92ef-24f64f64d54c
+NOTION_RESPONSE_DATA_SOURCE_ID=59417970-10ef-4269-a272-cc0153d19d68
+NOTION_REGISTER_DATA_SOURCE_ID=f1727d1b-0d38-43ed-b034-3b9c01b3668b
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA

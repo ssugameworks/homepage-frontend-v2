@@ -34,22 +34,24 @@ export const router = createBrowserRouter([
   },
   {
     path: ROUTES.REGISTER,
-    lazy: () =>
-      import("@/pages/register/RegisterLayout").then((m) => ({ Component: m.default })),
+    lazy: () => import("@/pages/register/RegisterLayout").then((m) => ({ Component: m.default })),
     children: [
       {
         index: true,
         lazy: () =>
-          import("@/pages/register/RegisterLandingPage").then((m) => ({
-            Component: m.default,
-          })),
-      },
-      {
-        path: "apply",
-        lazy: () =>
           import("@/pages/register/RegisterWizardPage").then((m) => ({
             Component: m.default,
           })),
+      },
+    ],
+  },
+  {
+    path: ROUTES.APPLY_FORM,
+    lazy: () => import("@/pages/register/RegisterLayout").then((m) => ({ Component: m.default })),
+    children: [
+      {
+        index: true,
+        lazy: () => import("@/pages/apply/NotionFormPage").then((m) => ({ Component: m.default })),
       },
     ],
   },

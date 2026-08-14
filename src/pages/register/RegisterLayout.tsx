@@ -1,26 +1,26 @@
 import { Link, Outlet } from "react-router-dom";
-import { Header } from "@/components/layout";
-import LogoMarkDark from "@/assets/icons/register/logo-mark-dark.svg?react";
+import { IconLogoMarkDark } from "@/assets/icons";
+import { Footer, Header } from "@/components/layout";
 import { ROUTES } from "@/router/routes";
 
 export default function RegisterLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-surface-white">
       {/* Mobile: shared dark header */}
-      <div className="md:hidden">
+      <div className="lg:hidden">
         <Header />
       </div>
 
       {/* Desktop: logo-only light header */}
-      <header className="hidden w-full bg-surface-white md:block">
-        <div className="mx-auto flex w-full max-w-[90rem] items-center px-6 py-[0.9375rem] short:py-2 md:px-20">
+      <header className="hidden w-full bg-surface-white lg:block">
+        <div className="mx-auto flex w-full max-w-360 items-center px-6 py-3.75 short:py-2 lg:px-20">
           <Link
             to={ROUTES.HOME}
             aria-label="GAMEWORKS"
             className="flex shrink-0 items-center overflow-hidden px-1 py-1.5"
           >
-            <span className="relative size-[1.625rem] shrink-0 overflow-clip">
-              <LogoMarkDark
+            <span className="relative size-6.5 shrink-0 overflow-clip text-black">
+              <IconLogoMarkDark
                 aria-hidden
                 className="absolute inset-0 block size-full max-w-none"
               />
@@ -38,22 +38,24 @@ export default function RegisterLayout() {
       <main
         className={[
           "relative flex flex-1 flex-col",
-          "bg-gradient-to-b from-surface-white from-50% via-[#d6e7fd] via-[66%] to-primary-200",
-          "md:bg-none",
+          "bg-gradient-to-b from-surface-white from-50% to-primary-200",
+          "lg:bg-none",
         ].join(" ")}
       >
         <div
-          className="pointer-events-none absolute inset-0 hidden md:block"
+          className="pointer-events-none absolute inset-0 hidden lg:block"
           style={{
             backgroundImage:
               "radial-gradient(ellipse 45rem 30rem at 50% 50%, var(--color-primary-200) 0%, var(--color-surface-white) 70%)",
           }}
           aria-hidden
         />
-        <div className="relative z-[1] flex flex-1 flex-col">
+        <div className="relative z-1 flex flex-1 flex-col">
           <Outlet />
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }

@@ -13,21 +13,21 @@ type ActivityInfoCardProps = {
 };
 
 const labelClass =
-  "shrink-0 text-[length:var(--font-size-body1)] font-bold leading-[1.5] text-primary-950 md:text-[1.25rem]";
+  "shrink-0 typo-body1 typo-bold text-primary-950 md:text-xl md:leading-normal";
 
 const valueClass =
-  "min-w-0 break-words text-[length:var(--font-size-body1)] font-light leading-[1.5] text-gray-700 md:text-[1.25rem]";
+  "min-w-0 break-words typo-body1 typo-light text-gray-700 md:text-xl md:leading-normal";
 
 export function ActivityInfoCard({ activity, actions }: ActivityInfoCardProps) {
   return (
-    <div className="flex w-full max-w-[20.5rem] flex-col overflow-hidden rounded-[0.9375rem] bg-surface-white shadow-[0_4px_16px_rgba(0,0,0,0.08)] md:max-w-[32.5rem] md:rounded-[1.25rem]">
-      <div className="flex flex-col gap-4 px-9 pt-8 pb-6 short:md:gap-3 short:md:px-10 short:md:pt-8 short:md:pb-6 md:px-[3.1875rem] md:pt-[3.625rem] md:pb-8">
+    <div className="flex w-full max-w-82 flex-col overflow-hidden rounded-[0.9375rem] bg-surface-white shadow-[0_4px_16px_rgba(0,0,0,0.08)] md:max-w-130 md:rounded-[1.25rem]">
+      <div className="flex flex-col gap-4 px-9 pt-8 pb-6 short:md:gap-3 short:md:px-10 short:md:pt-8 short:md:pb-6 md:px-12.75 md:pt-14.5 md:pb-8">
         <div className="flex flex-col gap-3 md:gap-4">
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 md:gap-[0.8125rem]">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 md:gap-3.25">
             <p className={labelClass}>신청 기간</p>
             <p className={valueClass}>{activity.applyPeriod}</p>
           </div>
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 md:gap-[0.8125rem]">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 md:gap-3.25">
             <p className={labelClass}>활동 기간</p>
             <p className={valueClass}>{activity.activityPeriod}</p>
           </div>
@@ -46,7 +46,7 @@ export function ActivityInfoCard({ activity, actions }: ActivityInfoCardProps) {
       </div>
 
       {actions ? (
-        <div className="px-9 pb-6 short:md:px-10 short:md:pb-8 md:px-[3.1875rem] md:pb-[3.625rem]">
+        <div className="px-9 pb-6 short:md:px-10 short:md:pb-8 md:px-12.75 md:pb-14.5">
           {actions}
         </div>
       ) : null}
