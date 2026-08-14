@@ -51,4 +51,29 @@
   --color-foreground: var(--color-surface-white);
   --color-border: rgba(255, 255, 255, 0.12);
   --color-overlay: rgba(255, 255, 255, 0.05);
+
+  /**
+   * Button — Figma button/primary-mixed, primary-mixed-hover, secondary-mixed
+   * layered gradients: color overlay on white
+   */
+  --color-button-primary:
+    linear-gradient(90deg, rgba(26, 122, 255, 0.9) 0%, rgba(26, 122, 255, 0.9) 100%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 100%);
+  --color-button-primary-hover:
+    linear-gradient(90deg, rgba(0, 96, 229, 0.9) 0%, rgba(0, 96, 229, 0.9) 100%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 100%);
+  --color-button-disabled:
+    linear-gradient(90deg, rgba(178, 211, 255, 0.4) 0%, rgba(178, 211, 255, 0.4) 100%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%);
+  --color-button-solid: var(--color-primary-500);
+  --color-button-solid-hover: var(--color-primary-600);
+  --color-button-outline: rgba(43, 132, 255, 0.97);
+  --color-button-disabled-text: rgba(255, 255, 255, 0.4);
+
+  /* Accent — form validation */
+  --color-accent-green: #228738;
+  --color-accent-red: #de3412;
+
+  /* Icon */
+  --color-icon-primary: #256ef4;
 }
