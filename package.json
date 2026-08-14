@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "pages:dev": "wrangler pages dev -- npm run dev",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "biome lint ./src",
@@ -17,10 +18,13 @@
     "*.{ts,tsx,js,jsx,css,json}": "biome check --write --no-errors-on-unmatched"
   },
   "dependencies": {
+    "@tanstack/react-form": "^1.33.5",
+    "framer-motion": "^13.1.0",
     "react": "^19",
     "react-dom": "^19",
     "react-router-dom": "^7.13.2",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
@@ -28,11 +32,13 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitejs/plugin-react": "^4.3.3",
+    "@vitejs/plugin-react": "^6.0.5",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "typescript": "^5.6.2",
-    "vite": "^5.4.10",
-    "vitest": "^2.1.8"
+    "vite": "^8.2.0",
+    "vite-plugin-svgr": "^5.2.0",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.121.0"
   }
 }

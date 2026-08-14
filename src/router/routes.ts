@@ -3,8 +3,13 @@ export const ROUTES = {
   INTRODUCE: "/introduce",
   ACTIVITIES: "/activities",
   MEMBERS: "/members",
-  JOIN: "/join",
+  REGISTER: "/register",
+  APPLY_FORM: "/apply/:slug",
   CONTACT: "/contact",
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];
+
+export function applyFormPath(slug: string) {
+  return `/apply/${slug}`;
+}
