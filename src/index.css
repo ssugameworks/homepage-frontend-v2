@@ -77,4 +77,29 @@
   --text-caption--line-height: var(--line-height-relaxed);
 
   --tracking-dense: var(--letter-spacing-tight);
+
+  --animate-card-slide-next: card-slide-next 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-card-slide-prev: card-slide-prev 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes card-slide-next {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes card-slide-prev {
+  from {
+    transform: translateX(-24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }

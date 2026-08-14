@@ -22,8 +22,7 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.MEMBERS.slice(1),
-        lazy: () => import("@/pages/PlaceholderPage").then((m) => ({ Component: m.default })),
-        loader: () => ({ title: "임원진" }),
+        lazy: () => import("@/pages/MembersPage").then((m) => ({ Component: m.default })),
       },
       {
         path: ROUTES.CONTACT.slice(1),
