@@ -1,4 +1,3 @@
-export { ActivityInfoCard } from "./ActivityInfoCard";
 export {
   GRADE_OPTIONS,
   INITIAL_REGISTER_FORM,

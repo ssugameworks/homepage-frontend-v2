@@ -130,7 +130,7 @@ export function Select({
                 </motion.span>
               </button>
 
-              <ul className="m-0 max-h-78 list-none overflow-y-auto p-0">
+              <ul className="m-0 max-h-[max(6rem,min(19.5rem,calc(100dvh-450px)))] list-none overflow-y-auto p-0">
                 {options.map((option) => {
                   const selected = value === option;
                   return (
