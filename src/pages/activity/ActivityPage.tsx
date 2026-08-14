@@ -44,6 +44,19 @@ const MOCK_ACTIVITIES: ActivityItem[] = [
 export default function ActivityPage() {
   const [filter, setFilter] = useState<"upcoming" | "past">("upcoming");
 
+  // 1. 오늘 날짜 구하기 (YYYY-MM-DD)
+  const todayStr = new Date().toISOString().split("T")[0];
+
+  // 2. 탭 선택에 따른 활동 필터링
+  const filteredActivities = MOCK_ACTIVITIES.filter((activity) => {
+    if (filter === "upcoming") {
+      // 모집 종료일이 오늘이거나 이후인 활동
+      return activity.applyEndDate >= todayStr;
+    }
+    // 모집 종료일이 지난 활동
+    return activity.applyEndDate < todayStr;
+  });
+
   return (
     <div className="min-h-screen bg-[#FAFAFA] text-text-primary tracking-dense">
       {/* 1. 히어로 배너 영역 */}
@@ -72,8 +85,8 @@ export default function ActivityPage() {
         {/* 상단 필터 & 카운트 헤더 */}
         <div className="flex justify-between items-end border-b border-border">
           <h2 className="text-heading3 font-medium text-text-primary">
-            지금 참여할 수 있는 활동이{" "}
-            <span className="text-primary-700 font-bold">{MOCK_ACTIVITIES.length}개</span> 있어요
+            {filter === "upcoming" ? "지금 참여할 수 있는 활동이 " : "지난 활동이 "}
+            <span className="text-primary-700 font-bold">{filteredActivities.length}개</span> 있어요
           </h2>
 
           <div className="flex gap-4 text-body1  font-bold">
@@ -98,30 +111,36 @@ export default function ActivityPage() {
         <div className="w-full h-[3px] bg-primary-900 my-4" />
 
         {/* 3. 활동 타임라인 리스트 */}
-        <div className="space-y-6">
-          {MOCK_ACTIVITIES.map((activity, index) => {
-            const currentMonth = activity.applyStartDate.slice(5, 7);
-            const prevMonth = MOCK_ACTIVITIES[index - 1]?.applyStartDate.slice(5, 7);
-            const nextMonth = MOCK_ACTIVITIES[index + 1]?.applyStartDate.slice(5, 7);
+        {filteredActivities.length === 0 ? (
+          <div className="py-20 text-center text-text-tertiary text-body1">
+            {filter === "upcoming" ? "현재 예정된 활동이 없습니다." : "지난 활동 내역이 없습니다."}
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {filteredActivities.map((activity, index) => {
+              const currentMonth = activity.applyStartDate.slice(5, 7);
+              const prevMonth = filteredActivities[index - 1]?.applyStartDate.slice(5, 7);
+              const nextMonth = filteredActivities[index + 1]?.applyStartDate.slice(5, 7);
 
-            const showDateHeader = index === 0 || prevMonth !== currentMonth;
-            const isLastInMonth =
-              index === MOCK_ACTIVITIES.length - 1 || nextMonth !== currentMonth;
+              const showDateHeader = index === 0 || prevMonth !== currentMonth;
+              const isLastInMonth =
+                index === filteredActivities.length - 1 || nextMonth !== currentMonth;
 
-            return (
-              <Fragment key={activity.id}>
-                <ActivityCard
-                  activity={activity}
-                  showDateHeader={showDateHeader}
-                  isLastInMonth={isLastInMonth}
-                />
+              return (
+                <Fragment key={activity.id}>
+                  <ActivityCard
+                    activity={activity}
+                    showDateHeader={showDateHeader}
+                    isLastInMonth={isLastInMonth}
+                  />
 
-                {/* 해당 월의 마지막 카드 바로 뒤에 전체 가로 구분선 출력 */}
-                {isLastInMonth && <div className="w-full h-[3px] bg-primary-900 my-8" />}
-              </Fragment>
-            );
-          })}
-        </div>
+                  {/* 해당 월의 마지막 카드 바로 뒤에 전체 가로 구분선 출력 */}
+                  {isLastInMonth && <div className="w-full h-[3px] bg-primary-900 my-8" />}
+                </Fragment>
+              );
+            })}
+          </div>
+        )}
       </main>
     </div>
   );
