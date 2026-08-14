@@ -1,3 +1,4 @@
+import { Button } from "@/ui/Button";
 export interface ActivityItem {
   id: string;
   title: string;
@@ -127,22 +128,19 @@ export default function ActivityCard({
 
           {/* 우측: 신청 / 마감 버튼 */}
           <div className="self-end lg:self-center flex-shrink-0">
-            {isApplyActive ? (
-              <button
-                type="button"
-                className="bg-primary-600 hover:bg-primary-700 text-white font-medium text-body2 px-6 py-3 rounded-xl transition-all shadow-sm active:scale-95"
-              >
-                신청하기
-              </button>
-            ) : (
-              <button
-                type="button"
-                disabled
-                className="bg-gray-600 text-white font-medium text-body2 px-6 py-3 rounded-xl cursor-not-allowed opacity-90"
-              >
-                신청마감
-              </button>
-            )}
+            <Button
+              variant="primarySolid"
+              size="md"
+              disabled={!isApplyActive}
+              className="min-w-28" // 버튼 가로폭을 시안에 맞게 안정적으로 지정
+              onClick={() => {
+                if (isApplyActive) {
+                  // 신청 링크 이동 또는 모달 열기 핸들러
+                }
+              }}
+            >
+              {isApplyActive ? "신청하기" : "신청마감"}
+            </Button>
           </div>
         </div>
       </div>
