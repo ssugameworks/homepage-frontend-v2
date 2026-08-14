@@ -1,4 +1,4 @@
-import { type RefObject, useRef } from "react";
+import { type RefObject, useRef, useState } from "react";
 import playArrowIcon from "@/assets/icons/play-arrow.svg";
 import { ExecutiveCard, ExecutiveRosterCard, TeamCard } from "@/components/executives";
 import { useExecutives } from "@/hooks/useExecutives";
@@ -58,10 +58,20 @@ function ScrollArrows({ onPrev, onNext, prevLabel, nextLabel, className }: Scrol
 
 export default function MembersPage() {
   const { executives, isLoading } = useExecutives();
-  const cardScrollRef = useRef<HTMLDivElement>(null);
   const rosterScrollRef = useRef<HTMLDivElement>(null);
   const currentYear = new Date().getFullYear();
   const pastRosters = buildPastRosters(executives, currentYear);
+
+  // 모바일 임원진 카드: 스와이프 제스처 대신 화살표 클릭으로만 전환하되, 스와이프 느낌의 슬라이드 연출을 준다
+  const totalCards = executives.length + 1;
+  const [cardIndex, setCardIndex] = useState(0);
+  const [cardDirection, setCardDirection] = useState<"prev" | "next">("next");
+  const goToCard = (direction: "prev" | "next") => {
+    setCardDirection(direction);
+    setCardIndex((prev) =>
+      direction === "next" ? (prev + 1) % totalCards : (prev - 1 + totalCards) % totalCards
+    );
+  };
 
   const slide = (ref: RefObject<HTMLDivElement | null>, direction: "prev" | "next") => {
     const container = ref.current;
@@ -90,8 +100,8 @@ export default function MembersPage() {
             className="lg:hidden"
             prevLabel="이전 카드"
             nextLabel="다음 카드"
-            onPrev={() => slide(cardScrollRef, "prev")}
-            onNext={() => slide(cardScrollRef, "next")}
+            onPrev={() => goToCard("prev")}
+            onNext={() => goToCard("next")}
           />
         </div>
       </div>
@@ -100,19 +110,26 @@ export default function MembersPage() {
         <p className="text-center text-[16px] text-gray-600">불러오는 중...</p>
       ) : (
         <>
-          {/* 모바일: 스와이프 캐러셀, 카드 고정 347px (Figma mobile:executive, 758:8991 "스와이프 케러셜 형태") */}
-          <div
-            ref={cardScrollRef}
-            className="mx-auto flex w-full max-w-[390px] snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth px-5 pb-2 lg:hidden"
-          >
-            {executives.map((executive) => (
-              <ExecutiveCard
-                key={executive.id}
-                executive={executive}
-                className="w-[347px] shrink-0 snap-start"
-              />
-            ))}
-            <TeamCard {...PRODUCT_TEAM} className="w-[347px] shrink-0 snap-start" />
+          {/* 모바일: 스와이프가 아닌 화살표로만 전환되는 단일 카드 뷰 — 양옆에 다른 카드가 보이지 않는다 */}
+          <div className="mx-auto w-full max-w-[390px] overflow-hidden px-5 lg:hidden">
+            {(() => {
+              const currentExecutive = executives[cardIndex];
+              const slideClassName =
+                cardDirection === "next" ? "animate-card-slide-next" : "animate-card-slide-prev";
+              return currentExecutive ? (
+                <ExecutiveCard
+                  key={currentExecutive.id}
+                  executive={currentExecutive}
+                  className={`w-full ${slideClassName}`}
+                />
+              ) : (
+                <TeamCard
+                  key="product-team"
+                  {...PRODUCT_TEAM}
+                  className={`w-full ${slideClassName}`}
+                />
+              );
+            })()}
           </div>
 
           {/* 데스크탑: 정적 그리드 (Figma web/executives, card-big 420px 기준) */}

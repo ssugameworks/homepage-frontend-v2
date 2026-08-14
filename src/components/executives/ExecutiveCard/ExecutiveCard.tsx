@@ -82,7 +82,7 @@ export function ExecutiveCard({ executive, className }: ExecutiveCardProps) {
         <div className="absolute inset-0 overflow-hidden rounded-[4px] bg-[#031838] [backface-visibility:hidden] [transform:rotateY(180deg)]">
           <div
             aria-hidden
-            className="pointer-events-none absolute top-[12.6%] left-[27.1%] flex h-[75.9%] w-[54%] items-end justify-end lg:top-[10.4%] lg:left-[39.8%] lg:h-[62.6%] lg:w-[44.6%]"
+            className="pointer-events-none absolute top-[9.8%] left-[44.4%] flex h-[95.9%] w-[54%] items-end justify-end lg:top-[6%] lg:left-[52%] lg:h-[108%] lg:w-[44.6%]"
           >
             <p
               className="bg-gradient-to-r from-[rgba(80,95,132,0.55)] to-[rgba(228,242,248,0.55)] bg-clip-text text-[57.64cqw] text-transparent leading-[0.9] lg:text-[59.52cqw]"
