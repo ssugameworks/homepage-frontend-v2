@@ -69,7 +69,7 @@ export default function ActivityPage() {
     (activity) => activity.applyEndDate >= todayStr
   ).length;
 
-  // 👉 2. 필터링 및 마감 임박순(오름차순) 정렬 적용
+  //  2. 필터링 및 마감 임박순(오름차순) 정렬 적용
   const filteredActivities = MOCK_ACTIVITIES.filter((activity) => {
     if (filter === "upcoming") return activity.applyEndDate >= todayStr;
     return activity.applyEndDate < todayStr;

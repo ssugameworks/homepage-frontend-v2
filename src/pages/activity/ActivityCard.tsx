@@ -17,7 +17,7 @@ interface ActivityCardProps {
   activity: ActivityItem;
   showDateHeader?: boolean;
   isLastInMonth?: boolean;
-  // 👉 [반응형 수정 1] 모바일에서 첫 번째 월(08) 우측에 탭(예정된/지난)을 넣기 위한 prop 추가
+  //[반응형] 모바일에서 첫 번째 월(08) 우측에 탭(예정된/지난)을 넣기 위한 prop 추가
   filterComponent?: React.ReactNode;
 }
 
@@ -25,7 +25,7 @@ interface ActivityCardProps {
 const formatDate = (dateStr: string) => dateStr.replace(/-/g, ".");
 const formatPeriod = (start: string, end: string) => `${formatDate(start)} ~ ${formatDate(end)}`;
 
-// 👉 [반응형 수정 2] 남은 일수 계산 함수 추가 (D-11, D-1, 오늘마감 계산)
+// [반응형] 남은 일수 계산 함수 추가 (D-11, D-1, 오늘마감 계산)
 function getDDay(endDateStr: string): string | null {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -53,7 +53,7 @@ export default function ActivityCard({
 
   return (
     <div className="w-full">
-      {/* 👉 [반응형 수정 3] [모바일 전용 상단 월 바]
+      {/* [반응형] [모바일 전용 상단 월 바]
           모바일 시안처럼 카드 상단에 '2026 08'과 우측 필터 탭이 위치하고 밑줄이 그어짐 (PC에서는 숨김: md:hidden) */}
       {showDateHeader && (
         <div className="md:hidden flex items-end justify-between pb-2 mb-4 border-b-2 border-primary-950">
@@ -70,7 +70,7 @@ export default function ActivityCard({
 
       {/* 2. 카드 본문 레이아웃 */}
       <div className="grid grid-cols-12 md:gap-8 lg:gap-12 items-start w-full">
-        {/* 👉 [반응형 수정 4] [PC 전용 좌측 월 타임라인]
+        {/* [반응형] [PC 전용 좌측 월 타임라인]
             모바일에서는 상단 바로 올라갔으므로 PC에서만 표시 (hidden md:block) */}
         <div className="hidden md:block col-span-3 md:col-span-2 pt-1 flex-shrink-0">
           {showDateHeader ? (
@@ -94,7 +94,7 @@ export default function ActivityCard({
           <div className="flex justify-between items-center gap-4 w-full min-w-0">
             {/* 썸네일 & 텍스트 콘텐츠 */}
             <div className="flex gap-6 flex-1 items-start min-w-0">
-              {/* 👉 [반응형 수정 5] [포스터 이미지]
+              {/* [반응형] [포스터 이미지]
                   모바일 시안에는 이미지가 없으므로 PC에서만 표시 (hidden md:block) */}
               <div className="hidden md:block w-[227px] h-[268px] rounded-[12px] overflow-hidden flex-shrink-0 bg-gray-100 shadow-sm">
                 <img
@@ -111,7 +111,7 @@ export default function ActivityCard({
                   <h3 className="text-[17px] md:text-heading3 font-bold text-text-primary tracking-tight truncate">
                     {activity.title}
                   </h3>
-                  {/* 👉 [반응형 수정 6] 계산된 dDayTag (D-11, D-1, 오늘마감) 출력 */}
+                  {/* [반응형] 계산된 dDayTag (D-11, D-1, 오늘마감) 출력 */}
                   {dDayTag && (
                     <span className="border border-red-500 text-red-500 font-bold text-[11px] md:text-body1 px-1.5 py-0.5 rounded-[4px] flex-shrink-0 leading-tight">
                       {dDayTag}
@@ -119,7 +119,7 @@ export default function ActivityCard({
                   )}
                 </div>
 
-                {/* 👉 [반응형 수정 7] [모바일 전용 컴팩트 텍스트 리스트]
+                {/* [반응형] [모바일 전용 컴팩트 텍스트 리스트]
                     모바일 시안 스타일인 "접수 기간 | 2026.08.01 ~ ..." 텍스트 (PC에서는 숨김: md:hidden) */}
                 <div className="md:hidden space-y-1 text-[13px] text-gray-600">
                   <div className="flex items-center gap-2">
@@ -143,7 +143,7 @@ export default function ActivityCard({
                   </div>
                 </div>
 
-                {/* 👉 [반응형 수정 8] [PC 전용 회색 상세 정보 박스]
+                {/* [반응형] [PC 전용 회색 상세 정보 박스]
                     모바일에서는 숨김 처리 (hidden md:block) */}
                 <div className="hidden md:block w-full min-w-0 bg-[#F2F2F3] p-5 rounded-[16px] text-body2 space-y-2 text-text-secondary">
                   <div className="flex items-center gap-4 min-w-0">
@@ -185,8 +185,7 @@ export default function ActivityCard({
               </div>
             </div>
 
-            {/* 👉 [반응형 수정 9] [우측 버튼 반응형 크기 조절]
-                모바일에서는 컴팩트한 패딩(px-3.5 py-2), PC에서는 넉넉한 크기(md:px-6 md:py-3) */}
+            {/* [반응형] [우측 버튼 반응형 크기 조절] */}
             <div className="self-center flex-shrink-0">
               <Button
                 variant="primarySolid"
