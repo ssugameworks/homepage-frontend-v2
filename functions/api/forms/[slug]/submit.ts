@@ -1,3 +1,4 @@
+import { getActivityFieldSpecs, validateActivityAnswers } from "../../_lib/activityForm";
 import {
   createPage,
   type Env,
@@ -9,7 +10,7 @@ import { verifyTurnstile } from "../../_lib/turnstile";
 
 type SubmitBody = {
   studentId?: string;
-  answers?: Record<string, string | string[]>;
+  answers?: Record<string, unknown>;
   turnstileToken?: string;
 };
 
@@ -21,9 +22,13 @@ export async function onRequestPost(context: Context) {
   const body = (await request.json()) as SubmitBody;
 
   const studentId = body.studentId?.trim();
-  if (!studentId || !body.answers || !body.turnstileToken) {
+  if (!studentId || !/^\d{8}$/.test(studentId) || !body.turnstileToken) {
     return Response.json({ error: "필수 정보가 없어요" }, { status: 400 });
   }
+  if (body.answers != null && (typeof body.answers !== "object" || Array.isArray(body.answers))) {
+    return Response.json({ error: "답변 형식이 올바르지 않아요" }, { status: 400 });
+  }
+  const answers = body.answers ?? {};
 
   const verified = await verifyTurnstile(
     env.TURNSTILE_SECRET_KEY,
@@ -42,6 +47,12 @@ export async function onRequestPost(context: Context) {
     return Response.json({ error: "폼을 찾을 수 없어요" }, { status: 404 });
   }
 
+  const fields = await getActivityFieldSpecs(env, activity.id);
+  const validationError = validateActivityAnswers(fields, answers);
+  if (validationError) {
+    return Response.json({ error: validationError }, { status: 400 });
+  }
+
   const { results } = await queryDataSource(env, env.NOTION_RESPONSE_DATA_SOURCE_ID, {
     filter: {
       and: [
@@ -52,7 +63,7 @@ export async function onRequestPost(context: Context) {
   });
 
   const properties = {
-    응답: { rich_text: [{ text: { content: JSON.stringify(body.answers) } }] },
+    응답: { rich_text: [{ text: { content: JSON.stringify(answers) } }] },
     검토상태: { select: { name: "신규" } },
   };
 

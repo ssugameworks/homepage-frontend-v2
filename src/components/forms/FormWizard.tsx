@@ -83,6 +83,13 @@ export function FormWizard<TFormApi extends AnyFormApi>({
   const currentStep = stepIndex === "complete" ? null : steps[stepIndex];
   const isFirstStep = stepIndex === 0;
   const isLastStep = stepIndex === steps.length - 1;
+  const progressTotal = steps.filter((step) => step.includeInProgress !== false).length;
+  const progressStep =
+    stepIndex === "complete"
+      ? progressTotal
+      : steps.slice(0, stepIndex + 1).filter((step) => step.includeInProgress !== false).length;
+  const showProgress =
+    stepIndex !== "complete" && currentStep?.includeInProgress !== false && progressTotal > 0;
 
   const goPrev = () => {
     if (stepIndex === "complete") return;
@@ -160,10 +167,10 @@ export function FormWizard<TFormApi extends AnyFormApi>({
           footer={footer}
           className={stepIndex === "complete" ? "min-h-80 md:h-112 md:min-h-0" : undefined}
         >
-          {stepIndex !== "complete" ? (
+          {showProgress ? (
             <StepIndicator
-              step={stepIndex + 1}
-              total={steps.length}
+              step={progressStep}
+              total={progressTotal}
               direction={direction}
               className="mb-4 md:mb-6"
             />

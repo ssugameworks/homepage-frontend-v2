@@ -72,7 +72,7 @@ export function NotionFormRenderer({ schema }: NotionFormRendererProps) {
     canProceed: (values) => studentIdSchema.safeParse(values.studentId).success,
   };
 
-  const fieldSteps: StepDefinition<typeof form>[] = schema.fields.map((field) => ({
+  const notionQuestionSteps: StepDefinition<typeof form>[] = schema.fields.map((field) => ({
     id: field.id,
     render: (f) => (
       <f.Field
@@ -88,9 +88,10 @@ export function NotionFormRenderer({ schema }: NotionFormRendererProps) {
     canProceed: (values) => canProceedField(field.kind, field, values[field.id]),
   }));
 
+  // 활동 신청의 고정 요구사항은 학번뿐이다. 노션 질문은 0개 이상이며,
+  // 질문 DB가 없는 활동은 학번 입력 후 바로 제출 인증으로 진행한다.
   const captchaStep = createCaptchaStep<typeof form>(TURNSTILE_SITE_KEY);
-
-  const steps = [studentIdStep, ...fieldSteps, captchaStep];
+  const steps = [studentIdStep, ...notionQuestionSteps, captchaStep];
 
   return (
     <FormWizard

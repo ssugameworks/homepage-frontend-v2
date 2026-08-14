@@ -5,6 +5,8 @@ export type StepDefinition<TFormApi extends AnyFormApi> = {
   id: string;
   render: (form: TFormApi) => ReactNode;
   canProceed: (values: TFormApi["state"]["values"]) => boolean;
+  /** Captcha처럼 사용자 질문이 아닌 단계는 진행률 계산에서 제외한다. */
+  includeInProgress?: boolean;
 };
 
 /** A single Notion-sourced field's spec — one field maps to exactly one step. */
