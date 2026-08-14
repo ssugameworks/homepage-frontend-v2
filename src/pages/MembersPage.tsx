@@ -1,20 +1,15 @@
 import { type RefObject, useRef, useState } from "react";
 import playArrowIcon from "@/assets/icons/play-arrow.svg";
+import productTeamBack from "@/assets/images/executives/product-team-back.png";
+import productTeamFront from "@/assets/images/executives/product-team-front.png";
 import { ExecutiveCard, ExecutiveRosterCard, TeamCard } from "@/components/executives";
 import { useExecutives } from "@/hooks/useExecutives";
 import type { Executive } from "@/types/executive";
 
 const PRODUCT_TEAM = {
   teamName: "Product team",
-  description: [
-    "IT 기술로 구성원의 숨은 불편을 해결해,",
-    "게임웍스 안팎에 더 편리한 경험과 단단한 신뢰를 만듭니다",
-  ],
-  memberGroups: [
-    { label: "PM", members: ["홍준우", "조영찬"] },
-    { label: "DESIGN", members: ["박민지", "유은정", "이가은"] },
-    { label: "FRONTEND", members: ["박다희", "이승빈", "이정혁"] },
-  ],
+  frontImageUrl: productTeamFront,
+  backImageUrl: productTeamBack,
 };
 
 function buildPastRosters(executives: Executive[], currentYear: number) {

@@ -1,2 +1,2 @@
 export { TeamCard } from "./TeamCard";
-export type { TeamCardProps, TeamMemberGroup } from "./TeamCard.types";
+export type { TeamCardProps } from "./TeamCard.types";

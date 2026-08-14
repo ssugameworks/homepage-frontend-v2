@@ -1,11 +1,6 @@
-export type TeamMemberGroup = {
-  label: string;
-  members: string[];
-};
-
 export type TeamCardProps = {
   teamName: string;
-  description: string[];
-  memberGroups: TeamMemberGroup[];
+  frontImageUrl: string | null;
+  backImageUrl: string | null;
   className?: string;
 };
