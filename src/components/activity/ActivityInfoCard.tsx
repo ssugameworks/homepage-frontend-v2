@@ -12,8 +12,7 @@ type ActivityInfoCardProps = {
   actions?: ReactNode;
 };
 
-const labelClass =
-  "shrink-0 typo-body1 typo-bold text-primary-950 md:text-xl md:leading-normal";
+const labelClass = "shrink-0 typo-body1 typo-bold text-primary-950 md:text-xl md:leading-normal";
 
 const valueClass =
   "min-w-0 break-words typo-body1 typo-light text-gray-700 md:text-xl md:leading-normal";

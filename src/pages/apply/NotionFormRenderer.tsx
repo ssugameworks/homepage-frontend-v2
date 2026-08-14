@@ -10,9 +10,9 @@ import {
   FormWizard,
   type StepDefinition,
 } from "@/components/forms";
-import { formatStudentId, studentIdSchema } from "@/components/register/validation";
 import { ROUTES } from "@/router/routes";
 import { TextField } from "@/ui";
+import { formatStudentId, studentIdSchema } from "@/utils/validation/studentId";
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string;
 

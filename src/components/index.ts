@@ -1,3 +1,5 @@
+// Activity Components
+export * from "./activity/index";
 // Common UI Components
 export * from "./common/index";
 // Form Components

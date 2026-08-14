@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { fetchFormSchema, type NotionFormSchema } from "@/api";
 import { IconArrowBack } from "@/assets/icons";
-import { ActivityInfoCard } from "@/components/register";
+import { ActivityInfoCard } from "@/components/activity";
 import { ROUTES } from "@/router/routes";
 import { Button } from "@/ui";
 import { NotionFormRenderer } from "./NotionFormRenderer";
