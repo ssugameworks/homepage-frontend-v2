@@ -80,7 +80,7 @@ export default function ActivityCard({
                   {activity.title}
                 </h3>
                 {isTodayDeadline && (
-                  <span className="bg-red-50 text-accent-red border border-red-200 text-caption px-2 py-0.5 rounded font-semibold flex-shrink-0">
+                  <span className="text-accent-red border border-accent-red font-bold text-body1 px-2 py-0.5 rounded-[4px] flex-shrink-0">
                     오늘마감
                   </span>
                 )}
