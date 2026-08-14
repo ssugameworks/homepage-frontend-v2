@@ -1,48 +1,43 @@
 import React, { Fragment, useState } from "react";
+import Logo3D from "@/assets/icons/logo-mark-3d.png";
 import ActivityCard, { type ActivityItem } from "@/pages/activity/ActivityCard";
 
 const MOCK_ACTIVITIES: ActivityItem[] = [
   {
     id: "1",
-    year: "2026",
-    month: "08",
     title: "Flow: Startup Bridge",
-    statusTag: "오늘마감",
-    applyPeriod: "2026.08.01 ~ 2026.08.02",
-    activityPeriod: "2026.08.11 ~ 2026.08.12",
+    applyStartDate: "2026-08-01",
+    applyEndDate: "2026-08-14", // 오늘 마감 테스트 (현재 날짜 기준)
+    activityStartDate: "2026-08-15",
+    activityEndDate: "2026-08-20",
     location: "정보과학관",
     description:
       "자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명",
     imageUrl: "/images/activity-sample.png",
-    isApplyActive: true,
   },
   {
     id: "2",
-    year: "2026",
-    month: "08",
     title: "Flow: Startup Bridge",
-    statusTag: "오늘마감",
-    applyPeriod: "2026.08.01 ~ 2026.08.02",
-    activityPeriod: "2026.08.11 ~ 2026.08.12",
+    applyStartDate: "2026-08-01",
+    applyEndDate: "2026-08-10", // 이미 모집 마감된 활동
+    activityStartDate: "2026-08-11",
+    activityEndDate: "2026-08-12",
     location: "정보과학관",
     description:
       "자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명",
     imageUrl: "/images/activity-sample.png",
-    isApplyActive: true,
   },
   {
     id: "3",
-    year: "2026",
-    month: "07",
     title: "Flow: Startup Bridge",
-    statusTag: "오늘마감",
-    applyPeriod: "2026.08.01 ~ 2026.08.02",
-    activityPeriod: "2026.08.11 ~ 2026.08.12",
+    applyStartDate: "2026-07-01",
+    applyEndDate: "2026-07-20", // 지난 7월 활동
+    activityStartDate: "2026-07-25",
+    activityEndDate: "2026-07-30",
     location: "정보과학관",
     description:
       "자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명",
     imageUrl: "/images/activity-sample.png",
-    isApplyActive: true,
   },
 ];
 
@@ -52,9 +47,9 @@ export default function ActivityPage() {
   return (
     <div className="min-h-screen bg-[#FAFAFA] text-text-primary tracking-dense">
       {/* 1. 히어로 배너 영역 */}
-      <section className="relative overflow-hidden bg-[linear-gradient(90deg,var(--color-gray-50,#F2F2F3)_0%,var(--color-primary-300,#B2D3FF)_100%)] py-16 px-6 md:px-20">
+      <section className="relative overflow-hidden bg-[linear-gradient(90deg,var(--color-gray-50,#F2F2F3)_0%,var(--color-primary-300,#B2D3FF)_100%)] py-16 px-6 md:px-20 z-0">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div>
+          <div className="relative z-10">
             <h1 className="text-heading1 font-bold text-text-primary-950 text-[38px] leading-tight">
               함께 몰입하고 성장할 순간들이
               <br />
@@ -62,8 +57,12 @@ export default function ActivityPage() {
             </h1>
           </div>
           {/* 오른쪽 3D 그래픽 이미지 */}
-          <div className="hidden md:block w-52 h-52 relative">
-            {/* <img src="/images/hero-graphic.png" alt="Hero" className="w-full h-full object-contain" /> */}
+          <div className="absolute right-5 md:right-8 top-1/2 -translate-y-1/2  md:h-[230%] aspect-square flex items-center justify-center pointer-events-none select-none z-0">
+            <img
+              src={Logo3D}
+              alt="GAMEWORKS Graphic"
+              className="w-full h-full object-contain object-right drop-shadow-sm"
+            />
           </div>
         </div>
       </section>
@@ -71,7 +70,7 @@ export default function ActivityPage() {
       {/* 2. 메인 컨텐츠 영역 */}
       <main className="max-w-6xl mx-auto px-6  py-[18px]">
         {/* 상단 필터 & 카운트 헤더 */}
-        <div className="flex justify-between items-end border-b border-border pb-4 mb-10">
+        <div className="flex justify-between items-end border-b border-border">
           <h2 className="text-heading3 font-medium text-text-primary">
             지금 참여할 수 있는 활동이{" "}
             <span className="text-primary-700 font-bold">{MOCK_ACTIVITIES.length}개</span> 있어요
@@ -96,18 +95,18 @@ export default function ActivityPage() {
             </button>
           </div>
         </div>
+        <div className="w-full h-[3px] bg-primary-900 my-4" />
 
         {/* 3. 활동 타임라인 리스트 */}
         <div className="space-y-6">
           {MOCK_ACTIVITIES.map((activity, index) => {
-            // 1. 새로운 월이 시작되는지 체크
-            const showDateHeader =
-              index === 0 || MOCK_ACTIVITIES[index - 1]?.month !== activity.month;
+            const currentMonth = activity.applyStartDate.slice(5, 7);
+            const prevMonth = MOCK_ACTIVITIES[index - 1]?.applyStartDate.slice(5, 7);
+            const nextMonth = MOCK_ACTIVITIES[index + 1]?.applyStartDate.slice(5, 7);
 
-            // 2. 해당 월의 마지막 아이템인지 체크 (다음 아이템이 없거나, 다음 아이템의 월이 다를 때)
+            const showDateHeader = index === 0 || prevMonth !== currentMonth;
             const isLastInMonth =
-              index === MOCK_ACTIVITIES.length - 1 ||
-              MOCK_ACTIVITIES[index + 1]?.month !== activity.month;
+              index === MOCK_ACTIVITIES.length - 1 || nextMonth !== currentMonth;
 
             return (
               <Fragment key={activity.id}>
@@ -118,7 +117,7 @@ export default function ActivityPage() {
                 />
 
                 {/* 해당 월의 마지막 카드 바로 뒤에 전체 가로 구분선 출력 */}
-                {isLastInMonth && <div className="w-full h-[1px] bg-gray-300 my-8" />}
+                {isLastInMonth && <div className="w-full h-[3px] bg-primary-900 my-8" />}
               </Fragment>
             );
           })}
