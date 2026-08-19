@@ -65,7 +65,7 @@ export async function onRequestPost(context: Context) {
     return Response.json({ error: "신청 기간이 아니에요" }, { status: 400 });
   }
 
-  const answerRichText = toRichText(JSON.stringify(body.answers));
+  const answerRichText = toRichText(JSON.stringify(answers));
   if (!answerRichText) {
     return Response.json({ error: "답변이 너무 길어요" }, { status: 400 });
   }
