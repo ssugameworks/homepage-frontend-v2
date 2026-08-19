@@ -1,1 +1,5 @@
-export { ActivityInfoCard } from "./ActivityInfoCard";
+export {
+  ActivityInfoCard,
+  activityInfoLabelClass,
+  activityInfoValueClass,
+} from "./ActivityInfoCard";

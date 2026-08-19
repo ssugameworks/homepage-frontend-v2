@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import type React from "react";
 import { useNavigate } from "react-router-dom";
 import { applyFormPath } from "@/router/routes";
@@ -32,10 +33,10 @@ const formatPeriod = (start: string, end: string) => `${formatDate(start)} ~ ${f
 // [반응형] 남은 일수 계산 함수 추가 (D-11, D-1, 오늘마감 계산)
 // 브라우저 로컬 타임존과 무관하게 KST 기준으로 날짜만 비교한다 (isApplyActive와 동일 기준).
 function getDDay(endDateStr: string): string | null {
-  const today = Date.parse(`${todayKstDateString()}T00:00:00Z`);
-  const end = Date.parse(`${endDateStr}T00:00:00Z`);
+  const today = dayjs(todayKstDateString());
+  const end = dayjs(endDateStr);
 
-  const diffDays = Math.round((end - today) / (1000 * 60 * 60 * 24));
+  const diffDays = end.diff(today, "day");
 
   if (diffDays < 0) return null; // 마감됨
   if (diffDays === 0) return "오늘마감";

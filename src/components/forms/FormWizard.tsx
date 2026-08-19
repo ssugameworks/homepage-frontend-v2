@@ -83,9 +83,16 @@ export function FormWizard<TFormApi extends AnyFormApi>({
 
   useEffect(() => {
     if (stepIndex === "complete" || !currentStep) return;
+    const { turnstileToken: _turnstileToken, ...persistableValues } = values as Record<
+      string,
+      unknown
+    >;
     sessionStorage.setItem(
       storageKey,
-      JSON.stringify({ stepId: currentStep.id, values } satisfies PersistedProgress)
+      JSON.stringify({
+        stepId: currentStep.id,
+        values: persistableValues,
+      } satisfies PersistedProgress)
     );
   }, [storageKey, stepIndex, currentStep, values]);
 
@@ -102,6 +109,7 @@ export function FormWizard<TFormApi extends AnyFormApi>({
   const goPrev = () => {
     if (stepIndex === "complete") return;
     if (isFirstStep) {
+      sessionStorage.removeItem(storageKey);
       onExit();
       return;
     }

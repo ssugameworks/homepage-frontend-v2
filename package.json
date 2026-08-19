@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@tanstack/react-form": "^1.33.5",
+    "dayjs": "^1.11.21",
     "framer-motion": "^13.1.0",
     "react": "^19",
     "react-dom": "^19",

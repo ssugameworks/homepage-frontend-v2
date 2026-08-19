@@ -7,9 +7,12 @@ import {
 import { SubmitLockedError, withSubmitLock } from "../../_lib/lock";
 import {
   createPage,
+  dateRange,
   type Env,
   findActivityBySlug,
+  isWithinDateRange,
   queryDataSource,
+  toRichText,
   updatePage,
 } from "../../_lib/notion";
 import { verifyTurnstile } from "../../_lib/turnstile";
@@ -25,9 +28,22 @@ type Context = { params: { slug: string }; env: Env; request: Request };
 export async function onRequestPost(context: Context) {
   const { env, request } = context;
   const { slug } = context.params;
-  const body = (await request.json()) as SubmitBody;
 
-  const studentId = body.studentId?.trim();
+  let body: SubmitBody;
+  try {
+    const parsed: unknown = await request.json();
+    if (typeof parsed !== "object" || parsed === null) {
+      return Response.json({ error: "요청 형식이 올바르지 않아요" }, { status: 400 });
+    }
+    body = parsed as SubmitBody;
+  } catch {
+    return Response.json({ error: "요청 형식이 올바르지 않아요" }, { status: 400 });
+  }
+
+  if (typeof body.studentId !== "string" || typeof body.turnstileToken !== "string") {
+    return Response.json({ error: "필수 정보가 없어요" }, { status: 400 });
+  }
+  const studentId = body.studentId.trim();
   if (!studentId || !/^\d{8}$/.test(studentId) || !body.turnstileToken) {
     return Response.json({ error: "필수 정보가 없어요" }, { status: 400 });
   }
@@ -51,6 +67,14 @@ export async function onRequestPost(context: Context) {
   const activity = await findActivityBySlug(env, slug);
   if (!activity) {
     return Response.json({ error: "폼을 찾을 수 없어요" }, { status: 404 });
+  }
+  if (!isWithinDateRange(dateRange("신청기간", activity))) {
+    return Response.json({ error: "신청 기간이 아니에요" }, { status: 400 });
+  }
+
+  const answerRichText = toRichText(JSON.stringify(answers));
+  if (!answerRichText) {
+    return Response.json({ error: "답변이 너무 길어요" }, { status: 400 });
   }
 
   let fields: ActivityFieldSpec[];
@@ -79,7 +103,7 @@ export async function onRequestPost(context: Context) {
       });
 
       const properties = {
-        응답: { rich_text: [{ text: { content: JSON.stringify(answers) } }] },
+        응답: { rich_text: answerRichText },
         검토상태: { select: { name: "신규" } },
       };
 

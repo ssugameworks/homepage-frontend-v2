@@ -62,7 +62,33 @@ type Context = { env: Env; request: Request };
 
 export async function onRequestPost(context: Context) {
   const { env, request } = context;
-  const body = (await request.json()) as SubmitBody;
+
+  let body: SubmitBody;
+  try {
+    const parsed: unknown = await request.json();
+    if (typeof parsed !== "object" || parsed === null) {
+      return Response.json({ error: "요청 형식이 올바르지 않아요" }, { status: 400 });
+    }
+    body = parsed as SubmitBody;
+  } catch {
+    return Response.json({ error: "요청 형식이 올바르지 않아요" }, { status: 400 });
+  }
+
+  const isOptionalString = (value: unknown) => value === undefined || typeof value === "string";
+  const isValid =
+    typeof body.studentId === "string" &&
+    typeof body.name === "string" &&
+    typeof body.turnstileToken === "string" &&
+    (body.parts === undefined || Array.isArray(body.parts)) &&
+    isOptionalString(body.phone) &&
+    isOptionalString(body.major) &&
+    isOptionalString(body.grade) &&
+    isOptionalString(body.motivation) &&
+    isOptionalString(body.portfolioUrl) &&
+    isOptionalString(body.githubUrl);
+  if (!isValid) {
+    return Response.json({ error: "요청 형식이 올바르지 않아요" }, { status: 400 });
+  }
 
   const studentId = body.studentId?.trim();
   if (!studentId || !/^\d{8}$/.test(studentId) || !body.turnstileToken) {

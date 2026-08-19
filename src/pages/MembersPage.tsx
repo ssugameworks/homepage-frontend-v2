@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { type RefObject, useRef, useState } from "react";
 import playArrowIcon from "@/assets/icons/play-arrow.svg";
 import productTeamBack from "@/assets/images/executives/product-team-back.png";
@@ -54,7 +55,7 @@ function ScrollArrows({ onPrev, onNext, prevLabel, nextLabel, className }: Scrol
 export default function MembersPage() {
   const { executives, isLoading } = useExecutives();
   const rosterScrollRef = useRef<HTMLDivElement>(null);
-  const currentYear = new Date().getFullYear();
+  const currentYear = dayjs().year();
   const pastRosters = buildPastRosters(executives, currentYear);
 
   // 모바일 임원진 카드: 스와이프 제스처 대신 화살표 클릭으로만 전환하되, 스와이프 느낌의 슬라이드 연출을 준다

@@ -1,4 +1,9 @@
+import dayjs, { type Dayjs } from "dayjs";
+import utc from "dayjs/plugin/utc";
+
 import type { KVNamespace } from "./lock";
+
+dayjs.extend(utc);
 
 export type Env = {
   NOTION_TOKEN: string;
@@ -110,10 +115,44 @@ export function dateRange(name: string, page: NotionPage): { start: string; end:
 }
 
 export function formatDateRange(range: { start: string; end: string | null }): string {
-  const toDots = (iso: string) => (iso ? iso.split("T")[0]?.replaceAll("-", ".") : "");
-  const start = toDots(range.start);
-  const end = range.end ? toDots(range.end) : start;
-  return start ? `${start} ~ ${end}` : "";
+  if (!range.start) return "";
+  const start = dayjs(range.start).format("YYYY.MM.DD");
+  const end = range.end ? dayjs(range.end).format("YYYY.MM.DD") : start;
+  return `${start} ~ ${end}`;
+}
+
+/** 인스턴트/날짜 문자열을 KST(UTC+9) 기준 캘린더 날짜(YYYY-MM-DD)로 정규화한다. */
+function kstDateString(value: string | Dayjs = dayjs.utc()): string {
+  return dayjs.utc(value).add(9, "hour").format("YYYY-MM-DD");
+}
+
+/**
+ * 신청기간(있으면) 안에 있는지 검사한다 — 시작일 이전, 종료일 이후 모두 막는다.
+ * now/range 모두 KST 캘린더 날짜로 정규화한 뒤 비교한다 — 서버(UTC)와 신청기간(KST) 기준이
+ * 달라 시작일이 최대 9시간 늦게 열리거나 종료일 이후에도 최대 9시간 신청이 허용되는 것을 막는다.
+ */
+export function isWithinDateRange(
+  range: { start: string; end: string | null },
+  now: string | Dayjs = dayjs.utc()
+): boolean {
+  if (!range.start) return true;
+  const today = kstDateString(now);
+  if (today < kstDateString(range.start)) return false;
+  if (!range.end) return true;
+  return today <= kstDateString(range.end);
+}
+
+const RICH_TEXT_CHUNK_SIZE = 2000;
+const RICH_TEXT_MAX_ITEMS = 100;
+
+/** Notion rich_text 속성은 항목당 2000자, 배열 최대 100개 제한이 있다 — 길면 나눠 담고, 그래도 넘치면 null. */
+export function toRichText(content: string): { text: { content: string } }[] | null {
+  const chunks: string[] = [];
+  for (let i = 0; i < content.length; i += RICH_TEXT_CHUNK_SIZE) {
+    chunks.push(content.slice(i, i + RICH_TEXT_CHUNK_SIZE));
+  }
+  if (chunks.length > RICH_TEXT_MAX_ITEMS) return null;
+  return chunks.map((text) => ({ text: { content: text } }));
 }
 
 /** Notion date 프로퍼티는 시간까지 포함할 수 있다 — 날짜만 남긴 YYYY-MM-DD로 자른다. */
@@ -132,7 +171,7 @@ export function filesUrl(name: string, page: NotionPage): string {
 
 /** Returns today's calendar date in KST (UTC+9) as YYYY-MM-DD, regardless of server-local timezone. */
 function todayKstDateString(): string {
-  return new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().split("T")[0] as string;
+  return kstDateString();
 }
 
 export async function findActivityBySlug(env: Env, slug: string): Promise<NotionPage | null> {
