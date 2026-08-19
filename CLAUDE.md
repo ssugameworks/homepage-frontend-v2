@@ -1,11 +1,11 @@
 
-Default to using npm instead of other package managers.
+Default to using bun instead of other package managers.
 
-- Use `node <file>` to run Node.js files
-- Use `npm test` instead of `bun test`
-- Use `npm install` instead of `bun install` or `yarn install` or `pnpm install`
-- Use `npm run <script>` instead of `bun run <script>` or `yarn run <script>` or `pnpm run <script>`
-- Use `npx <package> <command>` instead of `bunx <package> <command>`
+- Use `bun <file>` to run Node.js files
+- Use `bun test` instead of `npm test`
+- Use `bun install` instead of `npm install` or `yarn install` or `pnpm install`
+- Use `bun run <script>` instead of `npm run <script>` or `yarn run <script>` or `pnpm run <script>`
+- Use `bunx <package> <command>` instead of `npx <package> <command>`
 - Use `dotenv` package for .env file handling
 
 ## APIs
@@ -20,7 +20,7 @@ Default to using npm instead of other package managers.
 
 ## Testing
 
-Use `npm test` to run tests with Jest or Vitest.
+Use `bun test` to run tests with Jest or Vitest.
 
 ```ts#index.test.ts
 import { describe, it, expect } from "vitest";
@@ -39,7 +39,7 @@ Use `vite` as the bundler and dev server for React. It provides fast HMR (Hot Mo
 Installation:
 
 ```sh
-npm install -D vite @vitejs/plugin-react
+bun add -d vite @vitejs/plugin-react
 ```
 
 Vite config:
@@ -92,7 +92,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 Then run:
 
 ```sh
-npm run dev
+bun run dev
 ```
 
 For more information, read the Bun API docs in `node_modules/bun-types/docs/**.mdx`.

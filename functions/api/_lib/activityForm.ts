@@ -9,6 +9,7 @@ import {
   select,
   title,
 } from "./notion";
+import { isHttpUrl, isValidPhone } from "./validate";
 
 export const ACTIVITY_FIELD_KINDS = [
   "short_text",
@@ -91,14 +92,8 @@ function isBlank(value: unknown) {
   );
 }
 
-function isHttpUrl(value: string) {
-  try {
-    const url = new URL(value);
-    return url.protocol === "http:" || url.protocol === "https:";
-  } catch {
-    return false;
-  }
-}
+/** Notion rich_text 블록 하나의 최대 길이. 관리자가 최대글자수를 설정하지 않아도 이 값을 상한으로 강제한다. */
+const NOTION_RICH_TEXT_LIMIT = 2000;
 
 function isValidFieldValue(field: ActivityFieldSpec, value: unknown) {
   if (!field.required && isBlank(value)) return true;
@@ -115,10 +110,11 @@ function isValidFieldValue(field: ActivityFieldSpec, value: unknown) {
   if (field.kind === "single_choice") return (field.options ?? []).includes(value);
   const normalizedValue = value.trim();
   if (field.kind === "url") return isHttpUrl(normalizedValue);
-  if (field.kind === "phone") return /^010\d{8}$/.test(normalizedValue.replace(/\D/g, ""));
+  if (field.kind === "phone") return isValidPhone(normalizedValue);
   if (field.kind === "email") return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedValue);
   if (field.minLength != null && normalizedValue.length < field.minLength) return false;
-  if (field.maxLength != null && normalizedValue.length > field.maxLength) return false;
+  const maxLength = Math.min(field.maxLength ?? NOTION_RICH_TEXT_LIMIT, NOTION_RICH_TEXT_LIMIT);
+  if (normalizedValue.length > maxLength) return false;
 
   return true;
 }
