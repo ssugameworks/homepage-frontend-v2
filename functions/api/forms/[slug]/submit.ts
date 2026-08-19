@@ -4,6 +4,7 @@ import {
   getActivityFieldSpecs,
   validateActivityAnswers,
 } from "../../_lib/activityForm";
+import { SubmitLockedError, withSubmitLock } from "../../_lib/lock";
 import {
   createPage,
   type Env,
@@ -66,29 +67,38 @@ export async function onRequestPost(context: Context) {
     return Response.json({ error: validationError }, { status: 400 });
   }
 
-  const { results } = await queryDataSource(env, env.NOTION_RESPONSE_DATA_SOURCE_ID, {
-    filter: {
-      and: [
-        { property: "활동", relation: { contains: activity.id } },
-        { property: "학번", title: { equals: studentId } },
-      ],
-    },
-  });
+  try {
+    await withSubmitLock(env.SUBMIT_LOCKS, `forms:${slug}:${studentId}`, async () => {
+      const { results } = await queryDataSource(env, env.NOTION_RESPONSE_DATA_SOURCE_ID, {
+        filter: {
+          and: [
+            { property: "활동", relation: { contains: activity.id } },
+            { property: "학번", title: { equals: studentId } },
+          ],
+        },
+      });
 
-  const properties = {
-    응답: { rich_text: [{ text: { content: JSON.stringify(answers) } }] },
-    검토상태: { select: { name: "신규" } },
-  };
+      const properties = {
+        응답: { rich_text: [{ text: { content: JSON.stringify(answers) } }] },
+        검토상태: { select: { name: "신규" } },
+      };
 
-  const existing = results[0];
-  if (existing) {
-    await updatePage(env, existing.id, properties);
-  } else {
-    await createPage(env, env.NOTION_RESPONSE_DATA_SOURCE_ID, {
-      학번: { title: [{ text: { content: studentId } }] },
-      활동: { relation: [{ id: activity.id }] },
-      ...properties,
+      const existing = results[0];
+      if (existing) {
+        await updatePage(env, existing.id, properties);
+      } else {
+        await createPage(env, env.NOTION_RESPONSE_DATA_SOURCE_ID, {
+          학번: { title: [{ text: { content: studentId } }] },
+          활동: { relation: [{ id: activity.id }] },
+          ...properties,
+        });
+      }
     });
+  } catch (err) {
+    if (err instanceof SubmitLockedError) {
+      return Response.json({ error: err.message }, { status: 429 });
+    }
+    throw err;
   }
 
   return Response.json({ ok: true });

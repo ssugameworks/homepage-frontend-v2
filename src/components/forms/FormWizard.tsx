@@ -6,7 +6,7 @@ import { FormCard } from "./FormCard";
 import { StepIndicator } from "./StepIndicator";
 import type { StepDefinition } from "./types";
 
-type PersistedProgress = { stepIndex: number; values: unknown };
+type PersistedProgress = { stepId: string; values: unknown };
 
 function readProgress(storageKey: string): PersistedProgress | null {
   try {
@@ -61,11 +61,15 @@ export function FormWizard<TFormApi extends AnyFormApi>({
   const [stepIndex, setStepIndex] = useState<number | "complete">(() => {
     const saved = readProgress(storageKey);
     if (!saved) return 0;
-    return Math.min(Math.max(saved.stepIndex, 0), steps.length - 1);
+    // 저장된 스텝을 id로 다시 찾는다 — Notion 폼 구조가 바뀌어 순서/개수가
+    // 달라졌을 때 엉뚱한 스텝으로 복원되는 것을 막는다. 못 찾으면 처음부터 시작한다.
+    const idx = steps.findIndex((step) => step.id === saved.stepId);
+    return idx === -1 ? 0 : idx;
   });
   const [direction, setDirection] = useState<1 | -1>(1);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
   const values = useStore(form.store, (state) => state.values);
 
   // 저장된 입력값 복원 — 마운트 시 한 번만.
@@ -75,12 +79,16 @@ export function FormWizard<TFormApi extends AnyFormApi>({
     if (saved) form.reset(saved.values as never);
   }, []);
 
-  useEffect(() => {
-    if (stepIndex === "complete") return;
-    sessionStorage.setItem(storageKey, JSON.stringify({ stepIndex, values }));
-  }, [storageKey, stepIndex, values]);
-
   const currentStep = stepIndex === "complete" ? null : steps[stepIndex];
+
+  useEffect(() => {
+    if (stepIndex === "complete" || !currentStep) return;
+    sessionStorage.setItem(
+      storageKey,
+      JSON.stringify({ stepId: currentStep.id, values } satisfies PersistedProgress)
+    );
+  }, [storageKey, stepIndex, currentStep, values]);
+
   const isFirstStep = stepIndex === 0;
   const isLastStep = stepIndex === steps.length - 1;
   const progressTotal = steps.filter((step) => step.includeInProgress !== false).length;
@@ -119,6 +127,7 @@ export function FormWizard<TFormApi extends AnyFormApi>({
         setStepIndex("complete");
       } catch (err) {
         setSubmitError(err instanceof Error ? err.message : "제출에 실패했어요");
+        setRetryCount((n) => n + 1);
       } finally {
         setSubmitting(false);
       }
@@ -186,7 +195,7 @@ export function FormWizard<TFormApi extends AnyFormApi>({
               exit="exit"
               transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              {stepIndex === "complete" ? completeSlot : currentStep?.render(form)}
+              {stepIndex === "complete" ? completeSlot : currentStep?.render(form, { retryCount })}
             </motion.div>
           </AnimatePresence>
 

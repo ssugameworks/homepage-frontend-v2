@@ -1,8 +1,12 @@
 import type React from "react";
+import { useNavigate } from "react-router-dom";
+import { applyFormPath } from "@/router/routes";
 import { Button } from "@/ui/Button";
+import { todayKstDateString } from "@/utils";
 
 export interface ActivityItem {
   id: string;
+  slug: string;
   title: string;
   applyStartDate: string;
   applyEndDate: string;
@@ -26,14 +30,12 @@ const formatDate = (dateStr: string) => dateStr.replace(/-/g, ".");
 const formatPeriod = (start: string, end: string) => `${formatDate(start)} ~ ${formatDate(end)}`;
 
 // [반응형] 남은 일수 계산 함수 추가 (D-11, D-1, 오늘마감 계산)
+// 브라우저 로컬 타임존과 무관하게 KST 기준으로 날짜만 비교한다 (isApplyActive와 동일 기준).
 function getDDay(endDateStr: string): string | null {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const end = new Date(endDateStr);
-  end.setHours(0, 0, 0, 0);
+  const today = Date.parse(`${todayKstDateString()}T00:00:00Z`);
+  const end = Date.parse(`${endDateStr}T00:00:00Z`);
 
-  const diffTime = end.getTime() - today.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const diffDays = Math.round((end - today) / (1000 * 60 * 60 * 24));
 
   if (diffDays < 0) return null; // 마감됨
   if (diffDays === 0) return "오늘마감";
@@ -46,9 +48,9 @@ export default function ActivityCard({
   isLastInMonth = false,
   filterComponent,
 }: ActivityCardProps) {
+  const navigate = useNavigate();
   const [year, month] = activity.applyStartDate.split("-");
-  const todayStr = new Date().toISOString().split("T")[0];
-  const isApplyActive = activity.applyEndDate >= todayStr;
+  const isApplyActive = activity.applyEndDate >= todayKstDateString();
   const dDayTag = getDDay(activity.applyEndDate);
 
   return (
@@ -191,6 +193,7 @@ export default function ActivityCard({
                 variant="primarySolid"
                 size="sm"
                 disabled={!isApplyActive}
+                onClick={() => navigate(applyFormPath(activity.slug))}
                 className="!min-w-0 px-3.5 py-2 text-[13px] md:text-subheading md:px-6 md:py-3 md:!min-w-28 rounded-lg"
               >
                 {isApplyActive ? "신청하기" : "신청마감"}

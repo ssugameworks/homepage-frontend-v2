@@ -1,2 +1,12 @@
 name = "gameworks-homepage"
 compatibility_date = "2026-08-11"
+
+# 제출 API의 중복 제출 방지 락(functions/api/_lib/lock.ts)에 사용.
+# 이 프로젝트는 Cloudflare Pages(대시보드/Git 연동 배포, wrangler deploy 없음)라
+# wrangler의 자동 리소스 프로비저닝(id 생략 시 배포 때 자동 생성)이 적용되지 않는다.
+# 아래 id는 로컬 개발(`wrangler pages dev`)에만 쓰인다.
+# 프로덕션에는 Cloudflare 대시보드 → Pages 프로젝트 → Settings → Bindings →
+# Add → KV namespace 에서 같은 이름(SUBMIT_LOCKS)으로 바인딩을 추가하고 재배포해야 한다.
+[[kv_namespaces]]
+binding = "SUBMIT_LOCKS"
+id = "841709dcba0d4fa1872ad7cbbffc27f5"

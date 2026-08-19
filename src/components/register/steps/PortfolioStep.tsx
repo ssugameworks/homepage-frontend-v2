@@ -56,7 +56,9 @@ export function PortfolioStep({ form }: PortfolioStepProps) {
 }
 
 export function canProceedPortfolio(form: RegisterForm) {
-  const hasPortfolio = isValidUrl(form.portfolioUrl);
-  const hasGithub = isValidUrl(form.githubUrl);
-  return hasPortfolio || hasGithub;
+  const portfolio = form.portfolioUrl.trim();
+  const github = form.githubUrl.trim();
+  const portfolioOk = portfolio === "" || isValidUrl(portfolio);
+  const githubOk = github === "" || isValidUrl(github);
+  return portfolioOk && githubOk && (portfolio !== "" || github !== "");
 }

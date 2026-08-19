@@ -1,86 +1,66 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { fetchActivities } from "@/api";
 import Logo3D from "@/assets/icons/logo-mark-3d.png";
 import ActivityCard, { type ActivityItem } from "@/pages/activity/ActivityCard";
-
-const MOCK_ACTIVITIES: ActivityItem[] = [
-  {
-    id: "1",
-    title: "Flow: Startup Bridge",
-    applyStartDate: "2026-08-01",
-    applyEndDate: "2026-08-25", // D-11
-    activityStartDate: "2026-08-11",
-    activityEndDate: "2026-08-12",
-    location: "정보 과학관",
-    description: "자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명",
-    imageUrl: "/images/activity-sample.png",
-  },
-  {
-    id: "2",
-    title: "Flow: Startup Bridge",
-    applyStartDate: "2026-08-01",
-    applyEndDate: "2026-08-15", // D-1
-    activityStartDate: "2026-08-11",
-    activityEndDate: "2026-08-12",
-    location: "정보 과학관",
-    description: "자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명",
-    imageUrl: "/images/activity-sample.png",
-  },
-  {
-    id: "3",
-    title: "Flow: Startup Bridge",
-    applyStartDate: "2026-08-01",
-    applyEndDate: "2026-08-14", // 오늘마감
-    activityStartDate: "2026-08-11",
-    activityEndDate: "2026-08-12",
-    location: "정보 과학관",
-    description: "자세한 설명 자세한 설명 자세한 설명 자세한 설명 자세한 설명",
-    imageUrl: "/images/activity-sample.png",
-  },
-  {
-    id: "4",
-    title: "Flow: 지난 해커톤",
-    applyStartDate: "2026-07-01",
-    applyEndDate: "2026-07-20", // 지난 활동
-    activityStartDate: "2026-07-25",
-    activityEndDate: "2026-07-30",
-    location: "정보 과학관",
-    description: "지난 행사 설명입니다.",
-    imageUrl: "/images/activity-sample.png",
-  },
-  {
-    id: "5",
-    title: "Flow: 지난 워크샵",
-    applyStartDate: "2026-06-01",
-    applyEndDate: "2026-06-15", // 지난 활동
-    activityStartDate: "2026-06-20",
-    activityEndDate: "2026-06-22",
-    location: "정보 과학관",
-    description: "지난 행사 설명입니다.",
-    imageUrl: "/images/activity-sample.png",
-  },
-];
+import { todayKstDateString } from "@/utils";
 
 export default function ActivityPage() {
+  const [activities, setActivities] = useState<ActivityItem[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<"upcoming" | "past">("upcoming");
-  const todayStr = new Date().toISOString().split("T")[0];
+  const todayStr = todayKstDateString();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchActivities()
+      .then((result) => {
+        if (!cancelled) setActivities(result);
+      })
+      .catch((err: unknown) => {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : "활동 목록을 불러오지 못했어요");
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center px-5 py-16 text-center">
+        <p className="typo-subheading text-text-primary">{error}</p>
+      </div>
+    );
+  }
+
+  if (!activities) {
+    return (
+      <div className="min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center px-5 py-16 text-center">
+        <p className="typo-subheading text-text-tertiary">불러오는 중이에요…</p>
+      </div>
+    );
+  }
 
   // 1. 예정된 행사의 총 개수
-  const upcomingCount = MOCK_ACTIVITIES.filter(
-    (activity) => activity.applyEndDate >= todayStr
-  ).length;
+  const upcomingCount = activities.filter((activity) => activity.applyEndDate >= todayStr).length;
 
   //  2. 필터링 및 마감 임박순(오름차순) 정렬 적용
-  const filteredActivities = MOCK_ACTIVITIES.filter((activity) => {
-    if (filter === "upcoming") return activity.applyEndDate >= todayStr;
-    return activity.applyEndDate < todayStr;
-  }).sort((a, b) => {
-    if (filter === "upcoming") {
-      // 마감일이 오늘과 가장 가까운 순서(오름차순: 오늘마감 -> D-1 -> D-11)
-      return new Date(a.applyEndDate).getTime() - new Date(b.applyEndDate).getTime();
-    }
-    // 지난 활동: 가장 최근에 끝난 활동부터(내림차순)
-    return new Date(b.applyEndDate).getTime() - new Date(a.applyEndDate).getTime();
-  });
+  const filteredActivities = activities
+    .filter((activity) => {
+      if (filter === "upcoming") return activity.applyEndDate >= todayStr;
+      return activity.applyEndDate < todayStr;
+    })
+    .sort((a, b) => {
+      if (filter === "upcoming") {
+        // 마감일이 오늘과 가장 가까운 순서(오름차순: 오늘마감 -> D-1 -> D-11)
+        return new Date(a.applyEndDate).getTime() - new Date(b.applyEndDate).getTime();
+      }
+      // 지난 활동: 가장 최근에 끝난 활동부터(내림차순)
+      return new Date(b.applyEndDate).getTime() - new Date(a.applyEndDate).getTime();
+    });
 
   // 필터 탭 컴포넌트
   const FilterTabs = (
@@ -130,9 +110,9 @@ export default function ActivityPage() {
       </section>
 
       {/* 2. 메인 컨텐츠 영역 */}
-      <main className="max-w-6xl mx-auto px-5 md:px-6 py-6 md:py-[18px]">
+      <main className="max-w-6xl mx-auto px-5 md:px-6 pt-8 pb-6 md:pt-10 md:pb-[18px]">
         {/* 상단 개수 안내 헤더 */}
-        <div className="flex justify-between items-end md:border-b md:border-border pb-3 md:pb-4 mb-4 md:mb-0">
+        <div className="flex justify-between items-end md:border-b md:border-border pb-2 md:pb-3 mb-3 md:mb-0">
           <h2 className="text-[17px] md:text-heading3 font-bold text-text-primary">
             지금 참여할 수 있는 활동이 <span className="text-primary-700">{upcomingCount}개</span>{" "}
             있어요
@@ -142,7 +122,7 @@ export default function ActivityPage() {
         </div>
 
         {/* PC 전용 상단 굵은 구분선 */}
-        <div className="hidden md:block w-full h-[3px] bg-primary-900 my-4" />
+        <div className="hidden md:block w-full h-[3px] bg-primary-900 mt-3 mb-4" />
 
         {/* 3. 활동 타임라인 리스트 */}
         {filteredActivities.length === 0 ? (
