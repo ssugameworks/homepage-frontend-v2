@@ -1,9 +1,28 @@
 import dayjs from "dayjs";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchActivities } from "@/api";
 import Logo3D from "@/assets/icons/logo-mark-3d.png";
 import ActivityCard, { type ActivityItem } from "@/pages/activity/ActivityCard";
 import { todayKstDateString } from "@/utils";
+
+type ActivityMonthGroup = { key: string; year: string; month: string; items: ActivityItem[] };
+
+/** applyStartDate의 연/월이 같은 활동끼리 순서를 유지한 채 묶는다 (이미 정렬된 목록 기준). */
+function groupByMonth(activities: ActivityItem[]): ActivityMonthGroup[] {
+  const groups: ActivityMonthGroup[] = [];
+  for (const activity of activities) {
+    const year = activity.applyStartDate.slice(0, 4);
+    const month = activity.applyStartDate.slice(5, 7);
+    const key = `${year}-${month}`;
+    const current = groups.at(-1);
+    if (current?.key === key) {
+      current.items.push(activity);
+    } else {
+      groups.push({ key, year, month, items: [activity] });
+    }
+  }
+  return groups;
+}
 
 export default function ActivityPage() {
   const [activities, setActivities] = useState<ActivityItem[] | null>(null);
@@ -31,7 +50,7 @@ export default function ActivityPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center px-5 py-16 text-center">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-surface-white px-5 py-16 text-center">
         <p className="typo-subheading text-text-primary">{error}</p>
       </div>
     );
@@ -39,16 +58,16 @@ export default function ActivityPage() {
 
   if (!activities) {
     return (
-      <div className="min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center px-5 py-16 text-center">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-surface-white px-5 py-16 text-center">
         <p className="typo-subheading text-text-tertiary">불러오는 중이에요…</p>
       </div>
     );
   }
 
-  // 1. 예정된 행사의 총 개수
+  // 예정된 행사의 총 개수
   const upcomingCount = activities.filter((activity) => activity.applyEndDate >= todayStr).length;
 
-  //  2. 필터링 및 마감 임박순(오름차순) 정렬 적용
+  // 필터링 및 마감 임박순(오름차순) 정렬 적용
   const filteredActivities = activities
     .filter((activity) => {
       if (filter === "upcoming") return activity.applyEndDate >= todayStr;
@@ -63,24 +82,19 @@ export default function ActivityPage() {
       return dayjs(b.applyEndDate).valueOf() - dayjs(a.applyEndDate).valueOf();
     });
 
-  // 필터 탭 컴포넌트
   const FilterTabs = (
-    <div className="flex gap-3 md:gap-4 text-caption md:text-body1 font-bold">
+    <div className="typo-subheading typo-bold flex items-center gap-4">
       <button
         type="button"
         onClick={() => setFilter("upcoming")}
-        className={
-          filter === "upcoming" ? "text-text-primary font-bold" : "text-text-tertiary font-normal"
-        }
+        className={filter === "upcoming" ? "text-primary-950" : "text-gray-500"}
       >
         예정된
       </button>
       <button
         type="button"
         onClick={() => setFilter("past")}
-        className={
-          filter === "past" ? "text-text-primary font-bold" : "text-text-tertiary font-normal"
-        }
+        className={filter === "past" ? "text-primary-950" : "text-gray-500"}
       >
         지난
       </button>
@@ -88,75 +102,79 @@ export default function ActivityPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-text-primary tracking-dense">
-      {/* 1. 히어로 배너 영역 */}
-      <section className="relative overflow-hidden bg-[linear-gradient(90deg,var(--color-gray-50,#F2F2F3)_0%,var(--color-primary-300,#B2D3FF)_100%)] min-h-[160px] md:min-h-[200px] py-10 md:py-16 px-5 md:px-20 z-0">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="relative z-10">
-            <h1 className="text-[22px] sm:text-3xl md:text-[38px] font-bold text-text-primary-950 leading-tight">
-              함께 몰입하고 성장할 순간들이
-              <br />
-              기다리고 있어요
-            </h1>
-          </div>
-          {/* 오른쪽 3D 그래픽 이미지 */}
-          <div className="absolute right-0 md:right-8 top-1/2 -translate-y-1/2 h-[220%] sm:h-[230%] md:h-[240%] aspect-square flex items-center justify-center pointer-events-none select-none z-0">
-            <img
-              src={Logo3D}
-              alt="GAMEWORKS Graphic"
-              className="w-full h-full object-contain object-right drop-shadow-sm"
-            />
-          </div>
+    <div className="min-h-screen bg-surface-white text-text-primary tracking-dense">
+      {/* 히어로 배너 */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-gray-100 to-primary-200">
+        <div className="relative mx-auto w-full max-w-360 px-5 py-10 md:py-16 lg:px-20">
+          <h1 className="relative z-10 max-w-56 text-[1.75rem] leading-tight font-bold text-primary-950 sm:max-w-xs sm:text-[2rem] md:max-w-lg md:typo-heading1">
+            함께 몰입하고 성장할 순간들이
+            <br />
+            기다리고 있어요
+          </h1>
+          <img
+            src={Logo3D}
+            alt=""
+            aria-hidden
+            className="pointer-events-none absolute -top-8 -right-6 z-0 size-36 rotate-6 object-contain select-none sm:size-48 md:-top-20 md:right-0 md:size-80 lg:-top-24 lg:right-6 lg:size-105"
+          />
         </div>
       </section>
 
-      {/* 2. 메인 컨텐츠 영역 */}
-      <main className="max-w-6xl mx-auto px-5 md:px-6 pt-8 pb-6 md:pt-10 md:pb-[18px]">
-        {/* 상단 개수 안내 헤더 */}
-        <div className="flex justify-between items-end md:border-b md:border-border pb-2 md:pb-3 mb-3 md:mb-0">
-          <h2 className="text-[17px] md:text-heading3 font-bold text-text-primary">
-            지금 참여할 수 있는 활동이 <span className="text-primary-700">{upcomingCount}개</span>{" "}
-            있어요
+      {/* 메인 컨텐츠 */}
+      <main className="mx-auto w-full max-w-360 px-5 pt-8 pb-6 lg:pt-10 lg:px-20">
+        {/* 상단 개수 안내 + 필터 탭 */}
+        <div className="flex items-end justify-between gap-4 pb-3">
+          <h2 className="typo-heading2">
+            <span className="typo-medium text-primary-950">지금 참여할 수 있는 활동이 </span>
+            <span className="text-primary-600">{upcomingCount}개</span>
+            <span className="typo-medium text-primary-950"> 있어요</span>
           </h2>
 
-          <div className="hidden md:block">{FilterTabs}</div>
+          <div className="hidden lg:block">{FilterTabs}</div>
         </div>
 
-        {/* PC 전용 상단 굵은 구분선 */}
-        <div className="hidden md:block w-full h-[3px] bg-primary-900 mt-3 mb-4" />
+        <div className="hidden h-px w-full bg-gray-200 lg:block" />
 
-        {/* 3. 활동 타임라인 리스트 */}
+        {/* 활동 타임라인 리스트 */}
         {filteredActivities.length === 0 ? (
-          <div className="py-20 text-center text-text-tertiary text-body1">
-            {filter === "upcoming" ? "현재 예정된 활동이 없습니다." : "활동 내역이 없습니다."}
-          </div>
+          <>
+            {/* 카드가 없어 모바일/태블릿 월바에 탭을 끼워 넣을 자리가 없을 때의 대체 위치 */}
+            <div className="flex justify-end pt-3 pr-1 pb-2 lg:hidden">{FilterTabs}</div>
+            <div className="h-px w-full bg-gray-200 lg:hidden" />
+            <div className="typo-body1 py-20 text-center text-text-tertiary">
+              {filter === "upcoming" ? "현재 예정된 활동이 없습니다." : "활동 내역이 없습니다."}
+            </div>
+          </>
         ) : (
-          <div className="space-y-4 md:space-y-6">
-            {filteredActivities.map((activity, index) => {
-              const currentMonth = activity.applyStartDate.slice(5, 7);
-              const prevMonth = filteredActivities[index - 1]?.applyStartDate.slice(5, 7);
-              const nextMonth = filteredActivities[index + 1]?.applyStartDate.slice(5, 7);
+          <div className="mt-3 lg:mt-6">
+            {groupByMonth(filteredActivities).map((group, groupIndex) => (
+              <div key={group.key} className="lg:flex lg:items-start lg:justify-between lg:gap-6">
+                {/* 데스크톱 전용 월 레이블 — 그룹이 화면을 지나가는 동안 상단에 고정된다 */}
+                <div className="hidden shrink-0 pt-1 lg:sticky lg:top-28 lg:block lg:w-28">
+                  <span className="typo-body2 typo-light mb-1 block leading-none text-text-tertiary">
+                    {group.year}
+                  </span>
+                  <span className="text-[5rem] font-bold leading-none text-primary-950">
+                    {group.month}
+                  </span>
+                </div>
 
-              const showDateHeader = index === 0 || prevMonth !== currentMonth;
-              const isLastInMonth =
-                index === filteredActivities.length - 1 || nextMonth !== currentMonth;
+                <div className="min-w-0 lg:max-w-[64rem] lg:flex-1">
+                  {group.items.map((activity, i) => (
+                    <ActivityCard
+                      key={activity.id}
+                      activity={activity}
+                      showDateHeader={i === 0}
+                      isLastInMonth={i === group.items.length - 1}
+                      filterComponent={groupIndex === 0 && i === 0 ? FilterTabs : null}
+                    />
+                  ))}
 
-              return (
-                <Fragment key={activity.id}>
-                  <ActivityCard
-                    activity={activity}
-                    showDateHeader={showDateHeader}
-                    isLastInMonth={isLastInMonth}
-                    filterComponent={index === 0 ? FilterTabs : null}
-                  />
-
-                  {/* 해당 월의 마지막 카드 뒤 구분선 */}
-                  {isLastInMonth && (
-                    <div className="hidden md:block w-full h-[3px] bg-primary-950 my-8" />
-                  )}
-                </Fragment>
-              );
-            })}
+                  {/* 월 그룹의 마지막 카드 뒤 구분선 */}
+                  <div className="hidden h-px w-full bg-gray-200 lg:block" />
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </main>
