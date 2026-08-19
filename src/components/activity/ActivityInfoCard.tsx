@@ -24,7 +24,7 @@ const valueClass = activityInfoValueClass;
 export function ActivityInfoCard({ activity, actions }: ActivityInfoCardProps) {
   return (
     <div className="flex w-full max-w-82 flex-col overflow-hidden rounded-[0.9375rem] bg-surface-white shadow-[0_4px_16px_rgba(0,0,0,0.08)] md:max-w-130 md:rounded-[1.25rem]">
-      <div className="flex flex-col gap-4 px-9 pt-8 pb-6 md:px-12.75 md:pt-14.5 md:pb-8">
+      <div className="flex flex-col gap-4 px-9 pt-8 pb-6 short:md:gap-3 short:md:px-10 short:md:pt-8 short:md:pb-6 md:px-12.75 md:pt-14.5 md:pb-8">
         <div className="flex flex-col gap-3 md:gap-4">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 md:gap-3.25">
             <p className={labelClass}>신청 기간</p>
@@ -48,7 +48,11 @@ export function ActivityInfoCard({ activity, actions }: ActivityInfoCardProps) {
         </div>
       </div>
 
-      {actions ? <div className="px-9 pb-6 md:px-12.75 md:pb-14.5">{actions}</div> : null}
+      {actions ? (
+        <div className="px-9 pb-6 short:md:px-10 short:md:pb-8 md:px-12.75 md:pb-14.5">
+          {actions}
+        </div>
+      ) : null}
     </div>
   );
 }

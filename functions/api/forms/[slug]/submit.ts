@@ -1,4 +1,11 @@
 import {
+  type ActivityFieldSpec,
+  ActivityFormConfigError,
+  getActivityFieldSpecs,
+  validateActivityAnswers,
+} from "../../_lib/activityForm";
+import { SubmitLockedError, withSubmitLock } from "../../_lib/lock";
+import {
   createPage,
   dateRange,
   type Env,
@@ -12,7 +19,7 @@ import { verifyTurnstile } from "../../_lib/turnstile";
 
 type SubmitBody = {
   studentId?: string;
-  answers?: Record<string, string | string[]>;
+  answers?: Record<string, unknown>;
   turnstileToken?: string;
 };
 
@@ -30,9 +37,13 @@ export async function onRequestPost(context: Context) {
   }
 
   const studentId = body.studentId?.trim();
-  if (!studentId || !body.answers || !body.turnstileToken) {
+  if (!studentId || !/^\d{8}$/.test(studentId) || !body.turnstileToken) {
     return Response.json({ error: "필수 정보가 없어요" }, { status: 400 });
   }
+  if (body.answers != null && (typeof body.answers !== "object" || Array.isArray(body.answers))) {
+    return Response.json({ error: "답변 형식이 올바르지 않아요" }, { status: 400 });
+  }
+  const answers = body.answers ?? {};
 
   const verified = await verifyTurnstile(
     env.TURNSTILE_SECRET_KEY,
@@ -59,29 +70,52 @@ export async function onRequestPost(context: Context) {
     return Response.json({ error: "답변이 너무 길어요" }, { status: 400 });
   }
 
-  const { results } = await queryDataSource(env, env.NOTION_RESPONSE_DATA_SOURCE_ID, {
-    filter: {
-      and: [
-        { property: "활동", relation: { contains: activity.id } },
-        { property: "학번", title: { equals: studentId } },
-      ],
-    },
-  });
+  let fields: ActivityFieldSpec[];
+  try {
+    fields = await getActivityFieldSpecs(env, activity.id);
+  } catch (error) {
+    if (error instanceof ActivityFormConfigError) {
+      return Response.json({ error: error.message }, { status: 500 });
+    }
+    throw error;
+  }
+  const validationError = validateActivityAnswers(fields, answers);
+  if (validationError) {
+    return Response.json({ error: validationError }, { status: 400 });
+  }
 
-  const properties = {
-    응답: { rich_text: answerRichText },
-    검토상태: { select: { name: "신규" } },
-  };
+  try {
+    await withSubmitLock(env.SUBMIT_LOCKS, `forms:${slug}:${studentId}`, async () => {
+      const { results } = await queryDataSource(env, env.NOTION_RESPONSE_DATA_SOURCE_ID, {
+        filter: {
+          and: [
+            { property: "활동", relation: { contains: activity.id } },
+            { property: "학번", title: { equals: studentId } },
+          ],
+        },
+      });
 
-  const existing = results[0];
-  if (existing) {
-    await updatePage(env, existing.id, properties);
-  } else {
-    await createPage(env, env.NOTION_RESPONSE_DATA_SOURCE_ID, {
-      학번: { title: [{ text: { content: studentId } }] },
-      활동: { relation: [{ id: activity.id }] },
-      ...properties,
+      const properties = {
+        응답: { rich_text: answerRichText },
+        검토상태: { select: { name: "신규" } },
+      };
+
+      const existing = results[0];
+      if (existing) {
+        await updatePage(env, existing.id, properties);
+      } else {
+        await createPage(env, env.NOTION_RESPONSE_DATA_SOURCE_ID, {
+          학번: { title: [{ text: { content: studentId } }] },
+          활동: { relation: [{ id: activity.id }] },
+          ...properties,
+        });
+      }
     });
+  } catch (err) {
+    if (err instanceof SubmitLockedError) {
+      return Response.json({ error: err.message }, { status: 429 });
+    }
+    throw err;
   }
 
   return Response.json({ ok: true });

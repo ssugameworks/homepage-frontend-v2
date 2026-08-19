@@ -1,31 +1,18 @@
 import {
-  checkbox,
+  type ActivityFieldSpec,
+  ActivityFormConfigError,
+  getActivityFieldSpecs,
+} from "../_lib/activityForm";
+import {
   dateRange,
   type Env,
   findActivityBySlug,
-  findChildDataSourceId,
   formatDateRange,
-  type NotionPage,
-  queryDataSource,
   richText,
-  select,
   title,
 } from "../_lib/notion";
 
 const CACHE_TTL_SECONDS = 120;
-
-function toFieldSpec(row: NotionPage) {
-  const kind = select("타입", row) ?? "short_text";
-  const options = richText("옵션", row);
-  return {
-    id: row.id,
-    label: title("라벨", row),
-    hint: richText("힌트", row) || undefined,
-    required: checkbox("필수여부", row),
-    kind,
-    options: options ? options.split(",").map((o) => o.trim()) : undefined,
-  };
-}
 
 type Context = {
   params: { slug: string };
@@ -48,12 +35,15 @@ export async function onRequestGet(context: Context) {
     return Response.json({ error: "폼을 찾을 수 없어요" }, { status: 404 });
   }
 
-  const stepsDataSourceId = await findChildDataSourceId(env, activity.id);
-  const steps = stepsDataSourceId
-    ? await queryDataSource(env, stepsDataSourceId, {
-        sorts: [{ property: "순서", direction: "ascending" }],
-      })
-    : { results: [] };
+  let fields: ActivityFieldSpec[];
+  try {
+    fields = await getActivityFieldSpecs(env, activity.id);
+  } catch (error) {
+    if (error instanceof ActivityFormConfigError) {
+      return Response.json({ error: error.message }, { status: 500 });
+    }
+    throw error;
+  }
 
   const schema = {
     slug,
@@ -64,7 +54,8 @@ export async function onRequestGet(context: Context) {
       location: richText("장소", activity),
       description: richText("설명", activity),
     },
-    fields: steps.results.map(toFieldSpec),
+    // 질문 DB가 없는 간단한 활동은 빈 배열을 반환한다.
+    fields,
   };
 
   const response = Response.json(schema, {

@@ -8,7 +8,7 @@ import {
   ActivityInfoCard,
   activityInfoLabelClass,
   activityInfoValueClass,
-} from "@/components/register";
+} from "@/components/activity";
 import { ROUTES } from "@/router/routes";
 import { Button } from "@/ui";
 import { NotionFormRenderer } from "./NotionFormRenderer";

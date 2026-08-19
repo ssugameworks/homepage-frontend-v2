@@ -39,6 +39,7 @@ export function MotivationStep({ form }: MotivationStepProps) {
                   "typo-caption text-primary-950",
                   "placeholder:font-medium placeholder:text-gray-400",
                   "md:h-61.5 md:rounded-2xl md:border-2 md:px-4.25 md:py-2.75",
+                  "short:md:h-50",
                   "md:typo-subheading md:typo-medium",
                   hasError ? "border-accent-red" : "border-gray-200",
                 ].join(" ")}

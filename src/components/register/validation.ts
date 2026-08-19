@@ -1,6 +1,12 @@
 import { z } from "zod";
 import type { RegisterForm } from "./types";
 
+export {
+  formatStudentId,
+  isValidStudentId,
+  studentIdSchema,
+} from "@/utils/validation/studentId";
+
 export function validateRegisterField(
   _field: keyof RegisterForm,
   _value: unknown
@@ -15,15 +21,6 @@ export const phoneSchema = z
   .string()
   .transform((phone) => phone.replace(/\D/g, ""))
   .pipe(z.string().regex(/^010\d{8}$/, "올바른 휴대폰 번호를 입력해주세요"));
-
-export const studentIdSchema = z
-  .string()
-  .trim()
-  .regex(/^\d{8}$/, "학번 8자리를 숫자로 입력해주세요");
-
-export function formatStudentId(value: string) {
-  return value.replace(/\D/g, "").slice(0, 8);
-}
 
 export const motivationSchema = z
   .string()
@@ -54,10 +51,6 @@ export function isValidName(name: string) {
 
 export function isValidPhone(phone: string) {
   return phoneSchema.safeParse(phone).success;
-}
-
-export function isValidStudentId(studentId: string) {
-  return studentIdSchema.safeParse(studentId).success;
 }
 
 export function isValidMotivation(text: string) {

@@ -15,6 +15,7 @@ export function FormCard({ children, className, footer }: FormCardProps) {
         "max-w-82 rounded-[0.9375rem]",
         "min-h-98.75 overflow-visible",
         "md:max-w-130 md:rounded-[1.25rem] md:h-146.5 md:min-h-0",
+        "short:md:h-125",
         className
       )}
     >

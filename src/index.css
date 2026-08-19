@@ -5,6 +5,13 @@
 @import "./styles/base.css";
 
 /**
+ * 화면 "높이"가 낮을 때만 적용되는 커스텀 variant (노트북 저해상도 대응).
+ * 가로 브레이크포인트(md:)와 별개로, 세로 공간이 부족할 때 여백/크기를 압축한다.
+ * 사용: short:py-8, short:md:h-[30rem] 등
+ */
+@custom-variant short (@media (max-height: 960px));
+
+/**
  * Tailwind v4 theme bridge
  * → bg-primary-950, text-gray-700, text-text-primary 등으로 사용
  */
@@ -70,4 +77,29 @@
   --text-caption--line-height: var(--line-height-relaxed);
 
   --tracking-dense: var(--letter-spacing-tight);
+
+  --animate-card-slide-next: card-slide-next 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-card-slide-prev: card-slide-prev 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes card-slide-next {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes card-slide-prev {
+  from {
+    transform: translateX(-24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }

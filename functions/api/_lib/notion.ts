@@ -1,4 +1,9 @@
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+import type { KVNamespace } from "./lock";
+
+dayjs.extend(utc);
 
 export type Env = {
   NOTION_TOKEN: string;
@@ -6,6 +11,7 @@ export type Env = {
   NOTION_RESPONSE_DATA_SOURCE_ID: string;
   NOTION_REGISTER_DATA_SOURCE_ID: string;
   TURNSTILE_SECRET_KEY: string;
+  SUBMIT_LOCKS: KVNamespace;
 };
 
 const NOTION_VERSION = "2025-09-03";
@@ -140,6 +146,25 @@ export function toRichText(content: string): { text: { content: string } }[] | n
   return chunks.map((text) => ({ text: { content: text } }));
 }
 
+/** Notion date 프로퍼티는 시간까지 포함할 수 있다 — 날짜만 남긴 YYYY-MM-DD로 자른다. */
+export function dateOnly(iso: string): string {
+  return iso ? (iso.split("T")[0] ?? "") : "";
+}
+
+/** files & media 프로퍼티의 첫 번째 파일 URL. Notion에 업로드된 파일의 URL은 약 1시간 후 만료된다. */
+export function filesUrl(name: string, page: NotionPage): string {
+  const prop = page.properties[name] as
+    | { files?: { file?: { url: string }; external?: { url: string } }[] }
+    | undefined;
+  const first = prop?.files?.[0];
+  return first?.file?.url ?? first?.external?.url ?? "";
+}
+
+/** Returns today's calendar date in KST (UTC+9) as YYYY-MM-DD, regardless of server-local timezone. */
+function todayKstDateString(): string {
+  return dayjs.utc().add(9, "hour").format("YYYY-MM-DD");
+}
+
 export async function findActivityBySlug(env: Env, slug: string): Promise<NotionPage | null> {
   const { results } = await queryDataSource(env, env.NOTION_ACTIVITY_DATA_SOURCE_ID, {
     filter: {
@@ -149,5 +174,12 @@ export async function findActivityBySlug(env: Env, slug: string): Promise<Notion
       ],
     },
   });
-  return results[0] ?? null;
+  const activity = results[0];
+  if (!activity) return null;
+
+  const applyEnd = dateRange("신청기간", activity).end;
+  if (applyEnd && applyEnd.split("T")[0]! < todayKstDateString()) {
+    return null;
+  }
+  return activity;
 }

@@ -1,8 +1,8 @@
 import { Select, TextField } from "@/ui";
+import { formatStudentId, isValidStudentId, studentIdSchema } from "@/utils/validation/studentId";
 import { MAJOR_OPTIONS } from "../constants";
 import type { RegisterForm } from "../types";
 import type { RegisterFormApi } from "../useRegisterForm";
-import { formatStudentId, isValidStudentId, studentIdSchema } from "../validation";
 
 type SchoolInfoStepProps = {
   form: RegisterFormApi;

@@ -6,7 +6,7 @@ import { FormCard } from "./FormCard";
 import { StepIndicator } from "./StepIndicator";
 import type { StepDefinition } from "./types";
 
-type PersistedProgress = { stepIndex: number; values: unknown };
+type PersistedProgress = { stepId: string; values: unknown };
 
 function readProgress(storageKey: string): PersistedProgress | null {
   try {
@@ -61,11 +61,15 @@ export function FormWizard<TFormApi extends AnyFormApi>({
   const [stepIndex, setStepIndex] = useState<number | "complete">(() => {
     const saved = readProgress(storageKey);
     if (!saved) return 0;
-    return Math.min(Math.max(saved.stepIndex, 0), steps.length - 1);
+    // 저장된 스텝을 id로 다시 찾는다 — Notion 폼 구조가 바뀌어 순서/개수가
+    // 달라졌을 때 엉뚱한 스텝으로 복원되는 것을 막는다. 못 찾으면 처음부터 시작한다.
+    const idx = steps.findIndex((step) => step.id === saved.stepId);
+    return idx === -1 ? 0 : idx;
   });
   const [direction, setDirection] = useState<1 | -1>(1);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
   const values = useStore(form.store, (state) => state.values);
 
   // 저장된 입력값 복원 — 마운트 시 한 번만.
@@ -75,18 +79,32 @@ export function FormWizard<TFormApi extends AnyFormApi>({
     if (saved) form.reset(saved.values as never);
   }, []);
 
+  const currentStep = stepIndex === "complete" ? null : steps[stepIndex];
+
   useEffect(() => {
-    if (stepIndex === "complete") return;
+    if (stepIndex === "complete" || !currentStep) return;
     const { turnstileToken: _turnstileToken, ...persistableValues } = values as Record<
       string,
       unknown
     >;
-    sessionStorage.setItem(storageKey, JSON.stringify({ stepIndex, values: persistableValues }));
-  }, [storageKey, stepIndex, values]);
+    sessionStorage.setItem(
+      storageKey,
+      JSON.stringify({
+        stepId: currentStep.id,
+        values: persistableValues,
+      } satisfies PersistedProgress)
+    );
+  }, [storageKey, stepIndex, currentStep, values]);
 
-  const currentStep = stepIndex === "complete" ? null : steps[stepIndex];
   const isFirstStep = stepIndex === 0;
   const isLastStep = stepIndex === steps.length - 1;
+  const progressTotal = steps.filter((step) => step.includeInProgress !== false).length;
+  const progressStep =
+    stepIndex === "complete"
+      ? progressTotal
+      : steps.slice(0, stepIndex + 1).filter((step) => step.includeInProgress !== false).length;
+  const showProgress =
+    stepIndex !== "complete" && currentStep?.includeInProgress !== false && progressTotal > 0;
 
   const goPrev = () => {
     if (stepIndex === "complete") return;
@@ -117,6 +135,7 @@ export function FormWizard<TFormApi extends AnyFormApi>({
         setStepIndex("complete");
       } catch (err) {
         setSubmitError(err instanceof Error ? err.message : "제출에 실패했어요");
+        setRetryCount((n) => n + 1);
       } finally {
         setSubmitting(false);
       }
@@ -157,18 +176,18 @@ export function FormWizard<TFormApi extends AnyFormApi>({
     );
 
   return (
-    <div className="flex flex-1 flex-col items-center px-5 py-16 md:px-6 md:py-22">
-      <div className="flex w-full max-w-82 flex-col items-center gap-6 md:max-w-130 md:gap-6.75">
+    <div className="flex flex-1 flex-col items-center justify-center px-5 py-16 short:md:py-8 md:px-6 md:py-22">
+      <div className="flex w-full max-w-82 flex-col items-center gap-6 short:md:gap-4 md:max-w-130 md:gap-6.75">
         {title}
 
         <FormCard
           footer={footer}
           className={stepIndex === "complete" ? "min-h-80 md:h-112 md:min-h-0" : undefined}
         >
-          {stepIndex !== "complete" ? (
+          {showProgress ? (
             <StepIndicator
-              step={stepIndex + 1}
-              total={steps.length}
+              step={progressStep}
+              total={progressTotal}
               direction={direction}
               className="mb-4 md:mb-6"
             />
@@ -184,7 +203,7 @@ export function FormWizard<TFormApi extends AnyFormApi>({
               exit="exit"
               transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              {stepIndex === "complete" ? completeSlot : currentStep?.render(form)}
+              {stepIndex === "complete" ? completeSlot : currentStep?.render(form, { retryCount })}
             </motion.div>
           </AnimatePresence>
 

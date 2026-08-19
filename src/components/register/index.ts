@@ -1,9 +1,4 @@
 export {
-  ActivityInfoCard,
-  activityInfoLabelClass,
-  activityInfoValueClass,
-} from "./ActivityInfoCard";
-export {
   GRADE_OPTIONS,
   INITIAL_REGISTER_FORM,
   MAJOR_OPTIONS,
