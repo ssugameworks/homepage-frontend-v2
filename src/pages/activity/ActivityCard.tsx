@@ -22,7 +22,7 @@ interface ActivityCardProps {
   activity: ActivityItem;
   showDateHeader?: boolean;
   isLastInMonth?: boolean;
-  //[반응형] 모바일에서 첫 번째 월(08) 우측에 탭(예정된/지난)을 넣기 위한 prop 추가
+  /** 모바일에서 그룹의 첫 카드 우측에 예정된/지난 탭을 함께 노출하기 위한 슬롯. */
   filterComponent?: React.ReactNode;
 }
 
@@ -30,8 +30,7 @@ interface ActivityCardProps {
 const formatDate = (dateStr: string) => dateStr.replace(/-/g, ".");
 const formatPeriod = (start: string, end: string) => `${formatDate(start)} ~ ${formatDate(end)}`;
 
-// [반응형] 남은 일수 계산 함수 추가 (D-11, D-1, 오늘마감 계산)
-// 브라우저 로컬 타임존과 무관하게 KST 기준으로 날짜만 비교한다 (isApplyActive와 동일 기준).
+/** 남은 일수 계산 (D-11, D-1, 오늘마감). 브라우저 타임존과 무관하게 KST 기준으로 비교한다. */
 function getDDay(endDateStr: string): string | null {
   const today = dayjs(todayKstDateString());
   const end = dayjs(endDateStr);
@@ -56,150 +55,126 @@ export default function ActivityCard({
 
   return (
     <div className="w-full">
-      {/* [반응형] [모바일 전용 상단 월 바]
-          모바일 시안처럼 카드 상단에 '2026 08'과 우측 필터 탭이 위치하고 밑줄이 그어짐 (PC에서는 숨김: md:hidden) */}
+      {/* 모바일 전용 상단 월 바: '2026 08'와 우측 필터 탭 (데스크톱에서는 숨김, 데스크톱 월 레이블은 ActivityPage에서 그룹 단위로 렌더링) */}
       {showDateHeader && (
-        <div className="md:hidden flex items-end justify-between pb-2 mb-4 border-b-2 border-primary-950">
+        <div className="mb-4 flex items-end justify-between border-b-2 border-primary-950 pb-2 lg:hidden">
           <div className="flex items-baseline gap-2">
-            <span className="text-body2 text-text-primary font-normal">{year}</span>
-            <span className="text-[28px] font-bold text-text-primary-950 leading-none">
-              {month}
-            </span>
+            <span className="typo-body2 typo-light text-text-tertiary">{year}</span>
+            <span className="typo-heading1 text-primary-950 leading-none">{month}</span>
           </div>
-          {/* 모바일 첫 번째 월 오른쪽에 탭 컴포넌트 렌더링 */}
-          {filterComponent && <div>{filterComponent}</div>}
+          {filterComponent}
         </div>
       )}
 
-      {/* 2. 카드 본문 레이아웃 */}
-      <div className="grid grid-cols-12 md:gap-8 lg:gap-12 items-start w-full">
-        {/* [반응형] [PC 전용 좌측 월 타임라인]
-            모바일에서는 상단 바로 올라갔으므로 PC에서만 표시 (hidden md:block) */}
-        <div className="hidden md:block col-span-3 md:col-span-2 pt-1 flex-shrink-0">
-          {showDateHeader ? (
-            <div>
-              <span className="text-[14px] text-text-tertiary font-light block leading-none mb-1">
-                {year}
-              </span>
-              <span className="text-4xl md:text-5xl lg:text-[80px] font-bold text-text-primary-950 leading-none">
-                {month}
-              </span>
-            </div>
-          ) : null}
-        </div>
-
-        {/* 우측: 카드 본문 컨테이너 */}
-        <div
-          className={`col-span-12 md:col-span-9 lg:col-span-10 pb-6 md:pb-8 min-w-0 w-full ${
-            !isLastInMonth ? "border-b border-gray-200" : ""
-          }`}
-        >
-          <div className="flex justify-between items-center gap-4 w-full min-w-0">
-            {/* 썸네일 & 텍스트 콘텐츠 */}
-            <div className="flex gap-6 flex-1 items-start min-w-0">
-              {/* [반응형] [포스터 이미지]
-                  모바일 시안에는 이미지가 없으므로 PC에서만 표시 (hidden md:block) */}
-              <div className="hidden md:block w-[227px] h-[268px] rounded-[12px] overflow-hidden flex-shrink-0 bg-gray-100 shadow-sm">
+      <div
+        className={`w-full min-w-0 py-3 lg:py-6 ${isLastInMonth ? "" : "border-b border-gray-200"}`}
+      >
+        <div className="flex w-full min-w-0 items-center justify-between gap-4">
+          {/* 썸네일 & 텍스트 콘텐츠: 데스크톱에서는 이미지 높이에 텍스트 컨테이너를 맞춘다(items-stretch) */}
+          <div className="flex min-w-0 flex-1 items-start gap-3 md:gap-4 lg:items-stretch lg:gap-6">
+            {/* 포스터 이미지: 인스타그램 게시물 비율(4:5). 포스터가 없으면 빈 배경만 표시한다. */}
+            <div className="aspect-[4/5] w-21 shrink-0 overflow-hidden rounded-lg bg-gray-100 shadow-sm md:w-32 lg:w-56.75 lg:rounded-[0.625rem]">
+              {activity.imageUrl && (
                 <img
                   src={activity.imageUrl}
                   alt={activity.title}
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-cover"
                 />
+              )}
+            </div>
+
+            {/* 텍스트 정보 영역: 데스크톱에서는 세로 flex로 이미지 높이를 그대로 채운다 */}
+            <div className="w-full min-w-0 flex-1 space-y-2 lg:flex lg:flex-col lg:space-y-0 lg:gap-2">
+              {/* 제목 & D-Day 뱃지 */}
+              <div className="flex items-center gap-3">
+                <h3 className="typo-heading3 typo-medium truncate text-primary-950">
+                  {activity.title}
+                </h3>
+                {dDayTag && (
+                  <span className="typo-body2 typo-bold shrink-0 rounded border border-accent-red px-1.5 py-0.5 leading-tight text-accent-red lg:typo-body1">
+                    {dDayTag}
+                  </span>
+                )}
               </div>
 
-              {/* 텍스트 정보 영역 */}
-              <div className="flex-1 space-y-2 md:space-y-3 w-full min-w-0">
-                {/* 제목 & D-Day 뱃지 */}
-                <div className="flex items-center gap-2">
-                  <h3 className="text-[17px] md:text-heading3 font-bold text-text-primary tracking-tight truncate">
-                    {activity.title}
-                  </h3>
-                  {/* [반응형] 계산된 dDayTag (D-11, D-1, 오늘마감) 출력 */}
-                  {dDayTag && (
-                    <span className="border border-red-500 text-red-500 font-bold text-[11px] md:text-body1 px-1.5 py-0.5 rounded-[4px] flex-shrink-0 leading-tight">
-                      {dDayTag}
-                    </span>
-                  )}
+              {/* 모바일 전용 컴팩트 텍스트 리스트 (데스크톱에서는 숨김) */}
+              <div className="space-y-1 text-[0.8125rem] text-gray-600 md:space-y-1.5 md:text-body1 lg:hidden">
+                <div className="flex items-center gap-2 md:gap-3">
+                  <span className="w-14 shrink-0 font-medium whitespace-nowrap text-gray-700 md:w-18">
+                    접수 기간
+                  </span>
+                  <span className="shrink-0 text-gray-300">|</span>
+                  <span className="truncate text-gray-600">
+                    {formatPeriod(activity.applyStartDate, activity.applyEndDate)}
+                  </span>
                 </div>
-
-                {/* [반응형] [모바일 전용 컴팩트 텍스트 리스트]
-                    모바일 시안 스타일인 "접수 기간 | 2026.08.01 ~ ..." 텍스트 (PC에서는 숨김: md:hidden) */}
-                <div className="md:hidden space-y-1 text-[13px] text-gray-600">
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-700 font-medium w-14 flex-shrink-0">접수 기간</span>
-                    <span className="text-gray-300">|</span>
-                    <span className="text-gray-600 truncate">
-                      {formatPeriod(activity.applyStartDate, activity.applyEndDate)}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-700 font-medium w-14 flex-shrink-0">활동 기간</span>
-                    <span className="text-gray-300">|</span>
-                    <span className="text-gray-600 truncate">
-                      {formatPeriod(activity.activityStartDate, activity.activityEndDate)}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-700 font-medium w-14 flex-shrink-0">진행 장소</span>
-                    <span className="text-gray-300">|</span>
-                    <span className="text-gray-600 truncate">{activity.location}</span>
-                  </div>
+                <div className="flex items-center gap-2 md:gap-3">
+                  <span className="w-14 shrink-0 font-medium whitespace-nowrap text-gray-700 md:w-18">
+                    활동 기간
+                  </span>
+                  <span className="shrink-0 text-gray-300">|</span>
+                  <span className="truncate text-gray-600">
+                    {formatPeriod(activity.activityStartDate, activity.activityEndDate)}
+                  </span>
                 </div>
+                <div className="flex items-center gap-2 md:gap-3">
+                  <span className="w-14 shrink-0 font-medium whitespace-nowrap text-gray-700 md:w-18">
+                    진행 장소
+                  </span>
+                  <span className="shrink-0 text-gray-300">|</span>
+                  <span className="truncate text-gray-600">{activity.location}</span>
+                </div>
+              </div>
 
-                {/* [반응형] [PC 전용 회색 상세 정보 박스]
-                    모바일에서는 숨김 처리 (hidden md:block) */}
-                <div className="hidden md:block w-full min-w-0 bg-[#F2F2F3] p-5 rounded-[16px] text-body2 space-y-2 text-text-secondary">
-                  <div className="flex items-center gap-4 min-w-0">
-                    <span className="font-medium text-subheading text-gray-800 w-20 flex-shrink-0">
+              {/* 데스크톱 전용 회색 상세 정보 박스 (모바일에서는 숨김). 남은 높이를 채우고, 넘치면 잘라낸다. */}
+              <div className="hidden w-full min-w-0 rounded-lg bg-gray-100 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col lg:overflow-hidden">
+                <div className="space-y-2 p-4">
+                  <div className="flex min-w-0 items-start gap-3">
+                    <span className="typo-subheading typo-medium w-20 shrink-0 text-gray-800">
                       신청 기간
                     </span>
-                    <span className="font-light text-subheading text-gray-700 truncate">
+                    <span className="typo-subheading typo-light break-words text-gray-700">
                       {formatPeriod(activity.applyStartDate, activity.applyEndDate)}
                     </span>
                   </div>
-
-                  <div className="flex items-center gap-4 min-w-0">
-                    <span className="font-medium text-subheading text-gray-800 w-20 flex-shrink-0">
+                  <div className="flex min-w-0 items-start gap-3">
+                    <span className="typo-subheading typo-medium w-20 shrink-0 text-gray-800">
                       활동 기간
                     </span>
-                    <span className="font-light text-subheading text-gray-700 truncate">
+                    <span className="typo-subheading typo-light break-words text-gray-700">
                       {formatPeriod(activity.activityStartDate, activity.activityEndDate)}
                     </span>
                   </div>
-
-                  <div className="flex items-center gap-4 min-w-0">
-                    <span className="font-medium text-subheading text-gray-800 w-20 flex-shrink-0">
+                  <div className="flex min-w-0 items-start gap-3">
+                    <span className="typo-subheading typo-medium w-20 shrink-0 text-gray-800">
                       진행 장소
                     </span>
-                    <span className="font-light text-subheading text-gray-700 truncate">
+                    <span className="typo-subheading typo-light break-words text-gray-700">
                       {activity.location}
                     </span>
                   </div>
-
-                  <div className="pt-0.8 space-y-1 min-w-0">
-                    <span className="font-medium text-subheading text-gray-800 block">
-                      활동 설명
-                    </span>
-                    <p className="font-light text-subheading text-gray-700 leading-relaxed line-clamp-2 break-words">
-                      {activity.description}
-                    </p>
-                  </div>
+                </div>
+                <div className="min-w-0 space-y-1 overflow-hidden px-4 pb-4">
+                  <span className="typo-subheading typo-medium block text-gray-800">활동 설명</span>
+                  <p className="typo-subheading typo-light line-clamp-3 break-words text-gray-700">
+                    {activity.description}
+                  </p>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* [반응형] [우측 버튼 반응형 크기 조절] */}
-            <div className="self-center flex-shrink-0">
-              <Button
-                variant="primarySolid"
-                size="sm"
-                disabled={!isApplyActive}
-                onClick={() => navigate(applyFormPath(activity.slug))}
-                className="!min-w-0 px-3.5 py-2 text-[13px] md:text-subheading md:px-6 md:py-3 md:!min-w-28 rounded-lg"
-              >
-                {isApplyActive ? "신청하기" : "신청마감"}
-              </Button>
-            </div>
+          {/* 신청 버튼 */}
+          <div className="shrink-0 self-center">
+            <Button
+              variant="primary"
+              size="sm"
+              disabled={!isApplyActive}
+              onClick={() => navigate(applyFormPath(activity.slug))}
+              className="!h-10 !min-w-0 !rounded-lg !px-3.5 !py-2 !text-body2 md:!h-11 md:!min-w-20 md:!rounded-[0.625rem] md:!px-4 md:!text-subheading lg:!h-12 lg:!min-w-25 lg:!px-2.5"
+            >
+              {isApplyActive ? "신청하기" : "신청마감"}
+            </Button>
           </div>
         </div>
       </div>
