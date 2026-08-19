@@ -4,7 +4,7 @@
 
 도메인별로 파일을 분리하며, 컴포넌트에서 fetch를 직접 호출하지 않는다.
 
-```
+```text
 api/
 ├── client.ts     ← 공통 baseURL(/api), 에러 응답 파싱, GET/POST 헬퍼
 ├── activities.ts ← 활동 목록 (Notion 연동)

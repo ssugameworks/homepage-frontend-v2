@@ -31,12 +31,19 @@ export async function onRequestPost(context: Context) {
 
   let body: SubmitBody;
   try {
-    body = await request.json();
+    const parsed: unknown = await request.json();
+    if (typeof parsed !== "object" || parsed === null) {
+      return Response.json({ error: "요청 형식이 올바르지 않아요" }, { status: 400 });
+    }
+    body = parsed as SubmitBody;
   } catch {
     return Response.json({ error: "요청 형식이 올바르지 않아요" }, { status: 400 });
   }
 
-  const studentId = body.studentId?.trim();
+  if (typeof body.studentId !== "string" || typeof body.turnstileToken !== "string") {
+    return Response.json({ error: "필수 정보가 없어요" }, { status: 400 });
+  }
+  const studentId = body.studentId.trim();
   if (!studentId || !/^\d{8}$/.test(studentId) || !body.turnstileToken) {
     return Response.json({ error: "필수 정보가 없어요" }, { status: 400 });
   }

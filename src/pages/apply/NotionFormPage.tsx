@@ -11,6 +11,7 @@ import {
 } from "@/components/activity";
 import { ROUTES } from "@/router/routes";
 import { Button } from "@/ui";
+import { todayKstDateString } from "@/utils";
 import { NotionFormRenderer } from "./NotionFormRenderer";
 
 dayjs.extend(customParseFormat);
@@ -18,7 +19,8 @@ dayjs.extend(customParseFormat);
 const mobileCtaClass =
   "max-md:h-auto max-md:min-h-0 max-md:rounded-[0.625rem] max-md:px-6 max-md:py-2.25 max-md:typo-body1 max-md:typo-bold";
 
-function isApplyPeriodOpen(applyPeriod: string, now = dayjs()) {
+/** 브라우저 로컬 타임존과 무관하게 KST 기준으로 신청기간을 판정한다. */
+function isApplyPeriodOpen(applyPeriod: string, now = dayjs(todayKstDateString())) {
   const [startRaw, endRaw] = applyPeriod.split("~").map((part) => part?.trim());
 
   const start = startRaw ? dayjs(startRaw, "YYYY.MM.DD") : null;

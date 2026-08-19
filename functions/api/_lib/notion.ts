@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs, { type Dayjs } from "dayjs";
 import utc from "dayjs/plugin/utc";
 
 import type { KVNamespace } from "./lock";
@@ -121,16 +121,25 @@ export function formatDateRange(range: { start: string; end: string | null }): s
   return `${start} ~ ${end}`;
 }
 
-/** 신청기간(있으면) 안에 있는지 검사한다 — 시작일 이전, 종료일 이후 모두 막는다. */
+/** 인스턴트/날짜 문자열을 KST(UTC+9) 기준 캘린더 날짜(YYYY-MM-DD)로 정규화한다. */
+function kstDateString(value: string | Dayjs = dayjs.utc()): string {
+  return dayjs.utc(value).add(9, "hour").format("YYYY-MM-DD");
+}
+
+/**
+ * 신청기간(있으면) 안에 있는지 검사한다 — 시작일 이전, 종료일 이후 모두 막는다.
+ * now/range 모두 KST 캘린더 날짜로 정규화한 뒤 비교한다 — 서버(UTC)와 신청기간(KST) 기준이
+ * 달라 시작일이 최대 9시간 늦게 열리거나 종료일 이후에도 최대 9시간 신청이 허용되는 것을 막는다.
+ */
 export function isWithinDateRange(
   range: { start: string; end: string | null },
-  now = dayjs()
+  now: string | Dayjs = dayjs.utc()
 ): boolean {
   if (!range.start) return true;
-  const today = dayjs(now);
-  if (today.isBefore(dayjs(range.start))) return false;
+  const today = kstDateString(now);
+  if (today < kstDateString(range.start)) return false;
   if (!range.end) return true;
-  return !today.isAfter(dayjs(range.end).endOf("day"));
+  return today <= kstDateString(range.end);
 }
 
 const RICH_TEXT_CHUNK_SIZE = 2000;
@@ -162,7 +171,7 @@ export function filesUrl(name: string, page: NotionPage): string {
 
 /** Returns today's calendar date in KST (UTC+9) as YYYY-MM-DD, regardless of server-local timezone. */
 function todayKstDateString(): string {
-  return dayjs.utc().add(9, "hour").format("YYYY-MM-DD");
+  return kstDateString();
 }
 
 export async function findActivityBySlug(env: Env, slug: string): Promise<NotionPage | null> {
