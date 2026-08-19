@@ -1,3 +1,5 @@
+import { apiGet } from "./client";
+
 export type ActivityListItem = {
   id: string;
   slug: string;
@@ -12,11 +14,9 @@ export type ActivityListItem = {
 };
 
 export async function fetchActivities(): Promise<ActivityListItem[]> {
-  const res = await fetch("/api/activities");
-  if (!res.ok) {
-    const body = await res.json().catch(() => null);
-    throw new Error(body?.error ?? "활동 목록을 불러오지 못했어요");
-  }
-  const { activities } = (await res.json()) as { activities: ActivityListItem[] };
+  const { activities } = await apiGet<{ activities: ActivityListItem[] }>(
+    "/activities",
+    "활동 목록을 불러오지 못했어요"
+  );
   return activities;
 }

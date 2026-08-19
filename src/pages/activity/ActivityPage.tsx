@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { Fragment, useEffect, useState } from "react";
 import { fetchActivities } from "@/api";
 import Logo3D from "@/assets/icons/logo-mark-3d.png";
@@ -56,10 +57,10 @@ export default function ActivityPage() {
     .sort((a, b) => {
       if (filter === "upcoming") {
         // 마감일이 오늘과 가장 가까운 순서(오름차순: 오늘마감 -> D-1 -> D-11)
-        return new Date(a.applyEndDate).getTime() - new Date(b.applyEndDate).getTime();
+        return dayjs(a.applyEndDate).valueOf() - dayjs(b.applyEndDate).valueOf();
       }
       // 지난 활동: 가장 최근에 끝난 활동부터(내림차순)
-      return new Date(b.applyEndDate).getTime() - new Date(a.applyEndDate).getTime();
+      return dayjs(b.applyEndDate).valueOf() - dayjs(a.applyEndDate).valueOf();
     });
 
   // 필터 탭 컴포넌트

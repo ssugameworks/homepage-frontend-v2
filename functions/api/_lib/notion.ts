@@ -124,7 +124,7 @@ export function formatDateRange(range: { start: string; end: string | null }): s
 /** 신청기간(있으면) 안에 있는지 검사한다 — 시작일 이전, 종료일 이후 모두 막는다. */
 export function isWithinDateRange(
   range: { start: string; end: string | null },
-  now = new Date()
+  now = dayjs()
 ): boolean {
   if (!range.start) return true;
   const today = dayjs(now);
