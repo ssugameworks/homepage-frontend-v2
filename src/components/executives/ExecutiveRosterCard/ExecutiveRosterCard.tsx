@@ -11,11 +11,11 @@ export function ExecutiveRosterCard({ year, executives, className }: ExecutiveRo
         .join(" ")}
     >
       <div className="flex w-full flex-col gap-4">
-        <p className="w-full font-bold text-[20px] text-primary-950 leading-[1.5] lg:text-[28px]">
+        <p className="w-full font-bold text-[20px] text-primary-950 leading-normal lg:text-[28px]">
           {year}
         </p>
 
-        <ul className="flex w-full flex-col font-medium text-[16px] text-primary-950 leading-[1.5]">
+        <ul className="flex w-full flex-col font-medium text-[16px] text-primary-950 leading-normal">
           {executives.map((executive) => (
             <li key={executive.id} className="flex gap-2">
               <span className="w-14 shrink-0 whitespace-nowrap font-bold">
