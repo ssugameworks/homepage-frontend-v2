@@ -6,13 +6,15 @@ type DevPreviewFabProps = {
   onToggle: () => void;
 };
 
-const LABEL: Record<"skeleton" | "data" | "auto", string> = {
+type DevPreviewKey = DevPreviewMode | "auto";
+
+const LABEL: Record<DevPreviewKey, string> = {
   skeleton: "스켈레톤 보는 중",
   data: "더미 데이터 보는 중",
   auto: "실제 API 보는 중",
 };
 
-const DOT_CLASS: Record<"skeleton" | "data" | "auto", string> = {
+const DOT_CLASS: Record<DevPreviewKey, string> = {
   skeleton: "bg-amber-400",
   data: "bg-emerald-400",
   auto: "bg-primary-400",

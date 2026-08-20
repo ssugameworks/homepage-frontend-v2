@@ -38,6 +38,26 @@ function isApplyPeriodOpen(applyPeriod: string, now = dayjs(todayKstDateString()
   return true;
 }
 
+/** 라우터 state는 조작될 수 있으므로, 카드 렌더링에 필요한 필드가 모두 있을 때만 사용한다. */
+function readPreloadedActivity(state: unknown): ActivityListItem | undefined {
+  if (typeof state !== "object" || state === null) return undefined;
+  const activity = (state as Record<string, unknown>).activity;
+  if (typeof activity !== "object" || activity === null) return undefined;
+  const candidate = activity as Record<string, unknown>;
+  const required = [
+    "title",
+    "applyStartDate",
+    "applyEndDate",
+    "activityStartDate",
+    "activityEndDate",
+    "location",
+    "description",
+  ] as const;
+  return required.every((key) => typeof candidate[key] === "string")
+    ? (activity as ActivityListItem)
+    : undefined;
+}
+
 function BackToActivitiesLink() {
   return (
     <Link
@@ -60,7 +80,7 @@ function ActivityIntro({
 }: {
   title: string;
   activity: NotionActivityInfo;
-  /** 다음 단계(실제 신청 폼)에 필요한 필드 스키마가 아직 로딩 중이면 true. */
+  /** 다음 단계(실제 신청 폼)에 필요한 필드 스키마 로딩이 끝났으면 true. */
   fieldsReady: boolean;
   onStart: () => void;
 }) {
@@ -167,7 +187,7 @@ export default function ApplyPage() {
   const location = useLocation();
   // ActivitiesPage 목록 카드에서 이미 불러온 데이터가 있으면 넘겨받아, 폼 필드가
   // 도착하기 전에도 활동 소개 카드를 API 호출 없이 바로 보여준다.
-  const preloadedActivity = (location.state as { activity?: ActivityListItem } | null)?.activity;
+  const preloadedActivity = readPreloadedActivity(location.state);
 
   const [schema, setSchema] = useState<NotionFormSchema | null>(null);
   const [error, setError] = useState<string | null>(null);
