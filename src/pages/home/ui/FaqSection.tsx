@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import { useId, useState } from "react";
 import { Link } from "react-router-dom";
 import { tv } from "tailwind-variants";
@@ -96,16 +97,23 @@ export function FaqSection() {
                       </span>
                     </button>
                   </h3>
-                  <section
-                    id={panelId}
-                    aria-labelledby={buttonId}
-                    hidden={!isOpen}
-                    className="p-2.5 pl-13"
-                  >
-                    <p className="font-light text-base text-gray-600 leading-normal">
-                      {item.answer}
-                    </p>
-                  </section>
+                  <AnimatePresence initial={false}>
+                    {isOpen ? (
+                      <motion.section
+                        id={panelId}
+                        aria-labelledby={buttonId}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        className="overflow-hidden"
+                      >
+                        <p className="p-2.5 pl-13 font-light text-base text-gray-600 leading-normal">
+                          {item.answer}
+                        </p>
+                      </motion.section>
+                    ) : null}
+                  </AnimatePresence>
                 </li>
               );
             })}

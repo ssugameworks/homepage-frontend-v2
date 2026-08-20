@@ -92,7 +92,7 @@ export function ActivitiesSection() {
           </h2>
         </div>
 
-        <ul className="-mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:flex-wrap lg:justify-center lg:gap-8 lg:overflow-visible lg:px-0 lg:pb-0">
+        <ul className="-mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:snap-none md:justify-items-center md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 lg:gap-8">
           {ACTIVITIES.map((activity) => (
             <ActivityCard
               key={activity.id}
@@ -112,9 +112,9 @@ export function ActivitiesSection() {
 
 function ActivityCard({ activity, onOpen }: { activity: Activity; onOpen: () => void }) {
   return (
-    <li className="size-75 shrink-0 snap-center rounded-2xl bg-white p-6 shadow-[0_2px_5px_rgba(0,0,0,0.2)] lg:size-85 lg:rounded-3xl lg:p-8">
-      <div className="flex h-full flex-col items-start justify-between pt-4">
-        <div className="flex flex-col items-start gap-6 lg:gap-8">
+    <li className="size-75 shrink-0 snap-center rounded-2xl bg-white p-6 shadow-[0_2px_5px_rgba(0,0,0,0.2)] md:h-auto md:w-full md:max-w-85 lg:rounded-3xl lg:p-8">
+      <div className="flex h-full flex-col items-start justify-between">
+        <div className="flex flex-col items-start gap-4 lg:gap-6">
           <span className="flex items-center gap-2 rounded-2xl bg-gray-100 px-2 py-1">
             <img src={activity.icon} alt="" className="size-3.75" />
             <span className="font-medium text-base text-gray-600 leading-normal">

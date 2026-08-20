@@ -5,6 +5,7 @@ import { tv } from "tailwind-variants";
 import { applyFormPath } from "@/shared/config";
 import { todayKstDateString } from "@/shared/lib";
 import { Button } from "@/shared/ui/Button";
+import { formatPeriod } from "../lib/period";
 import type { ActivityListItem } from "../model/types";
 
 interface ActivityCardProps {
@@ -27,10 +28,6 @@ const row = tv({
     isLastInMonth: false,
   },
 });
-
-// 날짜 포맷 헬퍼 ("2026-08-01" -> "2026.08.01")
-const formatDate = (dateStr: string) => dateStr.replace(/-/g, ".");
-const formatPeriod = (start: string, end: string) => `${formatDate(start)} ~ ${formatDate(end)}`;
 
 /** 남은 일수 계산 (D-11, D-1, 오늘마감). 브라우저 타임존과 무관하게 KST 기준으로 비교한다. */
 function getDDay(endDateStr: string): string | null {
@@ -59,7 +56,7 @@ export default function ActivityCard({
     <div className="w-full">
       {/* 모바일 전용 상단 월 바: '2026 08'와 우측 필터 탭 (데스크톱에서는 숨김, 데스크톱 월 레이블은 ActivityPage에서 그룹 단위로 렌더링) */}
       {showDateHeader && (
-        <div className="mb-4 flex items-end justify-between border-b-2 border-primary-950 pb-2 lg:hidden">
+        <div className="mb-4 flex items-end justify-between border-b border-gray-200 pb-2 lg:hidden">
           <div className="flex items-baseline gap-2">
             <span className="typo-body2 typo-light text-text-tertiary">{year}</span>
             <span className="typo-heading1 text-primary-950 leading-none">{month}</span>
@@ -100,28 +97,34 @@ export default function ActivityCard({
               {/* 모바일 전용 컴팩트 텍스트 리스트 (데스크톱에서는 숨김) */}
               <div className="space-y-1 text-[0.8125rem] text-gray-600 md:space-y-1.5 md:text-body1 lg:hidden">
                 <div className="flex items-center gap-2 md:gap-3">
-                  <span className="w-14 shrink-0 font-medium whitespace-nowrap text-gray-700 md:w-18">
-                    접수 기간
+                  <span className="flex shrink-0 items-center gap-1">
+                    <span className="w-14 font-medium whitespace-nowrap text-gray-700 md:w-18">
+                      접수 기간
+                    </span>
+                    <span className="text-gray-300">|</span>
                   </span>
-                  <span className="shrink-0 text-gray-300">|</span>
                   <span className="truncate text-gray-600">
                     {formatPeriod(activity.applyStartDate, activity.applyEndDate)}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 md:gap-3">
-                  <span className="w-14 shrink-0 font-medium whitespace-nowrap text-gray-700 md:w-18">
-                    활동 기간
+                  <span className="flex shrink-0 items-center gap-1">
+                    <span className="w-14 font-medium whitespace-nowrap text-gray-700 md:w-18">
+                      활동 기간
+                    </span>
+                    <span className="text-gray-300">|</span>
                   </span>
-                  <span className="shrink-0 text-gray-300">|</span>
                   <span className="truncate text-gray-600">
                     {formatPeriod(activity.activityStartDate, activity.activityEndDate)}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 md:gap-3">
-                  <span className="w-14 shrink-0 font-medium whitespace-nowrap text-gray-700 md:w-18">
-                    진행 장소
+                  <span className="flex shrink-0 items-center gap-1">
+                    <span className="w-14 font-medium whitespace-nowrap text-gray-700 md:w-18">
+                      진행 장소
+                    </span>
+                    <span className="text-gray-300">|</span>
                   </span>
-                  <span className="shrink-0 text-gray-300">|</span>
                   <span className="truncate text-gray-600">{activity.location}</span>
                 </div>
               </div>
@@ -170,8 +173,8 @@ export default function ActivityCard({
               variant="primary"
               size="sm"
               disabled={!isApplyActive}
-              onClick={() => navigate(applyFormPath(activity.slug))}
-              className="h-10! min-w-0! rounded-lg! px-3.5! py-2! text-body2! md:h-11! md:min-w-20! md:!rounded-[0.625rem] md:!px-4 md:!text-subheading lg:!h-12 lg:!min-w-25 lg:!px-2.5"
+              onClick={() => navigate(applyFormPath(activity.slug), { state: { activity } })}
+              className="h-10! min-w-0! rounded-lg! px-3.5! py-2! text-body2! disabled:[background-image:none]! disabled:bg-gray-300! disabled:text-gray-600! md:h-11! md:min-w-20! md:!rounded-[0.625rem] md:!px-4 md:!text-subheading lg:!h-12 lg:!min-w-25 lg:!px-2.5"
             >
               {isApplyActive ? "신청하기" : "신청마감"}
             </Button>
