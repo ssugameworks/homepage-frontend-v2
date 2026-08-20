@@ -165,7 +165,7 @@ function ActivityCardSkeleton({
               variant="primary"
               size="sm"
               disabled
-              className="h-10! min-w-0! rounded-lg! px-3.5! py-2! text-body2! disabled:[background-image:none]! disabled:bg-gray-300! disabled:text-gray-600! md:h-11! md:min-w-20! md:!rounded-[0.625rem] md:!px-4 md:!text-subheading lg:!h-12 lg:!min-w-25 lg:!px-2.5"
+              className="h-10! min-w-0! rounded-lg! px-3.5! py-2! text-body2! disabled:bg-none! disabled:bg-gray-300! disabled:text-gray-600! md:h-11! md:min-w-20! md:rounded-[0.625rem]! md:px-4! md:text-subheading! lg:h-12! lg:min-w-25! lg:px-2.5!"
             >
               <span className="invisible">신청하기</span>
             </Button>
@@ -208,7 +208,7 @@ function ActivitiesListSkeleton({ filterTabs }: { filterTabs: ReactNode }) {
           </span>
         </div>
 
-        <div className="min-w-0 lg:max-w-256 lg:flex-1">
+        <div className="min-w-0 lg:max-w-5xl lg:flex-1">
           {[0, 1, 2].map((i) => (
             <ActivityCardSkeleton
               key={i}
@@ -296,7 +296,7 @@ export default function ActivitiesPage() {
   return (
     <div className="min-h-screen bg-surface-white text-text-primary tracking-dense">
       {/* 히어로 배너 */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-gray-100 to-primary-200">
+      <section className="relative overflow-hidden bg-linear-to-r from-gray-100 to-primary-200">
         <div className="relative mx-auto w-full max-w-360 px-5 py-10 md:py-16 lg:px-20">
           <h1 className="relative z-10 max-w-sm text-heading2 leading-tight font-bold text-primary-950 sm:max-w-md sm:text-3xl md:max-w-xl md:typo-heading1">
             함께 몰입하고 성장할 순간들이
@@ -362,7 +362,7 @@ export default function ActivitiesPage() {
                       </span>
                     </div>
 
-                    <div className="min-w-0 lg:max-w-256 lg:flex-1">
+                    <div className="min-w-0 lg:max-w-5xl lg:flex-1">
                       {group.items.map((activity, i) => (
                         <ActivityCard
                           key={activity.id}

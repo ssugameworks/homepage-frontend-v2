@@ -14,3 +14,11 @@ export async function submitFormAnswers(
 ): Promise<void> {
   await apiPost(`/forms/${encodeURIComponent(slug)}/submit`, input, "제출에 실패했어요");
 }
+
+/** 학번이 가입 신청 DB에 존재하는지 확인한다 — 가입 신청을 완료한 사람만 활동에 신청할 수 있다. */
+export function checkMembership(studentId: string): Promise<{ exists: boolean }> {
+  return apiGet<{ exists: boolean }>(
+    `/register/check?studentId=${encodeURIComponent(studentId)}`,
+    "가입 여부를 확인하지 못했어요"
+  );
+}

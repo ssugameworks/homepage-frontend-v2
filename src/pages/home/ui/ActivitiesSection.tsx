@@ -92,7 +92,7 @@ export function ActivitiesSection() {
           </h2>
         </div>
 
-        <ul className="-mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:snap-none md:justify-items-center md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 lg:gap-8">
+        <ul className="-mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 scrollbar-none [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:snap-none md:justify-items-center md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 lg:gap-8">
           {ACTIVITIES.map((activity) => (
             <ActivityCard
               key={activity.id}
