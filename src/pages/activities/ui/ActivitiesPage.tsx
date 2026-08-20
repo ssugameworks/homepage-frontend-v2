@@ -159,7 +159,7 @@ function ActivityCardSkeleton({
             </div>
           </div>
 
-          {/* 우측의 버튼: 내용 없이 빈 버튼 모양만 로딩 중 표시로 대체 */}
+          {/* 우측의 버튼: 실제 라벨과 동일한 너비를 갖도록 텍스트는 유지하되 보이지 않게 처리 */}
           <div className="shrink-0 self-center">
             <Button
               variant="primary"
@@ -167,7 +167,7 @@ function ActivityCardSkeleton({
               disabled
               className="h-10! min-w-0! rounded-lg! px-3.5! py-2! text-body2! disabled:[background-image:none]! disabled:bg-gray-300! disabled:text-gray-600! md:h-11! md:min-w-20! md:!rounded-[0.625rem] md:!px-4 md:!text-subheading lg:!h-12 lg:!min-w-25 lg:!px-2.5"
             >
-              &nbsp;
+              <span className="invisible">신청하기</span>
             </Button>
           </div>
         </div>
@@ -385,8 +385,14 @@ export default function ActivitiesPage() {
       </main>
 
       <DevPreviewFab
-        mode={devPreview ?? "data"}
-        onToggle={() => setDevPreview((prev) => (prev === "skeleton" ? "data" : "skeleton"))}
+        mode={devPreview}
+        onToggle={() =>
+          setDevPreview((prev) => {
+            if (prev === "skeleton") return "data";
+            if (prev === "data") return null;
+            return "skeleton";
+          })
+        }
       />
     </div>
   );
