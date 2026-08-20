@@ -33,7 +33,7 @@ export function HistorySection() {
           </h2>
         </div>
 
-        <div ref={ref} className="flex justify-center gap-7.5 rounded-[15px] p-4 lg:gap-25">
+        <div ref={ref} className="flex justify-center gap-7.5 rounded-2xl p-4 lg:gap-25">
           {STATS.map((stat) => (
             <StatItem key={stat.label} {...stat} start={inView} />
           ))}
@@ -59,14 +59,12 @@ function StatItem({
   return (
     <div className="flex flex-col items-center">
       {/* Figma: 숫자·접미사 모두 hero1의 letter-spacing(-3% of 80 = -2.4px · mobile -1.08px) 상속 */}
-      <p className="font-bold text-primary-800 tracking-[-1.08px] lg:tracking-[-2.4px]">
-        <span className="text-4xl leading-[1.3] lg:text-[80px]">{current}</span>
+      <p className="font-bold text-primary-800 tracking-dense">
+        <span className="text-4xl leading-tight lg:text-[80px]">{current}</span>
         {/* 상위 p의 tracking(-3%, 숫자 크기 기준)을 그대로 물려받아야 해서 typo-* 토큰(자체 tracking 포함) 대신 크기만 지정한다 */}
-        <span className="text-[28px] leading-normal lg:text-[38px]">{suffix}</span>
+        <span className="text-heading2 leading-normal lg:text-heading1">{suffix}</span>
       </p>
-      <p className="font-light text-base text-gray-600 leading-normal tracking-[-0.48px]">
-        {label}
-      </p>
+      <p className="font-light text-base text-gray-600 leading-normal tracking-dense">{label}</p>
     </div>
   );
 }

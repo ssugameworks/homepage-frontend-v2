@@ -1,7 +1,7 @@
 import { useForm } from "@tanstack/react-form";
 import { useNavigate } from "react-router-dom";
-import { ROUTES } from "@/shared/config/routes";
-import { formatStudentId, studentIdSchema } from "@/shared/lib/validation/studentId";
+import { ROUTES } from "@/shared/config";
+import { formatStudentId, studentIdSchema } from "@/shared/lib";
 import { TextField } from "@/shared/ui";
 import {
   CompleteStep,

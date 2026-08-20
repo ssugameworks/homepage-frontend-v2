@@ -1,4 +1,5 @@
-import { IconWarning } from "@/shared/assets/icons";
+import { tv } from "tailwind-variants";
+import { IconWarning } from "@/shared/assets";
 import type { RegisterForm } from "../../model/types";
 import type { RegisterFormApi } from "../../model/useRegisterForm";
 import { isValidMotivation, motivationSchema } from "../../model/validation";
@@ -8,6 +9,27 @@ const MAX_LENGTH = 150;
 type MotivationStepProps = {
   form: RegisterFormApi;
 };
+
+const textarea = tv({
+  base: [
+    "w-full resize-none bg-transparent outline-none",
+    "h-40 rounded-[0.625rem] border border-solid px-2 py-1.5",
+    "typo-caption text-primary-950",
+    "placeholder:font-medium placeholder:text-gray-400",
+    "md:h-61.5 md:rounded-2xl md:border-2 md:px-4.25 md:py-2.75",
+    "short:md:h-50",
+    "md:typo-subheading md:typo-medium",
+  ],
+  variants: {
+    hasError: {
+      true: "border-accent-red",
+      false: "border-gray-200",
+    },
+  },
+  defaultVariants: {
+    hasError: false,
+  },
+});
 
 export function MotivationStep({ form }: MotivationStepProps) {
   return (
@@ -33,16 +55,7 @@ export function MotivationStep({ form }: MotivationStepProps) {
                 onChange={(e) => field.handleChange(e.target.value)}
                 aria-invalid={hasError}
                 aria-describedby={hasError ? errorId : undefined}
-                className={[
-                  "w-full resize-none bg-transparent outline-none",
-                  "h-40 rounded-[0.625rem] border border-solid px-2 py-1.5",
-                  "typo-caption text-primary-950",
-                  "placeholder:font-medium placeholder:text-gray-400",
-                  "md:h-61.5 md:rounded-2xl md:border-2 md:px-4.25 md:py-2.75",
-                  "short:md:h-50",
-                  "md:typo-subheading md:typo-medium",
-                  hasError ? "border-accent-red" : "border-gray-200",
-                ].join(" ")}
+                className={textarea({ hasError })}
               />
 
               <div className="mt-1 flex items-center justify-between gap-3 px-2 py-1">

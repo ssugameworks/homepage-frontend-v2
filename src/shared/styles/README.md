@@ -11,7 +11,7 @@ styles/
 └── base.css            # 리셋·기본 스타일
 ```
 
-진입점은 `src/index.css` (`@theme`으로 Tailwind 연결).
+진입점은 `src/app/index.css` (`@theme`으로 Tailwind 연결).
 
 ## Colors
 

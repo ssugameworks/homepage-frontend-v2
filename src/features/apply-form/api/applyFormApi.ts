@@ -1,4 +1,4 @@
-import { apiGet, apiPost } from "@/shared/api/client";
+import { apiGet, apiPost } from "@/shared/api";
 import type { NotionFormSchema } from "../model/types";
 
 export function fetchFormSchema(slug: string): Promise<NotionFormSchema> {

@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
-import { IconLogoMarkDark } from "@/shared/assets/icons";
-import { ROUTES } from "@/shared/config/routes";
+import { IconLogoMarkDark } from "@/shared/assets";
+import { ROUTES } from "@/shared/config";
 import { Footer } from "@/widgets/footer";
 import { Header } from "@/widgets/header";
 
@@ -28,7 +28,7 @@ export default function RegisterLayout() {
             </span>
             <span
               aria-hidden
-              className="flex flex-col justify-center text-center text-[2rem] font-bold leading-[1.3] text-black whitespace-nowrap"
+              className="flex flex-col justify-center text-center text-3xl font-bold leading-tight text-black whitespace-nowrap"
             >
               AMEWORKS
             </span>

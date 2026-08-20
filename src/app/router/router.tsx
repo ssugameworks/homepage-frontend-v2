@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { ROUTES } from "@/shared/config/routes";
+import { ROUTES } from "@/shared/config";
 
 export const router = createBrowserRouter([
   {
@@ -8,33 +8,25 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        lazy: () => import("@/pages/home/ui/HomePage").then((m) => ({ Component: m.default })),
+        lazy: () => import("@/pages/home").then((m) => ({ Component: m.default })),
       },
       {
         path: ROUTES.INTRODUCE.slice(1),
-        lazy: () =>
-          import("@/pages/placeholder/ui/PlaceholderPage").then((m) => ({
-            Component: m.default,
-          })),
+        lazy: () => import("@/pages/placeholder").then((m) => ({ Component: m.default })),
         loader: () => ({ title: "소개" }),
       },
       {
         path: ROUTES.ACTIVITIES.slice(1),
-        lazy: () =>
-          import("@/pages/activities/ui/ActivitiesPage").then((m) => ({ Component: m.default })),
+        lazy: () => import("@/pages/activities").then((m) => ({ Component: m.default })),
         loader: () => ({ title: "활동" }),
       },
       {
         path: ROUTES.MEMBERS.slice(1),
-        lazy: () =>
-          import("@/pages/members/ui/MembersPage").then((m) => ({ Component: m.default })),
+        lazy: () => import("@/pages/members").then((m) => ({ Component: m.default })),
       },
       {
         path: ROUTES.CONTACT.slice(1),
-        lazy: () =>
-          import("@/pages/placeholder/ui/PlaceholderPage").then((m) => ({
-            Component: m.default,
-          })),
+        lazy: () => import("@/pages/placeholder").then((m) => ({ Component: m.default })),
         loader: () => ({ title: "문의" }),
       },
     ],
@@ -45,10 +37,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        lazy: () =>
-          import("@/pages/register/ui/RegisterPage").then((m) => ({
-            Component: m.default,
-          })),
+        lazy: () => import("@/pages/register").then((m) => ({ Component: m.default })),
       },
     ],
   },
@@ -58,7 +47,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        lazy: () => import("@/pages/apply/ui/ApplyPage").then((m) => ({ Component: m.default })),
+        lazy: () => import("@/pages/apply").then((m) => ({ Component: m.default })),
       },
     ],
   },

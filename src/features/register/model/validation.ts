@@ -3,17 +3,15 @@ import type { RegisterForm } from "./types";
 
 export {
   emailSchema,
+  formatStudentId,
   isValidEmail,
   isValidPhone,
+  isValidStudentId,
   isValidUrl,
   phoneSchema,
-  urlSchema,
-} from "@/shared/lib/validation/format";
-export {
-  formatStudentId,
-  isValidStudentId,
   studentIdSchema,
-} from "@/shared/lib/validation/studentId";
+  urlSchema,
+} from "@/shared/lib";
 
 export function validateRegisterField(
   _field: keyof RegisterForm,

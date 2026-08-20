@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { cx } from "@/shared/lib";
+import { tv } from "tailwind-variants";
 
 type StepIndicatorProps = {
   step: number;
@@ -7,6 +7,8 @@ type StepIndicatorProps = {
   direction?: 1 | -1;
   className?: string;
 };
+
+const root = tv({ base: "flex w-full flex-col items-start" });
 
 const stepTextVariants = {
   enter: (direction: 1 | -1) => ({ opacity: 0, y: direction * 6 }),
@@ -20,7 +22,7 @@ export function StepIndicator({ step, total, direction = 1, className }: StepInd
   const progress = safeStep / safeTotal;
 
   return (
-    <div className={cx("flex w-full flex-col items-start", className)}>
+    <div className={root({ className })}>
       <div className="sr-only flex-col items-center justify-center py-1 md:not-sr-only md:flex">
         <p className="flex typo-subheading text-(--color-button-outline)">
           <span className="overflow-hidden">

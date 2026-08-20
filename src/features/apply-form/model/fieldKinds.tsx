@@ -1,7 +1,7 @@
 import type { AnyFieldApi } from "@tanstack/react-form";
 import type { ReactNode } from "react";
 import { z } from "zod";
-import { emailSchema, phoneSchema, urlSchema } from "@/shared/lib/validation/format";
+import { emailSchema, phoneSchema, urlSchema } from "@/shared/lib";
 import { Checkbox, Radio, TextArea, TextField } from "@/shared/ui";
 import type { FieldSpec } from "./types";
 

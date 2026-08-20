@@ -1,9 +1,35 @@
 import { useEffect, useRef, useState } from "react";
-import { IconScrollChevron } from "@/shared/assets/icons";
+import { tv } from "tailwind-variants";
+import { IconScrollChevron } from "@/shared/assets";
 
 type Mode = "down" | "up";
 
 const DOCK_MARGIN = 40;
+
+const indicator = tv({
+  slots: {
+    button: [
+      // mobile: 하단 중앙(아이콘만) / desktop: 하단 우측 원형 버튼 (Figma web·mobile 시안 차이)
+      "-translate-x-1/2 fixed bottom-10 left-1/2 z-40 flex cursor-pointer items-center justify-center border-0 bg-transparent p-2 transition-opacity duration-300 lg:right-10 lg:bottom-13.25 lg:left-auto lg:size-15 lg:translate-x-0 lg:rounded-full lg:bg-white/5 lg:p-0",
+    ],
+    bounce: "block",
+    icon: "block text-gray-200 transition-transform duration-300 lg:h-6.75 lg:w-11.75",
+  },
+  variants: {
+    visible: {
+      true: { button: "opacity-100" },
+      false: { button: "pointer-events-none opacity-0" },
+    },
+    mode: {
+      down: { bounce: "home-bounce" },
+      up: { icon: "rotate-180" },
+    },
+  },
+  defaultVariants: {
+    visible: true,
+    mode: "down",
+  },
+});
 
 /**
  * Figma 노트:
@@ -72,6 +98,8 @@ export function ScrollIndicator() {
     }
   };
 
+  const { button, bounce, icon } = indicator({ visible, mode });
+
   return (
     <button
       ref={buttonRef}
@@ -79,19 +107,10 @@ export function ScrollIndicator() {
       onClick={handleClick}
       aria-label={mode === "down" ? "아래로 스크롤" : "맨 위로 이동"}
       style={dockTop !== null ? { position: "absolute", top: dockTop, bottom: "auto" } : undefined}
-      className={[
-        // mobile: 하단 중앙(아이콘만) / desktop: 하단 우측 원형 버튼 (Figma web·mobile 시안 차이)
-        "-translate-x-1/2 fixed bottom-10 left-1/2 z-40 flex cursor-pointer items-center justify-center border-0 bg-transparent p-2 transition-opacity duration-300 lg:right-10 lg:bottom-13.25 lg:left-auto lg:size-15 lg:translate-x-0 lg:rounded-full lg:bg-white/5 lg:p-0",
-        visible ? "opacity-100" : "pointer-events-none opacity-0",
-      ].join(" ")}
+      className={button()}
     >
-      <span className={mode === "down" ? "home-bounce block" : "block"}>
-        <IconScrollChevron
-          className={[
-            "block text-gray-200 transition-transform duration-300 lg:h-6.75 lg:w-11.75",
-            mode === "up" ? "rotate-180" : "",
-          ].join(" ")}
-        />
+      <span className={bounce()}>
+        <IconScrollChevron className={icon()} />
       </span>
     </button>
   );

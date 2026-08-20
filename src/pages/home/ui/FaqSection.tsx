@@ -1,7 +1,21 @@
 import { useId, useState } from "react";
 import { Link } from "react-router-dom";
-import { IconExternalArrow, IconQnaChevron } from "@/shared/assets/icons";
-import { ROUTES } from "@/shared/config/routes";
+import { tv } from "tailwind-variants";
+import { IconExternalArrow, IconQnaChevron } from "@/shared/assets";
+import { ROUTES } from "@/shared/config";
+
+const chevron = tv({
+  base: "text-primary-950 transition-transform duration-300",
+  variants: {
+    open: {
+      true: "rotate-180",
+      false: "",
+    },
+  },
+  defaultVariants: {
+    open: false,
+  },
+});
 
 // TODO: FAQ 내용 확정 필요 (Figma memo — 실제 내용으로 채워야 함)
 const FAQ_ITEMS = [
@@ -77,12 +91,7 @@ export function FaqSection() {
                           {item.question}
                         </span>
                         <span className="flex size-5 shrink-0 items-center justify-center">
-                          <IconQnaChevron
-                            className={[
-                              "text-primary-950 transition-transform duration-300",
-                              isOpen ? "rotate-180" : "",
-                            ].join(" ")}
-                          />
+                          <IconQnaChevron className={chevron({ open: isOpen })} />
                         </span>
                       </span>
                     </button>
@@ -108,7 +117,7 @@ export function FaqSection() {
           >
             <span className="flex items-center gap-2 font-medium text-base leading-normal">
               직접 문의하기
-              <IconExternalArrow className="rotate-[-135deg]" />
+              <IconExternalArrow className="-rotate-135" />
             </span>
             <span aria-hidden="true" className="block h-px w-full bg-current" />
           </Link>

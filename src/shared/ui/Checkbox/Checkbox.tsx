@@ -1,20 +1,21 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
-import { IconCheckmark } from "@/shared/assets/icons";
-import { cx } from "@/shared/lib";
+import { tv } from "tailwind-variants";
+import { IconCheckmark } from "@/shared/assets";
 
 export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
   label: ReactNode;
 };
 
-export function Checkbox({ label, className, ...rest }: CheckboxProps) {
+const label = tv({
+  base: [
+    "group inline-flex cursor-pointer items-center gap-2.75",
+    "has-disabled:cursor-not-allowed has-disabled:opacity-50",
+  ],
+});
+
+export function Checkbox({ label: labelText, className, ...rest }: CheckboxProps) {
   return (
-    <label
-      className={cx(
-        "group inline-flex cursor-pointer items-center gap-2.75",
-        "has-disabled:cursor-not-allowed has-disabled:opacity-50",
-        className
-      )}
-    >
+    <label className={label({ className })}>
       <span className="relative size-4.5 shrink-0">
         <input type="checkbox" className="peer sr-only" {...rest} />
         <span
@@ -34,7 +35,7 @@ export function Checkbox({ label, className, ...rest }: CheckboxProps) {
           <IconCheckmark aria-hidden className="absolute inset-0 block size-full max-w-none" />
         </span>
       </span>
-      <span className="typo-caption text-black md:typo-body1">{label}</span>
+      <span className="typo-caption text-black md:typo-body1">{labelText}</span>
     </label>
   );
 }

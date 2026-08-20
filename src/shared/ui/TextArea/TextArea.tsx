@@ -1,5 +1,5 @@
 import { type ChangeEvent, type TextareaHTMLAttributes, useId, useState } from "react";
-import { cx } from "@/shared/lib";
+import { tv } from "tailwind-variants";
 import { FieldHint } from "../FieldHint";
 
 export type TextAreaState = "default" | "error";
@@ -7,7 +7,9 @@ export type TextAreaState = "default" | "error";
 export type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   label?: string;
   state?: TextAreaState;
+  /** 도움말 또는 에러 메시지. textarea의 `aria-describedby`에 자동 연결된다. */
   hint?: string;
+  /** 글자 수 카운터 분모. 생략하면 `maxLength`를 그대로 쓴다. */
   maxLengthDisplay?: number;
 };
 
@@ -19,6 +21,41 @@ function initialLength(value: TextAreaProps["value"], defaultValue: TextAreaProp
   return 0;
 }
 
+const textArea = tv({
+  slots: {
+    base: "flex w-full flex-col items-start",
+    label: "mb-4 typo-subheading typo-medium text-primary-950",
+    textarea: [
+      "h-61.5 w-full resize-none rounded-2xl border-2 border-solid bg-transparent px-4.25 py-2.75",
+      "typo-subheading typo-medium text-primary-950 outline-none transition-colors duration-150",
+      "placeholder:font-medium placeholder:text-gray-400",
+    ],
+    counter: "mt-1 self-end px-2.5 py-1 typo-body2 typo-light",
+  },
+  variants: {
+    state: {
+      default: {
+        textarea:
+          "border-gray-200 hover:border-[color:var(--color-button-outline)]/50 focus:border-[color:var(--color-button-outline)]",
+        counter: "text-primary-600",
+      },
+      error: {
+        textarea: "border-accent-red hover:border-accent-red/70",
+        counter: "text-accent-red",
+      },
+    },
+  },
+  defaultVariants: {
+    state: "default",
+  },
+});
+
+/**
+ * 라벨 + textarea + 글자 수 카운터 + 힌트/에러 메시지가 한 세트인 여러 줄 입력 필드.
+ *
+ * @example
+ * <TextArea label="지원 동기" maxLength={150} state={isError ? "error" : "default"} />
+ */
 export function TextArea({
   label,
   state = "default",
@@ -43,10 +80,7 @@ export function TextArea({
     initialLength(value, defaultValue)
   );
   const length = isControlled ? initialLength(value, undefined) : uncontrolledLength;
-  const borderClass =
-    state === "error"
-      ? "border-accent-red hover:border-accent-red/70"
-      : "border-gray-200 hover:border-[color:var(--color-button-outline)]/50 focus:border-[color:var(--color-button-outline)]";
+  const { base, label: labelClass, textarea: textareaClass, counter } = textArea({ state });
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     if (!isControlled) {
@@ -56,9 +90,9 @@ export function TextArea({
   };
 
   return (
-    <div className={cx("flex w-full flex-col items-start", className)}>
+    <div className={base({ className })}>
       {label ? (
-        <label htmlFor={fieldId} className="mb-4 typo-subheading typo-medium text-primary-950">
+        <label htmlFor={fieldId} className={labelClass()}>
           {label}
         </label>
       ) : null}
@@ -69,25 +103,14 @@ export function TextArea({
         onChange={handleChange}
         aria-invalid={state === "error" || undefined}
         aria-describedby={describedBy}
-        className={cx(
-          "h-61.5 w-full resize-none rounded-2xl border-2 border-solid bg-transparent px-4.25 py-2.75",
-          "typo-subheading typo-medium text-primary-950 outline-none transition-colors duration-150",
-          "placeholder:font-medium placeholder:text-gray-400",
-          borderClass
-        )}
+        className={textareaClass()}
         {...rest}
       />
       <FieldHint id={hintId} state={state}>
         {hint}
       </FieldHint>
       {typeof counterMax === "number" ? (
-        <p
-          id={counterId}
-          className={cx(
-            "mt-1 self-end px-2.5 py-1 typo-body2 typo-light",
-            state === "error" ? "text-accent-red" : "text-primary-600"
-          )}
-        >
+        <p id={counterId} className={counter()}>
           {length}/{counterMax}
         </p>
       ) : null}

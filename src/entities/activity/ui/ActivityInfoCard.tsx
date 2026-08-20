@@ -16,7 +16,7 @@ export const activityInfoLabelClass =
   "shrink-0 typo-body1 typo-bold text-primary-950 md:typo-heading3";
 
 export const activityInfoValueClass =
-  "min-w-0 break-words typo-body1 typo-light text-gray-700 md:typo-heading3 md:typo-light";
+  "min-w-0 wrap-break-words typo-body1 typo-light text-gray-700 md:typo-heading3 md:typo-light";
 
 const labelClass = activityInfoLabelClass;
 const valueClass = activityInfoValueClass;

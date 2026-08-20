@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
+import { IconArrowRight } from "@/shared/assets";
 import ctaPattern from "@/shared/assets/backgrounds/cta-pattern.svg";
-import { IconArrowRight } from "@/shared/assets/icons";
-import { ROUTES } from "@/shared/config/routes";
+import { ROUTES } from "@/shared/config";
 import { glassButtonClass, glassButtonLabelClass } from "./glassButton";
 
 /** 가입 유도 CTA 섹션. 모바일은 Button/filled, 데스크톱은 밑줄 Button/text로 시안이 다르다. */

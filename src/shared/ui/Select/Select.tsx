@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useId, useRef, useState } from "react";
-import { IconSelectChevron } from "@/shared/assets/icons";
-import { cx } from "@/shared/lib";
+import { tv } from "tailwind-variants";
+import { IconSelectChevron } from "@/shared/assets";
 
+/** 커스텀 드롭다운 select. 네이티브 `<select>`가 아니라 role="listbox" 마크업이다. */
 export type SelectProps = {
   label: string;
   value: string;
@@ -11,6 +12,55 @@ export type SelectProps = {
   placeholder?: string;
   className?: string;
 };
+
+const select = tv({
+  slots: {
+    base: "flex w-full flex-col items-start",
+    label: "px-2 py-1 typo-caption typo-medium text-primary-950 md:typo-body1",
+    trigger: [
+      "flex w-full cursor-pointer items-center justify-between bg-surface-white text-left outline-none",
+      "h-auto rounded-[0.625rem] border border-solid border-gray-200 px-2 py-1.5 transition-colors duration-150",
+      "typo-caption",
+      "md:h-12.75 md:rounded-2xl md:border-2 md:px-4.25 md:py-0",
+      "md:typo-subheading md:typo-medium",
+      "hover:border-(--color-button-outline)/50 focus:border-(--color-button-outline)",
+    ],
+    chevron: "relative h-[0.67rem] w-3.25 shrink-0 overflow-clip text-gray-400",
+    dropdown: [
+      "absolute top-0 left-0 z-30 w-full overflow-hidden border border-solid border-gray-200 bg-surface-white",
+      "rounded-[0.625rem] shadow-[0_8px_24px_rgba(0,0,0,0.12)] md:rounded-2xl md:border-2",
+    ],
+    closeButton:
+      "flex h-auto w-full cursor-pointer items-center justify-between px-2 py-1.5 md:h-12.75 md:px-4.25 md:py-0",
+    optionList:
+      "m-0 max-h-[max(6rem,min(19.5rem,calc(100dvh-450px)))] list-none overflow-y-auto p-0",
+    option: [
+      "flex h-auto w-full cursor-pointer items-center px-2 py-1.5 text-left",
+      "typo-caption",
+      "md:h-13 md:px-4.75 md:typo-subheading md:typo-medium",
+      "hover:bg-gray-100 hover:text-primary-950",
+    ],
+  },
+  variants: {
+    hasValue: {
+      true: { trigger: "text-primary-950" },
+      false: { trigger: "text-gray-400" },
+    },
+    open: {
+      true: { trigger: "invisible" },
+      false: {},
+    },
+    selected: {
+      true: { option: "bg-gray-100 text-primary-950" },
+      false: { option: "bg-white text-gray-400" },
+    },
+  },
+  defaultVariants: {
+    hasValue: false,
+    open: false,
+    selected: false,
+  },
+});
 
 export function Select({
   label,
@@ -54,12 +104,19 @@ export function Select({
     setOpen(false);
   };
 
+  const {
+    base,
+    label: labelClass,
+    trigger,
+    chevron,
+    dropdown,
+    closeButton,
+    optionList,
+  } = select({ hasValue: Boolean(value), open });
+
   return (
-    <div className={cx("flex w-full flex-col items-start", className)}>
-      <span
-        id={labelId}
-        className="px-2 py-1 typo-caption typo-medium text-primary-950 md:typo-body1"
-      >
+    <div className={base({ className })}>
+      <span id={labelId} className={labelClass()}>
         {label}
       </span>
 
@@ -74,19 +131,10 @@ export function Select({
           aria-hidden={open}
           inert={open}
           onClick={() => setOpen((prev) => !prev)}
-          className={cx(
-            "flex w-full cursor-pointer items-center justify-between bg-surface-white text-left outline-none",
-            "h-auto rounded-[0.625rem] border border-solid border-gray-200 px-2 py-1.5 transition-colors duration-150",
-            "typo-caption",
-            "md:h-12.75 md:rounded-2xl md:border-2 md:px-4.25 md:py-0",
-            "md:typo-subheading md:typo-medium",
-            "hover:border-(--color-button-outline)/50 focus:border-(--color-button-outline)",
-            !value ? "text-gray-400" : "text-primary-950",
-            open ? "invisible" : ""
-          )}
+          className={trigger()}
         >
           <span>{value || placeholder}</span>
-          <span className="relative h-[0.67rem] w-3.25 shrink-0 overflow-clip text-gray-400">
+          <span className={chevron()}>
             <IconSelectChevron
               aria-hidden
               className="absolute inset-0 block size-full max-w-none"
@@ -104,14 +152,14 @@ export function Select({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
-              className="absolute top-0 left-0 z-30 w-full overflow-hidden rounded-[0.625rem] border border-solid border-gray-200 bg-surface-white shadow-[0_8px_24px_rgba(0,0,0,0.12)] md:rounded-2xl md:border-2"
+              className={dropdown()}
             >
               <button
                 ref={closeButtonRef}
                 type="button"
                 aria-label={`${label} 목록 닫기`}
                 onClick={() => setOpen(false)}
-                className="flex h-auto w-full cursor-pointer items-center justify-between px-2 py-1.5 md:h-12.75 md:px-4.25 md:py-0"
+                className={closeButton()}
               >
                 <span className="typo-caption text-gray-400 md:typo-subheading md:typo-medium">
                   {label}
@@ -121,7 +169,7 @@ export function Select({
                   initial={{ rotate: 0 }}
                   animate={{ rotate: 180 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="relative h-[0.67rem] w-3.25 shrink-0 overflow-clip text-gray-400"
+                  className={chevron()}
                 >
                   <IconSelectChevron
                     aria-hidden
@@ -130,7 +178,7 @@ export function Select({
                 </motion.span>
               </button>
 
-              <ul className="m-0 max-h-[max(6rem,min(19.5rem,calc(100dvh-450px)))] list-none overflow-y-auto p-0">
+              <ul className={optionList()}>
                 {options.map((option) => {
                   const selected = value === option;
                   return (
@@ -140,13 +188,7 @@ export function Select({
                         role="option"
                         aria-selected={selected}
                         onClick={() => selectOption(option)}
-                        className={cx(
-                          "flex h-auto w-full cursor-pointer items-center px-2 py-1.5 text-left",
-                          "typo-caption",
-                          "md:h-13 md:px-4.75 md:typo-subheading md:typo-medium",
-                          selected ? "bg-gray-100 text-primary-950" : "bg-white text-gray-400",
-                          "hover:bg-gray-100 hover:text-primary-950"
-                        )}
+                        className={select({ selected }).option()}
                       >
                         {option}
                       </button>
