@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
-import { IconLogoMarkDark } from "@/shared/assets/icons";
-import { ROUTES } from "@/shared/config/routes";
+import { IconLogoMarkDark } from "@/shared/assets";
+import { ROUTES } from "@/shared/config";
 import { Footer } from "@/widgets/footer";
 import { Header } from "@/widgets/header";
 

@@ -1,9 +1,10 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
 import { tv } from "tailwind-variants";
-import { IconRadioChecked, IconRadioDot } from "@/shared/assets/icons";
+import { IconRadioChecked, IconRadioDot } from "@/shared/assets";
 
 export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "name"> & {
   label: ReactNode;
+  /** 같은 그룹의 라디오는 동일한 name을 공유해야 한다. */
   name: string;
 };
 

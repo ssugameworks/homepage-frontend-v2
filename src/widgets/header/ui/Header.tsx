@@ -2,8 +2,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { tv } from "tailwind-variants";
-import { IconChevronRight, IconLogoMark, IconMenuBar, IconMenuClose } from "@/shared/assets/icons";
-import { ROUTES } from "@/shared/config/routes";
+import { IconChevronRight, IconLogoMark, IconMenuBar, IconMenuClose } from "@/shared/assets";
+import { ROUTES } from "@/shared/config";
 import type { HeaderProps, NavItemId } from "./Header.types";
 
 const bar = tv({ base: "fixed inset-x-0 top-0 z-40 w-full bg-primary-950" });

@@ -1,6 +1,6 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
 import { tv } from "tailwind-variants";
-import { IconCheckmark } from "@/shared/assets/icons";
+import { IconCheckmark } from "@/shared/assets";
 
 export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
   label: ReactNode;

@@ -1,4 +1,4 @@
-import { apiGet } from "@/shared/api/client";
+import { apiGet } from "@/shared/api";
 import type { ActivityListItem } from "../model/types";
 
 export async function fetchActivities(): Promise<ActivityListItem[]> {

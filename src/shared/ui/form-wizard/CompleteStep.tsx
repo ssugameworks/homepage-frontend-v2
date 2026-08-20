@@ -1,4 +1,4 @@
-import { IconCheckCircle } from "@/shared/assets/icons";
+import { IconCheckCircle } from "@/shared/assets";
 
 type CompleteStepProps = {
   title?: string;

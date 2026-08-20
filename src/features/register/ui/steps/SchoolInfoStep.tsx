@@ -1,8 +1,4 @@
-import {
-  formatStudentId,
-  isValidStudentId,
-  studentIdSchema,
-} from "@/shared/lib/validation/studentId";
+import { formatStudentId, isValidStudentId, studentIdSchema } from "@/shared/lib";
 import { Select, TextField } from "@/shared/ui";
 import { MAJOR_OPTIONS } from "../../model/constants";
 import type { RegisterForm } from "../../model/types";

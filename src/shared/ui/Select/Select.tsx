@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useId, useRef, useState } from "react";
 import { tv } from "tailwind-variants";
-import { IconSelectChevron } from "@/shared/assets/icons";
+import { IconSelectChevron } from "@/shared/assets";
 
+/** 커스텀 드롭다운 select. 네이티브 `<select>`가 아니라 role="listbox" 마크업이다. */
 export type SelectProps = {
   label: string;
   value: string;

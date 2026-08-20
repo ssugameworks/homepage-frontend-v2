@@ -1,8 +1,8 @@
 import { useId, useState } from "react";
 import { Link } from "react-router-dom";
 import { tv } from "tailwind-variants";
-import { IconExternalArrow, IconQnaChevron } from "@/shared/assets/icons";
-import { ROUTES } from "@/shared/config/routes";
+import { IconExternalArrow, IconQnaChevron } from "@/shared/assets";
+import { ROUTES } from "@/shared/config";
 
 const chevron = tv({
   base: "text-primary-950 transition-transform duration-300",

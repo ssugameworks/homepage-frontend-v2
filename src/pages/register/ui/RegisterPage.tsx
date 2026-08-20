@@ -16,7 +16,7 @@ import {
   submitRegisterForm,
   useRegisterForm,
 } from "@/features/register";
-import { ROUTES } from "@/shared/config/routes";
+import { ROUTES } from "@/shared/config";
 import {
   CompleteStep,
   createCaptchaStep,

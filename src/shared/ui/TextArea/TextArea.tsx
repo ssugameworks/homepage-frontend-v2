@@ -7,7 +7,9 @@ export type TextAreaState = "default" | "error";
 export type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   label?: string;
   state?: TextAreaState;
+  /** 도움말 또는 에러 메시지. textarea의 `aria-describedby`에 자동 연결된다. */
   hint?: string;
+  /** 글자 수 카운터 분모. 생략하면 `maxLength`를 그대로 쓴다. */
   maxLengthDisplay?: number;
 };
 
@@ -48,6 +50,12 @@ const textArea = tv({
   },
 });
 
+/**
+ * 라벨 + textarea + 글자 수 카운터 + 힌트/에러 메시지가 한 세트인 여러 줄 입력 필드.
+ *
+ * @example
+ * <TextArea label="지원 동기" maxLength={150} state={isError ? "error" : "default"} />
+ */
 export function TextArea({
   label,
   state = "default",

@@ -54,6 +54,10 @@ const button = tv({
   },
 });
 
+/**
+ * @example
+ * <Button variant="outline" size="lg">이전</Button>
+ */
 export function Button({
   variant = "primary",
   size = "md",

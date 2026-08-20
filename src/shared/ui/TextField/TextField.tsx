@@ -7,6 +7,7 @@ export type TextFieldState = "default" | "error";
 export type TextFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
   label?: string;
   state?: TextFieldState;
+  /** 도움말 또는 에러 메시지. input의 `aria-describedby`에 자동 연결된다. */
   hint?: string;
 };
 
@@ -39,6 +40,12 @@ const textField = tv({
   },
 });
 
+/**
+ * 라벨 + 인풋 + 힌트/에러 메시지가 한 세트인 텍스트 입력 필드.
+ *
+ * @example
+ * <TextField label="휴대폰 번호" state={isError ? "error" : "default"} hint={message} />
+ */
 export function TextField({
   label,
   state = "default",

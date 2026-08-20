@@ -1,5 +1,5 @@
 import { tv } from "tailwind-variants";
-import { IconWarning } from "@/shared/assets/icons";
+import { IconWarning } from "@/shared/assets";
 import type { RegisterForm } from "../../model/types";
 import type { RegisterFormApi } from "../../model/useRegisterForm";
 import { isValidMotivation, motivationSchema } from "../../model/validation";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IconPlus } from "@/shared/assets/icons";
+import { IconPlus } from "@/shared/assets";
 import iconBuddy from "@/shared/assets/icons/activity/buddy.png";
 import iconCoffeechat from "@/shared/assets/icons/activity/coffeechat.png";
 import iconFlow from "@/shared/assets/icons/activity/flow.png";

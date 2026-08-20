@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { tv } from "tailwind-variants";
-import { IconScrollChevron } from "@/shared/assets/icons";
+import { IconScrollChevron } from "@/shared/assets";
 
 type Mode = "down" | "up";
 

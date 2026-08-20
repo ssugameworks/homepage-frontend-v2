@@ -8,8 +8,8 @@ import {
   activityInfoValueClass,
 } from "@/entities/activity";
 import { fetchFormSchema, NotionFormRenderer, type NotionFormSchema } from "@/features/apply-form";
-import { IconArrowBack } from "@/shared/assets/icons";
-import { ROUTES } from "@/shared/config/routes";
+import { IconArrowBack } from "@/shared/assets";
+import { ROUTES } from "@/shared/config";
 import { todayKstDateString } from "@/shared/lib";
 import { Button } from "@/shared/ui";
 

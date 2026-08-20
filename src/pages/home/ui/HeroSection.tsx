@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
+import { IconArrowRight } from "@/shared/assets";
 import heroBackground from "@/shared/assets/backgrounds/hero.png";
-import { IconArrowRight } from "@/shared/assets/icons";
-import { ROUTES } from "@/shared/config/routes";
+import { ROUTES } from "@/shared/config";
 import { glassButtonClass, glassButtonLabelClass } from "./glassButton";
 
 /** TODO: 추후 API/데이터 연동으로 교체. 0이면 문구를 숨기고 버튼만 노출한다. */

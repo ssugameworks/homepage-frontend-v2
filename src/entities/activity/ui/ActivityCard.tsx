@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import type React from "react";
 import { useNavigate } from "react-router-dom";
 import { tv } from "tailwind-variants";
-import { applyFormPath } from "@/shared/config/routes";
+import { applyFormPath } from "@/shared/config";
 import { todayKstDateString } from "@/shared/lib";
 import { Button } from "@/shared/ui/Button";
 import type { ActivityListItem } from "../model/types";
@@ -73,7 +73,7 @@ export default function ActivityCard({
           {/* 썸네일 & 텍스트 콘텐츠: 데스크톱에서는 이미지 높이에 텍스트 컨테이너를 맞춘다(items-stretch) */}
           <div className="flex min-w-0 flex-1 items-start gap-3 md:gap-4 lg:items-stretch lg:gap-6">
             {/* 포스터 이미지: 인스타그램 게시물 비율(4:5). 포스터가 없으면 빈 배경만 표시한다. */}
-            <div className="aspect-[4/5] w-21 shrink-0 overflow-hidden rounded-lg bg-gray-100 shadow-sm md:w-32 lg:w-56.75 lg:rounded-[0.625rem]">
+            <div className="aspect-4/5 w-21 shrink-0 overflow-hidden rounded-lg bg-gray-100 shadow-sm md:w-32 lg:w-56.75 lg:rounded-[0.625rem]">
               {activity.imageUrl && (
                 <img
                   src={activity.imageUrl}
@@ -133,7 +133,7 @@ export default function ActivityCard({
                     <span className="typo-subheading typo-medium w-20 shrink-0 text-gray-800">
                       신청 기간
                     </span>
-                    <span className="typo-subheading typo-light break-words text-gray-700">
+                    <span className="typo-subheading typo-light wrap-break-words text-gray-700">
                       {formatPeriod(activity.applyStartDate, activity.applyEndDate)}
                     </span>
                   </div>
@@ -141,7 +141,7 @@ export default function ActivityCard({
                     <span className="typo-subheading typo-medium w-20 shrink-0 text-gray-800">
                       활동 기간
                     </span>
-                    <span className="typo-subheading typo-light break-words text-gray-700">
+                    <span className="typo-subheading typo-light wrap-break-words text-gray-700">
                       {formatPeriod(activity.activityStartDate, activity.activityEndDate)}
                     </span>
                   </div>
@@ -149,14 +149,14 @@ export default function ActivityCard({
                     <span className="typo-subheading typo-medium w-20 shrink-0 text-gray-800">
                       진행 장소
                     </span>
-                    <span className="typo-subheading typo-light break-words text-gray-700">
+                    <span className="typo-subheading typo-light wrap-break-words text-gray-700">
                       {activity.location}
                     </span>
                   </div>
                 </div>
                 <div className="min-w-0 space-y-1 overflow-hidden px-4 pb-4">
                   <span className="typo-subheading typo-medium block text-gray-800">활동 설명</span>
-                  <p className="typo-subheading typo-light line-clamp-3 break-words text-gray-700">
+                  <p className="typo-subheading typo-light line-clamp-3 wrap-break-word text-gray-700">
                     {activity.description}
                   </p>
                 </div>
@@ -171,7 +171,7 @@ export default function ActivityCard({
               size="sm"
               disabled={!isApplyActive}
               onClick={() => navigate(applyFormPath(activity.slug))}
-              className="!h-10 !min-w-0 !rounded-lg !px-3.5 !py-2 !text-body2 md:!h-11 md:!min-w-20 md:!rounded-[0.625rem] md:!px-4 md:!text-subheading lg:!h-12 lg:!min-w-25 lg:!px-2.5"
+              className="h-10! min-w-0! rounded-lg! px-3.5! py-2! text-body2! md:h-11! md:min-w-20! md:!rounded-[0.625rem] md:!px-4 md:!text-subheading lg:!h-12 lg:!min-w-25 lg:!px-2.5"
             >
               {isApplyActive ? "신청하기" : "신청마감"}
             </Button>

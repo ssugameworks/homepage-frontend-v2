@@ -1,4 +1,4 @@
-import { apiPost } from "@/shared/api/client";
+import { apiPost } from "@/shared/api";
 import type { RegisterForm } from "../model/types";
 
 export async function submitRegisterForm(values: RegisterForm): Promise<void> {

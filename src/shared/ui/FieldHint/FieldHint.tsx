@@ -5,6 +5,7 @@ import { tv } from "tailwind-variants";
 export type FieldHintState = "default" | "error";
 
 export type FieldHintProps = {
+  /** 상위 input/textarea의 `aria-describedby`가 가리키는 id. */
   id?: string;
   state?: FieldHintState;
   children?: ReactNode;
@@ -23,6 +24,7 @@ const hint = tv({
   },
 });
 
+/** TextField/TextArea 하단 도움말/에러 메시지. */
 export function FieldHint({ id, state = "default", children }: FieldHintProps) {
   return (
     <AnimatePresence>

@@ -6,8 +6,8 @@ import {
   IconInstagram,
   IconMail,
   IconYoutube,
-} from "@/shared/assets/icons";
-import { ROUTES } from "@/shared/config/routes";
+} from "@/shared/assets";
+import { ROUTES } from "@/shared/config";
 import type { SocialLink } from "./Footer.types";
 
 const SOCIAL_LINKS: SocialLink[] = [
