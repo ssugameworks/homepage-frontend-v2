@@ -1,9 +1,25 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { tv } from "tailwind-variants";
 import { IconChevronRight, IconLogoMark, IconMenuBar, IconMenuClose } from "@/shared/assets/icons";
 import { ROUTES } from "@/shared/config/routes";
 import type { HeaderProps, NavItemId } from "./Header.types";
+
+const bar = tv({ base: "fixed inset-x-0 top-0 z-40 w-full bg-primary-950" });
+
+const navLink = tv({
+  base: "flex items-center justify-center rounded-full px-6 font-medium text-subheading leading-tight tracking-dense whitespace-nowrap transition-colors",
+  variants: {
+    active: {
+      true: "text-primary-200",
+      false: "text-white hover:text-primary-200",
+    },
+  },
+  defaultVariants: {
+    active: false,
+  },
+});
 
 const NAV_ITEMS: { id: NavItemId; label: string; to: string }[] = [
   { id: "introduce", label: "소개", to: ROUTES.INTRODUCE },
@@ -66,19 +82,14 @@ export function Header({ className, activeItem }: HeaderProps) {
   return (
     <>
       <div aria-hidden style={{ height: barHeight }} />
-      <header
-        ref={barRef}
-        className={["fixed inset-x-0 top-0 z-40 w-full bg-primary-950", className]
-          .filter(Boolean)
-          .join(" ")}
-      >
+      <header ref={barRef} className={bar({ className })}>
         {/* Desktop */}
         <div className="mx-auto hidden w-full max-w-360 items-center justify-between px-20 py-3.75 lg:flex">
           <Link to={ROUTES.HOME} className="flex shrink-0 items-center overflow-hidden px-1 py-1.5">
             <span className="relative size-6.5 shrink-0 overflow-clip text-logo">
               <IconLogoMark aria-hidden className="absolute inset-0 block size-full max-w-none" />
             </span>
-            <span className="flex flex-col justify-center text-center font-bold text-[32px] leading-[1.3] text-logo whitespace-nowrap">
+            <span className="flex flex-col justify-center text-center font-bold text-3xl leading-tight text-logo whitespace-nowrap">
               AMEWORKS
             </span>
           </Link>
@@ -93,10 +104,7 @@ export function Header({ className, activeItem }: HeaderProps) {
                 <Link
                   key={item.id}
                   to={item.to}
-                  className={[
-                    "flex items-center justify-center rounded-full px-6 font-medium text-subheading leading-[1.3] tracking-dense whitespace-nowrap transition-colors",
-                    isActive ? "text-primary-200" : "text-white hover:text-primary-200",
-                  ].join(" ")}
+                  className={navLink({ active: isActive })}
                   aria-current={isActive ? "page" : undefined}
                 >
                   {item.label}

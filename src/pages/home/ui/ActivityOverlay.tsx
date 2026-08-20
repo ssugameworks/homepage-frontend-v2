@@ -297,9 +297,9 @@ function Carousel({ count, children }: { count: number; children: ReactNode }) {
     <div className="flex flex-col gap-8">
       {showPagination ? (
         <div className="flex items-center justify-center gap-2">
-          <span className="block h-1.25 w-25 overflow-hidden rounded-[999px] bg-gray-200">
+          <span className="block h-1.25 w-25 overflow-hidden rounded-full bg-gray-200">
             <span
-              className="block h-full rounded-[50px] bg-primary-400 transition-[width] duration-200"
+              className="block h-full rounded-full bg-primary-400 transition-[width] duration-200"
               style={{ width: `${(page / count) * 100}%` }}
             />
           </span>
@@ -342,7 +342,7 @@ function PersonCardView({ card }: { card: PersonCard }) {
         alt=""
         className="h-47.75 w-37.5 rounded-[32px] object-cover lg:h-71.5 lg:w-56.25"
       />
-      <div className="home-overlay-person-text absolute bottom-0 left-0 flex w-37.5 flex-col gap-2.5 rounded-[15px] p-5 lg:left-1/2 lg:w-57.25 lg:-translate-x-1/2">
+      <div className="home-overlay-person-text absolute bottom-0 left-0 flex w-37.5 flex-col gap-2.5 rounded-2xl p-5 lg:left-1/2 lg:w-57.25 lg:-translate-x-1/2">
         <Chip label={card.chip} />
         <p className="font-bold text-lg text-primary-950 leading-normal lg:typo-heading3">
           {card.name}
@@ -361,7 +361,7 @@ function ProjectCardView({ card }: { card: ProjectCard }) {
         alt=""
         className="h-47.75 w-37.5 rounded-[32px] object-cover lg:h-71.5 lg:w-56.25"
       />
-      <div className="flex flex-col gap-2.5 rounded-[15px] px-2.5 py-5">
+      <div className="flex flex-col gap-2.5 rounded-2xl px-2.5 py-5">
         <Chip label={card.chip} />
         <p className="font-bold text-lg text-primary-950 leading-normal lg:typo-heading3">
           {card.name}
@@ -387,7 +387,7 @@ function GalleryCardView({ card }: { card: GalleryCard }) {
           />
         ))}
       </div>
-      <div className="flex flex-col gap-2.5 rounded-[15px] px-2.5 py-5">
+      <div className="flex flex-col gap-2.5 rounded-2xl px-2.5 py-5">
         <p className="font-bold text-lg text-primary-950 leading-normal lg:typo-heading3">
           {card.name}
         </p>
@@ -418,7 +418,7 @@ function LectureCardView({ card }: { card: LectureCard }) {
 /** Figma: chip — button/secondary-mixed 배경 + primary-900 라벨 */
 function Chip({ label }: { label: string }) {
   return (
-    <span className="home-btn-secondary flex w-fit items-center gap-2 rounded-[16px] px-2 py-1 text-center font-medium text-xs text-primary-800 leading-normal lg:text-base">
+    <span className="home-btn-secondary flex w-fit items-center gap-2 rounded-2xl px-2 py-1 text-center font-medium text-xs text-primary-800 leading-normal lg:text-base">
       {label}
     </span>
   );

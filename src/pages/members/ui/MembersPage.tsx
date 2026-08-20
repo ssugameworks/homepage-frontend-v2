@@ -1,10 +1,13 @@
 import dayjs from "dayjs";
 import { type RefObject, useRef, useState } from "react";
+import { tv } from "tailwind-variants";
 import type { Executive } from "@/entities/executive";
 import { ExecutiveCard, ExecutiveRosterCard, TeamCard, useExecutives } from "@/entities/executive";
 import playArrowIcon from "@/shared/assets/icons/play-arrow.svg";
 import productTeamBack from "@/shared/assets/images/executives/product-team-back.png";
 import productTeamFront from "@/shared/assets/images/executives/product-team-front.png";
+
+const scrollArrows = tv({ base: "flex shrink-0 items-center" });
 
 const PRODUCT_TEAM = {
   teamName: "Product team",
@@ -30,22 +33,22 @@ type ScrollArrowsProps = {
 // Figma "Component 25" (material-symbols-light:play-arrow-rounded) 재현
 function ScrollArrows({ onPrev, onNext, prevLabel, nextLabel, className }: ScrollArrowsProps) {
   return (
-    <div className={["flex shrink-0 items-center", className].filter(Boolean).join(" ")}>
+    <div className={scrollArrows({ className })}>
       <button
         type="button"
         aria-label={prevLabel}
         onClick={onPrev}
-        className="flex size-[27px] items-center justify-center"
+        className="flex size-6.75 items-center justify-center"
       >
-        <img src={playArrowIcon} alt="" className="h-[15px] w-[12.5px] -scale-x-100" />
+        <img src={playArrowIcon} alt="" className="h-3.75 w-3.125 -scale-x-100" />
       </button>
       <button
         type="button"
         aria-label={nextLabel}
         onClick={onNext}
-        className="flex size-[27px] items-center justify-center"
+        className="flex size-6.75 items-center justify-center"
       >
-        <img src={playArrowIcon} alt="" className="h-[15px] w-[12.5px]" />
+        <img src={playArrowIcon} alt="" className="h-3.75 w-3.125" />
       </button>
     </div>
   );
@@ -80,13 +83,13 @@ export default function MembersPage() {
 
   return (
     <div className="bg-surface-white pb-24">
-      <div className="mx-auto w-full max-w-[390px] px-5 pt-24 pb-16 lg:max-w-[1322px] lg:px-0">
+      <div className="mx-auto w-full max-w-97.5 px-5 pt-24 pb-16 lg:max-w-330.5 lg:px-0">
         <div className="flex items-end justify-between lg:flex-col lg:items-center lg:gap-2 lg:text-center">
           <div>
-            <p className="font-medium text-[16px] text-gray-400 leading-normal lg:text-[22px]">
+            <p className="font-medium text-body1 text-gray-400 leading-normal lg:text-heading3">
               Team GameWorks {currentYear}
             </p>
-            <h1 className="font-bold text-[24px] text-gray-950 leading-[1.3] tracking-[-1.8px] lg:text-[60px]">
+            <h1 className="font-bold text-2xl text-gray-950 leading-tight tracking-dense lg:text-6xl">
               게임웍스 임원진
             </h1>
           </div>
@@ -102,11 +105,11 @@ export default function MembersPage() {
       </div>
 
       {isLoading ? (
-        <p className="text-center text-[16px] text-gray-600">불러오는 중...</p>
+        <p className="text-center text-body1 text-gray-600">불러오는 중...</p>
       ) : (
         <>
           {/* 모바일: 스와이프가 아닌 화살표로만 전환되는 단일 카드 뷰 — 양옆에 다른 카드가 보이지 않는다 */}
-          <div className="mx-auto w-full max-w-[390px] overflow-hidden px-5 lg:hidden">
+          <div className="mx-auto w-full max-w-97.5 overflow-hidden px-5 lg:hidden">
             {(() => {
               const currentExecutive = executives[cardIndex];
               const slideClassName =
@@ -128,20 +131,20 @@ export default function MembersPage() {
           </div>
 
           {/* 데스크탑: 정적 그리드 (Figma web/executives, card-big 420px 기준) */}
-          <div className="mx-auto hidden w-full max-w-[1322px] grid-cols-3 gap-8 lg:grid">
+          <div className="mx-auto hidden w-full max-w-330.5 grid-cols-3 gap-8 lg:grid">
             {executives.map((executive) => (
               <ExecutiveCard key={executive.id} executive={executive} className="w-full" />
             ))}
             <TeamCard {...PRODUCT_TEAM} className="w-full" />
           </div>
 
-          <div className="mx-auto mt-24 w-full max-w-[390px] px-5 lg:max-w-[1322px] lg:px-0">
+          <div className="mx-auto mt-24 w-full max-w-97.5 px-5 lg:max-w-330.5 lg:px-0">
             <div className="mb-8 flex items-end justify-between">
               <div>
-                <p className="font-medium text-[14px] text-gray-400 leading-normal">
+                <p className="font-medium text-body2 text-gray-400 leading-normal">
                   Past GameWorks Executives
                 </p>
-                <h2 className="font-bold text-[24px] text-gray-950 leading-[1.3] lg:text-[28px]">
+                <h2 className="font-bold text-2xl text-gray-950 leading-tight lg:text-heading2">
                   역대 게임웍스 임원진
                 </h2>
               </div>
@@ -156,14 +159,14 @@ export default function MembersPage() {
 
             <div
               ref={rosterScrollRef}
-              className="mx-auto flex w-full max-w-[390px] snap-x snap-mandatory items-stretch gap-2 overflow-x-auto scroll-smooth pb-2 lg:max-w-none lg:gap-6"
+              className="mx-auto flex w-full max-w-97.5 snap-x snap-mandatory items-stretch gap-2 overflow-x-auto scroll-smooth pb-2 lg:max-w-none lg:gap-6"
             >
               {pastRosters.map((roster) => (
                 <ExecutiveRosterCard
                   key={roster.year}
                   year={roster.year}
                   executives={roster.executives}
-                  className="w-[326px] shrink-0 snap-start lg:w-[354px]"
+                  className="w-81.5 shrink-0 snap-start lg:w-88.5"
                 />
               ))}
             </div>

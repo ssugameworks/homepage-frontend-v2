@@ -22,7 +22,7 @@ export function HeroSection() {
       />
 
       <div className="mx-auto flex w-full max-w-360 flex-col gap-10 px-9.25 lg:gap-8 lg:px-25">
-        <h1 className="flex flex-col gap-2 whitespace-pre-line font-bold text-4xl text-white leading-[1.3] tracking-[-0.03em] lg:text-[80px]">
+        <h1 className="flex flex-col gap-2 whitespace-pre-line font-bold text-4xl text-white leading-tight tracking-dense lg:text-[80px]">
           <span>배우고 도전하며,</span>
           <span>가치를 만드는 사람으로</span>
         </h1>

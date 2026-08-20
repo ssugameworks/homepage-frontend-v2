@@ -1,21 +1,22 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
+import { tv } from "tailwind-variants";
 import { IconRadioChecked, IconRadioDot } from "@/shared/assets/icons";
-import { cx } from "@/shared/lib";
 
 export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "name"> & {
   label: ReactNode;
   name: string;
 };
 
-export function Radio({ label, className, ...rest }: RadioProps) {
+const label = tv({
+  base: [
+    "group inline-flex cursor-pointer items-center gap-2.75",
+    "has-disabled:cursor-not-allowed has-disabled:opacity-50",
+  ],
+});
+
+export function Radio({ label: labelText, className, ...rest }: RadioProps) {
   return (
-    <label
-      className={cx(
-        "group inline-flex cursor-pointer items-center gap-2.75",
-        "has-disabled:cursor-not-allowed has-disabled:opacity-50",
-        className
-      )}
-    >
+    <label className={label({ className })}>
       <span className="relative size-5 shrink-0">
         <input type="radio" className="peer sr-only" {...rest} />
         <span
@@ -37,7 +38,7 @@ export function Radio({ label, className, ...rest }: RadioProps) {
           className="pointer-events-none absolute inset-0 rounded-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-600"
         />
       </span>
-      <span className="typo-caption text-black md:typo-body1">{label}</span>
+      <span className="typo-caption text-black md:typo-body1">{labelText}</span>
     </label>
   );
 }

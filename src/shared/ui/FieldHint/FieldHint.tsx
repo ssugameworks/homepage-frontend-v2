@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import type { ReactNode } from "react";
-import { cx } from "@/shared/lib";
+import { tv } from "tailwind-variants";
 
 export type FieldHintState = "default" | "error";
 
@@ -9,6 +9,19 @@ export type FieldHintProps = {
   state?: FieldHintState;
   children?: ReactNode;
 };
+
+const hint = tv({
+  base: "mt-1 px-2 typo-body2 typo-light",
+  variants: {
+    state: {
+      default: "text-primary-600",
+      error: "text-accent-red",
+    },
+  },
+  defaultVariants: {
+    state: "default",
+  },
+});
 
 export function FieldHint({ id, state = "default", children }: FieldHintProps) {
   return (
@@ -28,10 +41,7 @@ export function FieldHint({ id, state = "default", children }: FieldHintProps) {
             animate={{ y: 0 }}
             exit={{ y: -4 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className={cx(
-              "mt-1 px-2 typo-body2 typo-light",
-              state === "error" ? "text-accent-red" : "text-primary-600"
-            )}
+            className={hint({ state })}
           >
             {children}
           </motion.p>

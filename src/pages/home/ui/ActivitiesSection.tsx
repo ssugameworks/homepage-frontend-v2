@@ -115,7 +115,7 @@ function ActivityCard({ activity, onOpen }: { activity: Activity; onOpen: () => 
     <li className="size-75 shrink-0 snap-center rounded-2xl bg-white p-6 shadow-[0_2px_5px_rgba(0,0,0,0.2)] lg:size-85 lg:rounded-3xl lg:p-8">
       <div className="flex h-full flex-col items-start justify-between pt-4">
         <div className="flex flex-col items-start gap-6 lg:gap-8">
-          <span className="flex items-center gap-2 rounded-[16px] bg-gray-100 px-2 py-1">
+          <span className="flex items-center gap-2 rounded-2xl bg-gray-100 px-2 py-1">
             <img src={activity.icon} alt="" className="size-3.75" />
             <span className="font-medium text-base text-gray-600 leading-normal">
               {activity.chip}
@@ -126,7 +126,7 @@ function ActivityCard({ activity, onOpen }: { activity: Activity; onOpen: () => 
             <h3 className="font-bold text-xl text-primary-950 leading-normal lg:typo-heading2">
               {activity.title}
             </h3>
-            <p className="whitespace-pre-line font-light text-base text-primary-950 leading-normal tracking-[-0.03em]">
+            <p className="whitespace-pre-line font-light text-base text-primary-950 leading-normal tracking-dense">
               {activity.description}
             </p>
           </div>

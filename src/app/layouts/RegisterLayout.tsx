@@ -28,7 +28,7 @@ export default function RegisterLayout() {
             </span>
             <span
               aria-hidden
-              className="flex flex-col justify-center text-center text-[2rem] font-bold leading-[1.3] text-black whitespace-nowrap"
+              className="flex flex-col justify-center text-center text-3xl font-bold leading-tight text-black whitespace-nowrap"
             >
               AMEWORKS
             </span>

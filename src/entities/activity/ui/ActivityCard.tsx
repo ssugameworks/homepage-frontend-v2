@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import type React from "react";
 import { useNavigate } from "react-router-dom";
+import { tv } from "tailwind-variants";
 import { applyFormPath } from "@/shared/config/routes";
 import { todayKstDateString } from "@/shared/lib";
 import { Button } from "@/shared/ui/Button";
@@ -13,6 +14,19 @@ interface ActivityCardProps {
   /** 모바일에서 그룹의 첫 카드 우측에 예정된/지난 탭을 함께 노출하기 위한 슬롯. */
   filterComponent?: React.ReactNode;
 }
+
+const row = tv({
+  base: "w-full min-w-0 py-3 lg:py-6",
+  variants: {
+    isLastInMonth: {
+      true: "",
+      false: "border-b border-gray-200",
+    },
+  },
+  defaultVariants: {
+    isLastInMonth: false,
+  },
+});
 
 // 날짜 포맷 헬퍼 ("2026-08-01" -> "2026.08.01")
 const formatDate = (dateStr: string) => dateStr.replace(/-/g, ".");
@@ -54,9 +68,7 @@ export default function ActivityCard({
         </div>
       )}
 
-      <div
-        className={`w-full min-w-0 py-3 lg:py-6 ${isLastInMonth ? "" : "border-b border-gray-200"}`}
-      >
+      <div className={row({ isLastInMonth })}>
         <div className="flex w-full min-w-0 items-center justify-between gap-4">
           {/* 썸네일 & 텍스트 콘텐츠: 데스크톱에서는 이미지 높이에 텍스트 컨테이너를 맞춘다(items-stretch) */}
           <div className="flex min-w-0 flex-1 items-start gap-3 md:gap-4 lg:items-stretch lg:gap-6">
