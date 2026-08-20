@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!src/assets/**", "!src/styles/reset.css"]
+    "includes": ["**", "!src/shared/assets", "!src/shared/styles/reset.css"]
   },
   "formatter": {
     "enabled": true,
