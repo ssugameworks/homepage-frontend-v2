@@ -12,7 +12,6 @@ const indicator = tv({
       // mobile: 하단 중앙(아이콘만) / desktop: 하단 우측 원형 버튼 (Figma web·mobile 시안 차이)
       "-translate-x-1/2 fixed bottom-10 left-1/2 z-40 flex cursor-pointer items-center justify-center border-0 bg-transparent p-2 transition-opacity duration-300 lg:right-10 lg:bottom-13.25 lg:left-auto lg:size-15 lg:translate-x-0 lg:rounded-full lg:bg-white/5 lg:p-0",
     ],
-    bounce: "block",
     icon: "block text-gray-200 transition-transform duration-300 lg:h-6.75 lg:w-11.75",
   },
   variants: {
@@ -21,7 +20,7 @@ const indicator = tv({
       false: { button: "pointer-events-none opacity-0" },
     },
     mode: {
-      down: { bounce: "home-bounce" },
+      down: {},
       up: { icon: "rotate-180" },
     },
   },
@@ -33,7 +32,7 @@ const indicator = tv({
 
 /**
  * Figma 노트:
- * - [⬇ down-filled] 히어로에서 상하 바운스 반복
+ * - [⬇ down-filled] 히어로에서 노출
  * - [⬆ top-filled] position: fixed, down-filled와 동일한 위치
  *   - 기본: 화면에 고정되어 나타남
  *   - 천천히/조금 스크롤 업 → 그대로 유지
@@ -98,7 +97,7 @@ export function ScrollIndicator() {
     }
   };
 
-  const { button, bounce, icon } = indicator({ visible, mode });
+  const { button, icon } = indicator({ visible, mode });
 
   return (
     <button
@@ -109,9 +108,7 @@ export function ScrollIndicator() {
       style={dockTop !== null ? { position: "absolute", top: dockTop, bottom: "auto" } : undefined}
       className={button()}
     >
-      <span className={bounce()}>
-        <IconScrollChevron className={icon()} />
-      </span>
+      <IconScrollChevron className={icon()} />
     </button>
   );
 }

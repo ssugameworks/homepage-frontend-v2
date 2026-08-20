@@ -222,12 +222,6 @@
       linear-gradient(0deg, #4d97ff 9.1346%, rgba(178, 211, 255, 0) 100%),
       linear-gradient(180deg, rgba(255, 255, 255, 0) 22.596%, #ffffff 65.173%);
   }
-
-  /* ---------- Scroll indicator ---------- */
-
-  .home-bounce {
-    animation: home-bounce 1.6s ease-in-out infinite;
-  }
 }
 
 @keyframes home-hero-drift {
@@ -239,21 +233,10 @@
   }
 }
 
-@keyframes home-bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-}
-
 /* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .home-hero-image,
-  .home-bounce {
+  .home-hero-image {
     animation: none;
   }
 
