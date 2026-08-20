@@ -298,7 +298,7 @@ export default function ActivitiesPage() {
       {/* 히어로 배너 */}
       <section className="relative overflow-hidden bg-gradient-to-r from-gray-100 to-primary-200">
         <div className="relative mx-auto w-full max-w-360 px-5 py-10 md:py-16 lg:px-20">
-          <h1 className="relative z-10 max-w-56 text-heading2 leading-tight font-bold text-primary-950 sm:max-w-xs sm:text-3xl md:max-w-lg md:typo-heading1">
+          <h1 className="relative z-10 max-w-sm text-heading2 leading-tight font-bold text-primary-950 sm:max-w-md sm:text-3xl md:max-w-xl md:typo-heading1">
             함께 몰입하고 성장할 순간들이
             <br />
             기다리고 있어요
