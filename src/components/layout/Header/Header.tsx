@@ -28,9 +28,6 @@ export function Header({ className, activeItem }: HeaderProps) {
 
   const barRef = useRef<HTMLElement>(null);
   const [barHeight, setBarHeight] = useState(0);
-  const [scrolledPastFirstScreen, setScrolledPastFirstScreen] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
-  const desktopVisible = !scrolledPastFirstScreen || isHovering;
 
   useLayoutEffect(() => {
     const el = barRef.current;
@@ -42,13 +39,6 @@ export function Header({ className, activeItem }: HeaderProps) {
     const observer = new ResizeObserver(updateHeight);
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => setScrolledPastFirstScreen(window.scrollY > window.innerHeight);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
@@ -83,13 +73,7 @@ export function Header({ className, activeItem }: HeaderProps) {
           .join(" ")}
       >
         {/* Desktop */}
-        <motion.div
-          animate={{ opacity: desktopVisible ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-          className="mx-auto hidden w-full max-w-360 items-center justify-between px-20 py-3.75 lg:flex"
-        >
+        <div className="mx-auto hidden w-full max-w-360 items-center justify-between px-20 py-3.75 lg:flex">
           <Link to={ROUTES.HOME} className="flex shrink-0 items-center overflow-hidden px-1 py-1.5">
             <span className="relative size-6.5 shrink-0 overflow-clip text-logo">
               <IconLogoMark aria-hidden className="absolute inset-0 block size-full max-w-none" />
@@ -120,7 +104,7 @@ export function Header({ className, activeItem }: HeaderProps) {
               );
             })}
           </nav>
-        </motion.div>
+        </div>
 
         {/* Mobile bar */}
         <div className="flex h-16 w-full items-center justify-between px-6 lg:hidden">

@@ -50,11 +50,11 @@ export function IntroSection() {
   return (
     <section
       id="intro"
-      className="flex min-h-[500px] items-center bg-[color:var(--gw-bg-white)] lg:min-h-[700px]"
+      className="flex min-h-125 items-center bg-surface-white lg:min-h-175"
       aria-label="게임웍스 활동 소개"
     >
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center gap-4 px-6 text-center lg:gap-6">
-        <h2 className="flex flex-col items-center font-bold text-[28px] text-[color:var(--gw-gray-950)] leading-[1.3] tracking-[-0.03em] lg:text-[60px]">
+      <div className="mx-auto flex w-full max-w-360 flex-col items-center gap-4 px-6 text-center lg:gap-6">
+        <h2 className="flex flex-col items-center typo-heading2 text-gray-950 lg:text-6xl">
           {/* Component 9 — 하이라이트가 한 흐름처럼 단어 사이를 미끄러져 이동 */}
           <span className="home-intro-words gap-2 overflow-clip">
             <span ref={wordsRef} className="inline-flex gap-2">
@@ -84,7 +84,7 @@ export function IntroSection() {
           <span>함께 배우고 직접 만들어봐요</span>
         </h2>
 
-        <p className="font-medium text-[16px] text-[color:var(--gw-gray-500)] leading-[1.5] lg:text-[18px]">
+        <p className="font-medium text-base text-gray-500 leading-normal lg:text-lg">
           <span className="lg:hidden">
             스터디와 멘토링으로 배우고,
             <br />

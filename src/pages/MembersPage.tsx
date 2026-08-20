@@ -84,7 +84,7 @@ export default function MembersPage() {
       <div className="mx-auto w-full max-w-[390px] px-5 pt-24 pb-16 lg:max-w-[1322px] lg:px-0">
         <div className="flex items-end justify-between lg:flex-col lg:items-center lg:gap-2 lg:text-center">
           <div>
-            <p className="font-medium text-[16px] text-gray-400 leading-[1.5] lg:text-[22px]">
+            <p className="font-medium text-[16px] text-gray-400 leading-normal lg:text-[22px]">
               Team GameWorks {currentYear}
             </p>
             <h1 className="font-bold text-[24px] text-gray-950 leading-[1.3] tracking-[-1.8px] lg:text-[60px]">
@@ -139,7 +139,7 @@ export default function MembersPage() {
           <div className="mx-auto mt-24 w-full max-w-[390px] px-5 lg:max-w-[1322px] lg:px-0">
             <div className="mb-8 flex items-end justify-between">
               <div>
-                <p className="font-medium text-[14px] text-gray-400 leading-[1.5]">
+                <p className="font-medium text-[14px] text-gray-400 leading-normal">
                   Past GameWorks Executives
                 </p>
                 <h2 className="font-bold text-[24px] text-gray-950 leading-[1.3] lg:text-[28px]">

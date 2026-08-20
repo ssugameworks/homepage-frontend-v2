@@ -80,6 +80,8 @@
 
   --animate-card-slide-next: card-slide-next 0.32s cubic-bezier(0.22, 1, 0.36, 1);
   --animate-card-slide-prev: card-slide-prev 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-hero-drift: hero-drift 24s ease-in-out infinite alternate;
+  --animate-bounce-y: bounce-y 1.6s ease-in-out infinite;
 }
 
 @keyframes card-slide-next {
@@ -101,5 +103,24 @@
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+@keyframes hero-drift {
+  from {
+    transform: scale(1.04) translate3d(-1%, -0.5%, 0);
+  }
+  to {
+    transform: scale(1.1) translate3d(1.5%, 1%, 0);
+  }
+}
+
+@keyframes bounce-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
   }
 }

@@ -16,3 +16,8 @@ export { default as IconRadioChecked } from "./register/radio-checked.svg?react"
 export { default as IconRadioDot } from "./register/radio-dot.svg?react";
 export { default as IconSelectChevron } from "./register/select-chevron.svg?react";
 export { default as IconWarning } from "./register/warning.svg?react";
+export { default as IconArrowRight } from "./home/arrow-right.svg?react";
+export { default as IconExternalArrow } from "./home/external-arrow.svg?react";
+export { default as IconPlus } from "./home/plus.svg?react";
+export { default as IconQnaChevron } from "./home/qna-chevron.svg?react";
+export { default as IconScrollChevron } from "./home/scroll-chevron.svg?react";

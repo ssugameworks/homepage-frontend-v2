@@ -17,23 +17,21 @@ const PARTNERS = [
 export function PartnersSection() {
   return (
     <section
-      className="flex min-h-[292px] items-center bg-[color:var(--gw-bg-white)] py-12 lg:min-h-[500px] lg:py-0"
+      className="flex min-h-73 items-center bg-surface-white py-12 lg:min-h-125 lg:py-0"
       aria-label="파트너"
     >
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center gap-6 px-6 text-center lg:gap-8 lg:px-[110px]">
+      <div className="mx-auto flex w-full max-w-360 flex-col items-center gap-6 px-6 text-center lg:gap-8 lg:px-27.5">
         <div className="flex flex-col items-center gap-2">
-          <p className="font-medium text-[16px] text-[color:var(--gw-gray-400)] leading-[1.5]">
-            Partners
-          </p>
-          <h2 className="font-bold text-[24px] text-[color:var(--gw-gray-950)] leading-[1.5] lg:text-[38px]">
+          <p className="font-medium text-base text-gray-400 leading-normal">Partners</p>
+          <h2 className="font-bold text-2xl text-gray-950 leading-normal lg:typo-heading1">
             게임웍스와 함께하는 분들
           </h2>
         </div>
 
-        <ul className="flex flex-wrap items-start justify-center gap-x-[50px] gap-y-8 lg:gap-x-[100px]">
+        <ul className="flex flex-wrap items-start justify-center gap-x-12.5 gap-y-8 lg:gap-x-25">
           {PARTNERS.map((partner) => (
-            <li key={partner.name} className="flex w-[120px] flex-col items-center gap-4">
-              <span className="flex h-[60px] w-[120px] items-center justify-center">
+            <li key={partner.name} className="flex w-30 flex-col items-center gap-4">
+              <span className="flex h-15 w-30 items-center justify-center">
                 <img
                   src={partner.logo}
                   alt={partner.name}
@@ -41,7 +39,7 @@ export function PartnersSection() {
                   className="h-auto max-w-full"
                 />
               </span>
-              <span className="font-medium text-[16px] text-[color:var(--gw-gray-950)] leading-[1.5] lg:text-[18px]">
+              <span className="font-medium text-base text-gray-950 leading-normal lg:text-lg">
                 {partner.name}
               </span>
             </li>

@@ -20,12 +20,47 @@ type Props = {
  * - web: 880px 폭, 소제목 아래로 카드 grid가 세로로 쌓임
  * - mobile: 340px 폭, 소제목 아래 pagination bar + 카드 가로 스와이프
  */
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function ActivityOverlay({ overlay, onClose }: Props) {
   const titleId = useId();
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // 열릴 때 다이얼로그로 포커스를 옮기고, 닫히면 이전에 포커스가 있던 요소(트리거 버튼)로 되돌린다.
+  useEffect(() => {
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    dialogRef.current?.focus();
+
+    return () => {
+      previouslyFocused?.focus();
+    };
+  }, []);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+
+      // 다이얼로그 밖으로 포커스가 빠져나가지 않도록 Tab 순환을 가둔다.
+      if (event.key === "Tab") {
+        const dialog = dialogRef.current;
+        if (!dialog) return;
+        const focusable = Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+        if (focusable.length === 0) return;
+
+        const first = focusable[0]!;
+        const last = focusable[focusable.length - 1]!;
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
     };
 
     document.addEventListener("keydown", onKeyDown);
@@ -39,19 +74,16 @@ export function ActivityOverlay({ overlay, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5">
-      {/* 배경 클릭으로 닫기 (키보드는 Escape) */}
-      <button
-        type="button"
-        aria-label="닫기"
-        onClick={onClose}
-        className="absolute inset-0 cursor-default border-0 bg-black/50 p-0"
-      />
+      {/* 배경 클릭으로 닫기 (키보드는 Escape). 스크린리더/탭 순서에 노출되지 않는 순수 포인터 전용 오버레이라 button이 아닌 div를 쓴다. */}
+      <div aria-hidden onClick={onClose} className="absolute inset-0 cursor-default bg-black/50" />
 
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="home-overlay-scroll relative flex max-h-full w-full max-w-[340px] flex-col gap-6 overflow-y-auto rounded-[32px] bg-[color:var(--gw-bg-white)] px-6 py-[30px] lg:max-w-[880px] lg:gap-8 lg:px-[70px] lg:py-10"
+        tabIndex={-1}
+        className="home-overlay-scroll relative flex max-h-full w-full max-w-85 flex-col gap-6 overflow-y-auto rounded-[32px] bg-surface-white px-6 py-7.5 lg:max-w-220 lg:gap-8 lg:px-17.5 lg:py-10"
       >
         <div className="flex flex-col gap-8 lg:gap-12">
           {/* overlay/title */}
@@ -60,7 +92,7 @@ export function ActivityOverlay({ overlay, onClose }: Props) {
               <div className="flex items-center justify-between">
                 <h2
                   id={titleId}
-                  className="font-bold text-[20px] text-[color:var(--gw-primary-950)] leading-[1.5] lg:text-[28px]"
+                  className="font-bold text-xl text-primary-950 leading-normal lg:typo-heading2"
                 >
                   {overlay.title}
                 </h2>
@@ -68,17 +100,14 @@ export function ActivityOverlay({ overlay, onClose }: Props) {
                   type="button"
                   onClick={onClose}
                   aria-label="닫기"
-                  className="size-6 shrink-0 cursor-pointer border-0 bg-transparent p-0 text-[color:var(--gw-primary-950)]"
+                  className="size-6 shrink-0 cursor-pointer border-0 bg-transparent p-0 text-primary-950"
                 >
                   <img src={modalClose} alt="" className="block size-full max-w-none" />
                 </button>
               </div>
-              <span
-                aria-hidden="true"
-                className="block h-px w-full bg-[color:var(--gw-primary-950)]"
-              />
+              <span aria-hidden="true" className="block h-px w-full bg-primary-950" />
             </div>
-            <p className="font-medium text-[14px] text-[color:var(--gw-primary-950)] leading-[1.5]">
+            <p className="font-medium text-sm text-primary-950 leading-normal">
               {overlay.description}
             </p>
           </div>
@@ -182,7 +211,7 @@ function Section<Card>({ section, renderGroup, paginated = true }: SectionProps<
     <>
       {section.title ? (
         <div className="flex flex-col gap-2.5">
-          <h3 className="font-bold text-[18px] text-[color:var(--gw-primary-950)] leading-[1.5] lg:text-[22px]">
+          <h3 className="font-bold text-lg text-primary-950 leading-normal lg:typo-heading3">
             {section.title}
           </h3>
           {paginated ? (
@@ -268,13 +297,13 @@ function Carousel({ count, children }: { count: number; children: ReactNode }) {
     <div className="flex flex-col gap-8">
       {showPagination ? (
         <div className="flex items-center justify-center gap-2">
-          <span className="block h-[5px] w-[100px] overflow-hidden rounded-[999px] bg-[color:var(--gw-gray-200)]">
+          <span className="block h-1.25 w-25 overflow-hidden rounded-[999px] bg-gray-200">
             <span
-              className="block h-full rounded-[50px] bg-[color:var(--gw-primary-500)] transition-[width] duration-200"
+              className="block h-full rounded-[50px] bg-primary-400 transition-[width] duration-200"
               style={{ width: `${(page / count) * 100}%` }}
             />
           </span>
-          <span className="font-medium text-[12px] text-[color:var(--gw-gray-700)] leading-[1.5]">
+          <span className="font-medium text-xs text-gray-700 leading-normal">
             {page}/{count}
           </span>
         </div>
@@ -307,15 +336,15 @@ function CardGrid({ className, children }: { className?: string; children: React
 
 function PersonCardView({ card }: { card: PersonCard }) {
   return (
-    <li className="relative h-[217px] w-[150px] shrink-0 snap-start lg:h-[326px] lg:w-[225px]">
+    <li className="relative h-54.25 w-37.5 shrink-0 snap-start lg:h-81.5 lg:w-56.25">
       <img
         src={card.image}
         alt=""
-        className="h-[191px] w-[150px] rounded-[32px] object-cover lg:h-[286px] lg:w-[225px]"
+        className="h-47.75 w-37.5 rounded-[32px] object-cover lg:h-71.5 lg:w-56.25"
       />
-      <div className="home-overlay-person-text absolute bottom-0 left-0 flex w-[150px] flex-col gap-2.5 rounded-[15px] p-5 lg:left-1/2 lg:w-[229px] lg:-translate-x-1/2">
+      <div className="home-overlay-person-text absolute bottom-0 left-0 flex w-37.5 flex-col gap-2.5 rounded-[15px] p-5 lg:left-1/2 lg:w-57.25 lg:-translate-x-1/2">
         <Chip label={card.chip} />
-        <p className="font-bold text-[18px] text-[color:var(--gw-primary-950)] leading-[1.5] lg:text-[22px]">
+        <p className="font-bold text-lg text-primary-950 leading-normal lg:typo-heading3">
           {card.name}
         </p>
         <Details details={card.details} />
@@ -326,15 +355,15 @@ function PersonCardView({ card }: { card: PersonCard }) {
 
 function ProjectCardView({ card }: { card: ProjectCard }) {
   return (
-    <li className="flex w-[150px] shrink-0 snap-start flex-col lg:w-[225px]">
+    <li className="flex w-37.5 shrink-0 snap-start flex-col lg:w-56.25">
       <img
         src={card.image}
         alt=""
-        className="h-[191px] w-[150px] rounded-[32px] object-cover lg:h-[286px] lg:w-[225px]"
+        className="h-47.75 w-37.5 rounded-[32px] object-cover lg:h-71.5 lg:w-56.25"
       />
       <div className="flex flex-col gap-2.5 rounded-[15px] px-2.5 py-5">
         <Chip label={card.chip} />
-        <p className="font-bold text-[18px] text-[color:var(--gw-primary-950)] leading-[1.5] lg:text-[22px]">
+        <p className="font-bold text-lg text-primary-950 leading-normal lg:typo-heading3">
           {card.name}
         </p>
         {card.details ? <Details details={card.details} /> : null}
@@ -354,12 +383,12 @@ function GalleryCardView({ card }: { card: GalleryCard }) {
             key={index}
             src={src}
             alt=""
-            className="h-[120px] w-[95px] rounded-[32px] object-cover lg:h-[191px] lg:w-[150px]"
+            className="h-30 w-23.75 rounded-[32px] object-cover lg:h-47.75 lg:w-37.5"
           />
         ))}
       </div>
       <div className="flex flex-col gap-2.5 rounded-[15px] px-2.5 py-5">
-        <p className="font-bold text-[18px] text-[color:var(--gw-primary-950)] leading-[1.5] lg:text-[22px]">
+        <p className="font-bold text-lg text-primary-950 leading-normal lg:typo-heading3">
           {card.name}
         </p>
         {card.details ? <Details details={card.details} /> : null}
@@ -371,11 +400,11 @@ function GalleryCardView({ card }: { card: GalleryCard }) {
 
 function LectureCardView({ card }: { card: LectureCard }) {
   return (
-    <li className="flex w-[150px] shrink-0 snap-start flex-col lg:w-[225px]">
+    <li className="flex w-37.5 shrink-0 snap-start flex-col lg:w-56.25">
       <img
         src={card.image}
         alt=""
-        className="h-[87px] w-[150px] rounded-[32px] object-cover lg:h-[130px] lg:w-[225px]"
+        className="h-21.75 w-37.5 rounded-[32px] object-cover lg:h-32.5 lg:w-56.25"
       />
       <div className="px-2.5 py-5">
         <Body text={card.caption} />
@@ -389,7 +418,7 @@ function LectureCardView({ card }: { card: LectureCard }) {
 /** Figma: chip — button/secondary-mixed 배경 + primary-900 라벨 */
 function Chip({ label }: { label: string }) {
   return (
-    <span className="home-btn-secondary flex w-fit items-center gap-2 rounded-[16px] px-2 py-1 text-center font-medium text-[12px] text-[color:var(--gw-primary-900)] leading-[1.5] lg:text-[16px]">
+    <span className="home-btn-secondary flex w-fit items-center gap-2 rounded-[16px] px-2 py-1 text-center font-medium text-xs text-primary-800 leading-normal lg:text-base">
       {label}
     </span>
   );
@@ -397,7 +426,7 @@ function Chip({ label }: { label: string }) {
 
 function Details({ details }: { details: string[] }) {
   return (
-    <ul className="m-0 list-disc pl-[21px] font-medium text-[12px] text-[color:var(--gw-primary-950)] leading-[1.5] lg:text-[14px]">
+    <ul className="m-0 list-disc pl-5.25 font-medium text-xs text-primary-950 leading-normal lg:text-sm">
       {details.map((detail) => (
         <li key={detail}>{detail}</li>
       ))}
@@ -406,9 +435,5 @@ function Details({ details }: { details: string[] }) {
 }
 
 function Body({ text }: { text: string }) {
-  return (
-    <p className="font-medium text-[12px] text-[color:var(--gw-primary-950)] leading-[1.5] lg:text-[14px]">
-      {text}
-    </p>
-  );
+  return <p className="font-medium text-xs text-primary-950 leading-normal lg:text-sm">{text}</p>;
 }

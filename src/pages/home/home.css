@@ -1,15 +1,9 @@
 /**
- * HomePage 전용 스타일 — Figma 측정값 기반
+ * HomePage 전용 스타일 — Figma 측정값 기반. 색상은 프로젝트 공용 토큰(colors.css)을
+ * 그대로 쓴다(Figma 컬러 변수와 1:1로 매핑됨. primary 계열은 라벨이 한 단계씩 밀려 있어
+ * 값 기준으로 매핑: 예) Figma primary/900 #003580 = 프로젝트 primary-800).
  *
- * Figma 변수 (color 컬렉션, 저장소 tokens와 스케일이 달라 홈 한정으로 정의):
- *  primary: 950 #000B1A / 900 #003580 / 800 #004BB2 / 700 #0060E5
- *           600 #1A7AFF / 500 #4D97FF / 400 #80B5FF / 300 #B2D3FF
- *  gray:    950 #0C0C0D / 900 #252628 / 800 #3D3F42 / 700 #56585D / 600 #6E7177
- *           500 #888B91 / 400 #A2A5A9 / 300 #BDBEC2 / 200 #D7D8DA / 50 #F2F2F3
- *  semantic/background: white #FAFAFA, black #0F1012, button #000000 20%
- *  semantic/shadow: white-a5 #FFFFFF 5%
- *
- * font 변수 (web/mobile): hero1 80/36 · hero2 60/28 · heading1 38/24 ·
+ * font 변수(web/mobile): hero1 80/36 · hero2 60/28 · heading1 38/24 ·
  *  heading2 28/20 · heading3 22/18 · subheading 18/16 · body1 16 · body2 14 · caption 12
  *  heading~caption line-height 150%, hero 130% (letter-spacing -3%)
  *
@@ -19,28 +13,6 @@
  * NOTE: 컴포넌트 클래스는 `@layer components`에 넣어야 Tailwind 유틸리티(lg:hidden, px-8 …)가
  *       덮어쓸 수 있다. 레이어 밖에 두면 유틸리티보다 우선순위가 높아진다.
  */
-
-:root {
-  --gw-primary-950: #000b1a;
-  --gw-primary-900: #003580;
-  --gw-primary-800: #004bb2;
-  --gw-primary-700: #0060e5;
-  --gw-primary-600: #1a7aff;
-  --gw-primary-500: #4d97ff;
-  --gw-primary-400: #80b5ff;
-  --gw-primary-300: #b2d3ff;
-  --gw-gray-950: #0c0c0d;
-  --gw-gray-900: #252628;
-  --gw-gray-800: #3d3f42;
-  --gw-gray-700: #56585d;
-  --gw-gray-600: #6e7177;
-  --gw-gray-500: #888b91;
-  --gw-gray-400: #a2a5a9;
-  --gw-gray-300: #bdbec2;
-  --gw-gray-200: #d7d8da;
-  --gw-gray-50: #f2f2f3;
-  --gw-bg-white: #fafafa;
-}
 
 @layer components {
   /* ---------- Hero background ---------- */
@@ -230,7 +202,7 @@
   /* 모달 내부 스크롤바 — 라운드 코너를 가리지 않도록 얇게 */
   .home-overlay-scroll {
     scrollbar-width: thin;
-    scrollbar-color: var(--gw-gray-300) transparent;
+    scrollbar-color: var(--color-gray-300) transparent;
   }
 
   .home-overlay-scroll::-webkit-scrollbar {
@@ -239,7 +211,7 @@
 
   .home-overlay-scroll::-webkit-scrollbar-thumb {
     border-radius: 999px;
-    background: var(--gw-gray-300);
+    background: var(--color-gray-300);
   }
 
   /**

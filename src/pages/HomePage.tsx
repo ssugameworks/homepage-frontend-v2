@@ -1,4 +1,3 @@
-import { Footer } from "@/components/layout";
 import { ActivitiesSection } from "./home/ActivitiesSection";
 import { CtaSection } from "./home/CtaSection";
 import { FaqSection } from "./home/FaqSection";
@@ -19,8 +18,6 @@ export default function HomePage() {
       <FaqSection />
       <CtaSection />
       <PartnersSection />
-      {/* NOTE: 다른 페이지에도 푸터가 확정되면 RootLayout으로 이동 */}
-      <Footer />
       <ScrollIndicator />
     </div>
   );

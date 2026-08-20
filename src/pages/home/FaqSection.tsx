@@ -1,7 +1,7 @@
 import { useId, useState } from "react";
 import { Link } from "react-router-dom";
+import { IconExternalArrow, IconQnaChevron } from "@/assets/icons";
 import { ROUTES } from "@/router/routes";
-import { ExternalArrowIcon, QnaChevronIcon } from "./icons";
 
 // TODO: FAQ 내용 확정 필요 (Figma memo — 실제 내용으로 채워야 함)
 const FAQ_ITEMS = [
@@ -39,15 +39,13 @@ export function FaqSection() {
 
   return (
     <section
-      className="flex min-h-[499px] items-center bg-[color:var(--gw-bg-white)] py-12 lg:min-h-[600px] lg:py-0"
+      className="flex min-h-124.75 items-center bg-surface-white py-12 lg:min-h-150 lg:py-0"
       aria-label="자주 묻는 질문"
     >
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-6 px-6 lg:gap-8 lg:px-[150px]">
+      <div className="mx-auto flex w-full max-w-360 flex-col gap-6 px-6 lg:gap-8 lg:px-37.5">
         <div className="flex flex-col gap-2">
-          <p className="font-medium text-[16px] text-[color:var(--gw-gray-400)] leading-[1.5]">
-            FAQ
-          </p>
-          <h2 className="font-bold text-[24px] text-[color:var(--gw-gray-950)] leading-[1.5] lg:text-[38px]">
+          <p className="font-medium text-base text-gray-400 leading-normal">FAQ</p>
+          <h2 className="font-bold text-2xl text-gray-950 leading-normal lg:typo-heading1">
             자주 묻는 질문
           </h2>
         </div>
@@ -61,7 +59,7 @@ export function FaqSection() {
 
               return (
                 // biome-ignore lint/suspicious/noArrayIndexKey: 질문 확정 전 placeholder가 중복됨
-                <li key={index} className="border-[color:var(--gw-gray-200)] border-b">
+                <li key={index} className="border-gray-200 border-b">
                   <h3>
                     <button
                       type="button"
@@ -71,19 +69,21 @@ export function FaqSection() {
                       onClick={() => setOpenIndex(isOpen ? null : index)}
                       className="flex w-full cursor-pointer items-center gap-6 border-0 bg-transparent p-2.5 text-left"
                     >
-                      <span className="font-bold text-[20px] text-[color:var(--gw-primary-800)] leading-[1.5] lg:text-[28px]">
+                      <span className="font-bold text-xl text-primary-700 leading-normal lg:typo-heading2">
                         Q
                       </span>
                       <span className="flex flex-1 items-center justify-between">
-                        <span className="font-medium text-[16px] text-[color:var(--gw-primary-950)] leading-[1.5] lg:text-[18px]">
+                        <span className="font-medium text-base text-primary-950 leading-normal lg:text-lg">
                           {item.question}
                         </span>
-                        <QnaChevronIcon
-                          className={[
-                            "shrink-0 text-[color:var(--gw-primary-950)] transition-transform duration-300",
-                            isOpen ? "rotate-180" : "",
-                          ].join(" ")}
-                        />
+                        <span className="flex size-5 shrink-0 items-center justify-center">
+                          <IconQnaChevron
+                            className={[
+                              "text-primary-950 transition-transform duration-300",
+                              isOpen ? "rotate-180" : "",
+                            ].join(" ")}
+                          />
+                        </span>
                       </span>
                     </button>
                   </h3>
@@ -91,9 +91,9 @@ export function FaqSection() {
                     id={panelId}
                     aria-labelledby={buttonId}
                     hidden={!isOpen}
-                    className="p-2.5 pl-[52px]"
+                    className="p-2.5 pl-13"
                   >
-                    <p className="font-light text-[16px] text-[color:var(--gw-gray-600)] leading-[1.5]">
+                    <p className="font-light text-base text-gray-600 leading-normal">
                       {item.answer}
                     </p>
                   </section>
@@ -104,11 +104,11 @@ export function FaqSection() {
 
           <Link
             to={ROUTES.CONTACT}
-            className="flex flex-col items-start justify-center gap-1 text-[color:var(--gw-primary-700)]"
+            className="flex flex-col items-start justify-center gap-1 text-primary-600"
           >
-            <span className="flex items-center gap-2 font-medium text-[16px] leading-[1.5]">
+            <span className="flex items-center gap-2 font-medium text-base leading-normal">
               직접 문의하기
-              <ExternalArrowIcon />
+              <IconExternalArrow className="rotate-[-135deg]" />
             </span>
             <span aria-hidden="true" className="block h-px w-full bg-current" />
           </Link>

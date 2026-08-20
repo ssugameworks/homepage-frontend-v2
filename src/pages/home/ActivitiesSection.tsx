@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { IconPlus } from "@/assets/icons";
 import iconBuddy from "@/assets/icons/activity/buddy.png";
 import iconCoffeechat from "@/assets/icons/activity/coffeechat.png";
 import iconFlow from "@/assets/icons/activity/flow.png";
@@ -7,7 +8,7 @@ import iconMentoring from "@/assets/icons/activity/mentoring.png";
 import iconMt from "@/assets/icons/activity/mt.png";
 import { ActivityOverlay } from "./ActivityOverlay";
 import { ACTIVITY_OVERLAYS, type ActivityId } from "./activityOverlays";
-import { PlusCircleIcon } from "./icons";
+import { glassButtonClass } from "./glassButton";
 
 type Activity = {
   id: ActivityId;
@@ -74,42 +75,24 @@ const ACTIVITIES: Activity[] = [
   },
 ];
 
-/**
- * Figma spec (web 1440×900 · mobile 390×700)
- * - 섹션: bg #FAFAFA, padding 150(web) / 24(mobile), content 세로 중앙,
- *   gap/xlarge (32 · mobile 24)
- * - main_content/title: gap 8 — 캡션 body1-500(16) gray-400,
- *   타이틀 heading1-700 (38 · mobile 24) gray-950
- * - 카드(Home/Activity/card): card/card 340(mobile 300) 정사각, padding gap/xlarge(32 · mobile 24),
- *   radius gap/large(24 · mobile 16), bg semantic/shadow(white 5%),
- *   효과 activity(0 2 5 #000 20%) — 안쪽 pt 16, 위 그룹 gap/xlarge
- * - 칩: padding 8/4, radius 16, bg gray-50, 아이콘 15 + body1-500(16) gray-600
- * - 제목: heading2-700 (28 · mobile 20), primary-950
- * - 설명: body1-300 (16/150, Light), tracking -3%, primary-950
- * - 버튼(Button/Detail): padding 16/8, radius 32, gap 8, bg button/primary-mixed,
- *   그림자 0 0 2 #000 20%, label body1-700(16) gray-50 + plus 아이콘 16
- *   — 누르면 활동 상세 모달(overlay/main)이 열림
- * - 카드 배치: flex-wrap gap 32, 중앙 정렬 / mobile: gap 24 스와이프 캐러셀
- */
+/** 주요 활동 카드 목록. 카드를 누르면 활동 상세 모달(overlay/main)이 열린다. */
 export function ActivitiesSection() {
   const [openId, setOpenId] = useState<ActivityId | null>(null);
 
   return (
     <section
-      className="flex min-h-[700px] items-center bg-[color:var(--gw-bg-white)] py-16 lg:min-h-[900px]"
+      className="flex min-h-175 items-center bg-surface-white py-16 lg:min-h-225"
       aria-label="주요 활동"
     >
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-6 px-6 lg:gap-8 lg:px-[150px]">
+      <div className="mx-auto flex w-full max-w-360 flex-col gap-6 px-6 lg:gap-8 lg:px-37.5">
         <div className="flex flex-col gap-2">
-          <p className="font-medium text-[16px] text-[color:var(--gw-gray-400)] leading-[1.5]">
-            Activities
-          </p>
-          <h2 className="font-bold text-[24px] text-[color:var(--gw-gray-950)] leading-[1.5] lg:text-[38px]">
+          <p className="font-medium text-base text-gray-400 leading-normal">Activities</p>
+          <h2 className="font-bold text-2xl text-gray-950 leading-normal lg:typo-heading1">
             한 해동안 함께할 주요 활동이에요.
           </h2>
         </div>
 
-        <ul className="home-carousel -mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 lg:mx-0 lg:flex-wrap lg:justify-center lg:gap-8 lg:overflow-visible lg:px-0 lg:pb-0">
+        <ul className="-mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:flex-wrap lg:justify-center lg:gap-8 lg:overflow-visible lg:px-0 lg:pb-0">
           {ACTIVITIES.map((activity) => (
             <ActivityCard
               key={activity.id}
@@ -129,21 +112,21 @@ export function ActivitiesSection() {
 
 function ActivityCard({ activity, onOpen }: { activity: Activity; onOpen: () => void }) {
   return (
-    <li className="home-card size-[300px] shrink-0 snap-center rounded-[16px] bg-white p-6 lg:size-[340px] lg:rounded-[24px] lg:p-8">
+    <li className="size-75 shrink-0 snap-center rounded-2xl bg-white p-6 shadow-[0_2px_5px_rgba(0,0,0,0.2)] lg:size-85 lg:rounded-3xl lg:p-8">
       <div className="flex h-full flex-col items-start justify-between pt-4">
         <div className="flex flex-col items-start gap-6 lg:gap-8">
-          <span className="flex items-center gap-2 rounded-[16px] bg-[color:var(--gw-gray-50)] px-2 py-1">
-            <img src={activity.icon} alt="" className="size-[15px]" />
-            <span className="font-medium text-[16px] text-[color:var(--gw-gray-600)] leading-[1.5]">
+          <span className="flex items-center gap-2 rounded-[16px] bg-gray-100 px-2 py-1">
+            <img src={activity.icon} alt="" className="size-3.75" />
+            <span className="font-medium text-base text-gray-600 leading-normal">
               {activity.chip}
             </span>
           </span>
 
           <div className="flex flex-col gap-2">
-            <h3 className="font-bold text-[20px] text-[color:var(--gw-primary-950)] leading-[1.5] lg:text-[28px]">
+            <h3 className="font-bold text-xl text-primary-950 leading-normal lg:typo-heading2">
               {activity.title}
             </h3>
-            <p className="whitespace-pre-line font-light text-[16px] text-[color:var(--gw-primary-950)] leading-[1.5] tracking-[-0.03em]">
+            <p className="whitespace-pre-line font-light text-base text-primary-950 leading-normal tracking-[-0.03em]">
               {activity.description}
             </p>
           </div>
@@ -153,10 +136,12 @@ function ActivityCard({ activity, onOpen }: { activity: Activity; onOpen: () => 
           type="button"
           onClick={onOpen}
           aria-haspopup="dialog"
-          className="home-btn home-btn-primary gap-2 whitespace-nowrap px-4 py-2 font-bold text-[16px] text-[color:var(--gw-gray-50)] leading-[1.5]"
+          className={`${glassButtonClass({ variant: "primary" })} gap-2 whitespace-nowrap px-4 py-2 font-bold text-base text-gray-100 leading-normal`}
         >
           {activity.buttonLabel}
-          <PlusCircleIcon />
+          <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-gray-100">
+            <IconPlus className="size-2.5 text-primary-400" />
+          </span>
         </button>
       </div>
     </li>

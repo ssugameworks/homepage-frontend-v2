@@ -22,20 +22,18 @@ export function HistorySection() {
 
   return (
     <section
-      className="flex min-h-[200px] items-center bg-[color:var(--gw-bg-white)] py-10 lg:min-h-[500px] lg:py-0"
+      className="flex min-h-50 items-center bg-surface-white py-10 lg:min-h-125 lg:py-0"
       aria-label="게임웍스가 걸어온 시간"
     >
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center gap-6 px-6 text-center lg:gap-8">
+      <div className="mx-auto flex w-full max-w-360 flex-col items-center gap-6 px-6 text-center lg:gap-8">
         <div className="flex flex-col items-center gap-2">
-          <p className="font-medium text-[16px] text-[color:var(--gw-gray-400)] leading-[1.5]">
-            History
-          </p>
-          <h2 className="font-bold text-[24px] text-black leading-[1.5] lg:text-[38px]">
+          <p className="font-medium text-base text-gray-400 leading-normal">History</p>
+          <h2 className="font-bold text-2xl text-black leading-normal lg:typo-heading1">
             함께 걸어온 시간
           </h2>
         </div>
 
-        <div ref={ref} className="flex justify-center gap-[30px] rounded-[15px] p-4 lg:gap-[100px]">
+        <div ref={ref} className="flex justify-center gap-7.5 rounded-[15px] p-4 lg:gap-25">
           {STATS.map((stat) => (
             <StatItem key={stat.label} {...stat} start={inView} />
           ))}
@@ -61,11 +59,12 @@ function StatItem({
   return (
     <div className="flex flex-col items-center">
       {/* Figma: 숫자·접미사 모두 hero1의 letter-spacing(-3% of 80 = -2.4px · mobile -1.08px) 상속 */}
-      <p className="font-bold text-[color:var(--gw-primary-900)] tracking-[-1.08px] lg:tracking-[-2.4px]">
-        <span className="text-[36px] leading-[1.3] lg:text-[80px]">{current}</span>
-        <span className="text-[28px] leading-[1.5] lg:text-[38px]">{suffix}</span>
+      <p className="font-bold text-primary-800 tracking-[-1.08px] lg:tracking-[-2.4px]">
+        <span className="text-4xl leading-[1.3] lg:text-[80px]">{current}</span>
+        {/* 상위 p의 tracking(-3%, 숫자 크기 기준)을 그대로 물려받아야 해서 typo-* 토큰(자체 tracking 포함) 대신 크기만 지정한다 */}
+        <span className="text-[28px] leading-normal lg:text-[38px]">{suffix}</span>
       </p>
-      <p className="font-light text-[16px] text-[color:var(--gw-gray-600)] leading-[1.5] tracking-[-0.48px]">
+      <p className="font-light text-base text-gray-600 leading-normal tracking-[-0.48px]">
         {label}
       </p>
     </div>
