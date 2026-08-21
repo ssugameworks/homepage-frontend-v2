@@ -177,7 +177,7 @@ export function FormWizard<TFormApi extends AnyFormApi>({
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-5 py-16 short:md:py-8 md:px-6 md:py-22">
-      <div className="flex w-full max-w-82 flex-col items-center gap-6 short:md:gap-4 md:max-w-130 md:gap-6.75">
+      <div className="flex w-full max-w-82 flex-col items-center gap-6 short:md:gap-4 md:max-w-130 md:gap-4">
         {title}
 
         <FormCard

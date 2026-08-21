@@ -50,7 +50,7 @@ export function StepIndicator({ step, total, direction = 1, className }: StepInd
         aria-valuemax={safeTotal}
         aria-valuenow={safeStep}
         aria-valuetext={`${safeStep}/${safeTotal}`}
-        className="relative h-1 w-full overflow-hidden rounded-full bg-gray-200 md:h-1.5"
+        className="relative h-1 w-full overflow-hidden rounded-full bg-gray-200 md:h-1.5 md:max-w-60"
       >
         <div
           className="absolute inset-y-0 left-0 rounded-full bg-(--color-button-outline) transition-[width] duration-200 ease-out"

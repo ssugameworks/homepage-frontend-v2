@@ -20,7 +20,7 @@ const card = tv({
 export function FormCard({ children, className, footer }: FormCardProps) {
   return (
     <div className={card({ className })}>
-      <div className="flex min-h-0 flex-1 flex-col overflow-visible px-9 pt-4.5 pb-4 md:px-12.75 md:pt-10 md:pb-6">
+      <div className="flex min-h-0 flex-1 flex-col overflow-visible px-9 pt-4.5 pb-4 md:px-12.75 md:pt-6 md:pb-6">
         {children}
       </div>
       {footer ? (

@@ -90,7 +90,7 @@ function ActivityIntro({
     <div className="flex flex-1 flex-col items-center px-5 py-16 md:px-6 md:py-22">
       <div className="flex w-full max-w-82 flex-col items-center gap-6 md:max-w-130 md:gap-6.75">
         <h1 className="text-center font-bold text-primary-950">
-          <span className="typo-heading3 md:typo-heading1">{title}</span>
+          <span className="typo-heading2 md:typo-heading1">{title}</span>
         </h1>
 
         <ActivityInfoCard
@@ -127,7 +127,7 @@ function ActivityIntroSkeleton() {
     <div className="flex flex-1 flex-col items-center px-5 py-16 md:px-6 md:py-22">
       <div className="flex w-full max-w-82 flex-col items-center gap-6 md:max-w-130 md:gap-6.75">
         <h1 className="text-center font-bold text-primary-950">
-          <span className={`typo-heading3 md:typo-heading1 ${skeletonBar}`}>
+          <span className={`typo-heading2 md:typo-heading1 ${skeletonBar}`}>
             활동 정보를 불러오고 있어요
           </span>
         </h1>

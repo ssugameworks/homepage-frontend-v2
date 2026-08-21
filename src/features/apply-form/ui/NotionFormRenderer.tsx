@@ -194,7 +194,7 @@ export function NotionFormRenderer({ schema }: NotionFormRendererProps) {
       storageKey={`notion-form:${schema.slug}`}
       title={
         <h1 className="text-center font-bold text-primary-950">
-          <span className="typo-heading3 md:typo-heading1">{schema.title}</span>
+          <span className="typo-heading2 md:typo-heading1">{schema.title}</span>
         </h1>
       }
       completeSlot={

@@ -16,7 +16,7 @@ export type SelectProps = {
 const select = tv({
   slots: {
     base: "flex w-full flex-col items-start",
-    label: "px-2 py-1 typo-body1 typo-medium text-primary-950",
+    label: "px-2 py-1 typo-caption typo-medium text-primary-950 md:typo-body1",
     trigger: [
       "flex h-12.75 w-full cursor-pointer items-center justify-between rounded-2xl border-2 border-solid border-gray-200 bg-surface-white px-4.25 py-0 text-left outline-none transition-colors duration-150",
       "typo-subheading typo-medium",

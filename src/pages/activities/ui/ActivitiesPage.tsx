@@ -209,14 +209,7 @@ function ActivitiesListSkeleton({ filterTabs }: { filterTabs: ReactNode }) {
         </div>
 
         <div className="min-w-0 lg:max-w-5xl lg:flex-1">
-          {[0, 1, 2].map((i) => (
-            <ActivityCardSkeleton
-              key={i}
-              isLast={i === 2}
-              showMonthHeader={i === 0}
-              filterTabs={filterTabs}
-            />
-          ))}
+          <ActivityCardSkeleton isLast showMonthHeader filterTabs={filterTabs} />
 
           <div className="hidden h-px w-full bg-gray-200 lg:block" />
         </div>

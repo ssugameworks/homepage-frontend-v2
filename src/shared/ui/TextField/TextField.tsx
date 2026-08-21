@@ -14,7 +14,7 @@ export type TextFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size">
 const textField = tv({
   slots: {
     base: "flex w-full flex-col items-start",
-    label: "px-2 py-1 typo-body1 text-primary-950",
+    label: "px-2 py-1 typo-caption text-primary-950 md:typo-body1",
     input: [
       "h-12.75 w-full rounded-2xl border-2 border-solid bg-transparent px-4.25 py-0 outline-none transition-colors duration-150",
       "typo-subheading typo-medium text-primary-950",
