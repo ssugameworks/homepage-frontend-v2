@@ -11,9 +11,7 @@ type SchoolInfoStepProps = {
 export function SchoolInfoStep({ form }: SchoolInfoStepProps) {
   return (
     <div className="flex flex-col gap-4 md:gap-6">
-      <p className="typo-body1 typo-medium text-primary-950 md:typo-subheading">
-        학교 정보를 알려주세요
-      </p>
+      <p className="typo-subheading typo-medium text-primary-950">학교 정보를 알려주세요</p>
 
       <form.Field name="major">
         {(majorField) => (

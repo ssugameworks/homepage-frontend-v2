@@ -26,7 +26,7 @@ const textArea = tv({
     base: "flex w-full flex-col items-start",
     label: "mb-4 typo-subheading typo-medium text-primary-950",
     textarea: [
-      "h-61.5 w-full resize-none rounded-2xl border-2 border-solid bg-transparent px-4.25 py-2.75",
+      "h-75 w-full resize-none rounded-2xl border-2 border-solid bg-transparent px-4.25 py-2.75 md:h-90",
       "typo-subheading typo-medium text-primary-950 outline-none transition-colors duration-150",
       "placeholder:font-medium placeholder:text-gray-400",
     ],

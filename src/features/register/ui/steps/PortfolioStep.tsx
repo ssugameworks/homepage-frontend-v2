@@ -10,7 +10,7 @@ type PortfolioStepProps = {
 export function PortfolioStep({ form }: PortfolioStepProps) {
   return (
     <div className="flex flex-col gap-6">
-      <p className="typo-body1 typo-medium text-primary-950 md:typo-subheading">
+      <p className="typo-subheading typo-medium text-primary-950">
         포트폴리오 또는 Github 링크를 남겨주세요
       </p>
 

@@ -9,7 +9,7 @@ export function GradeStep({ form }: { form: RegisterFormApi }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <p id={labelId} className="typo-body1 typo-medium text-primary-950 md:typo-subheading">
+      <p id={labelId} className="typo-subheading typo-medium text-primary-950">
         현재 해당하시는 학년을 선택해 주세요
       </p>
 

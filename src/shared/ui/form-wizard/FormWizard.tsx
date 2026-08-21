@@ -18,10 +18,10 @@ function readProgress(storageKey: string): PersistedProgress | null {
 }
 
 const mobileCtaClass =
-  "max-md:h-auto max-md:min-h-0 max-md:w-full max-md:rounded-[0.625rem] max-md:px-6 max-md:py-2.25 max-md:typo-body1 max-md:typo-bold";
+  "max-md:h-13 max-md:min-h-0 max-md:w-full max-md:rounded-2xl max-md:px-6 max-md:py-3 max-md:typo-subheading max-md:typo-bold";
 
 const mobilePairClass =
-  "max-md:h-auto max-md:min-h-0 max-md:w-auto max-md:flex-1 max-md:rounded-[0.625rem] max-md:px-4 max-md:py-2.25 max-md:typo-body1 max-md:typo-bold";
+  "max-md:h-13 max-md:min-h-0 max-md:w-auto max-md:flex-1 max-md:rounded-2xl max-md:px-4 max-md:py-3 max-md:typo-subheading max-md:typo-bold";
 
 const stepVariants = {
   enter: (direction: 1 | -1) => ({ opacity: 0, x: direction * 16 }),

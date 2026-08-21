@@ -23,7 +23,7 @@ import { Button } from "@/shared/ui";
 dayjs.extend(customParseFormat);
 
 const mobileCtaClass =
-  "max-md:h-auto max-md:min-h-0 max-md:rounded-[0.625rem] max-md:px-6 max-md:py-2.25 max-md:typo-body1 max-md:typo-bold";
+  "max-md:h-13 max-md:min-h-0 max-md:rounded-2xl max-md:px-6 max-md:py-3 max-md:typo-subheading max-md:typo-bold";
 
 /** 브라우저 로컬 타임존과 무관하게 KST 기준으로 신청기간을 판정한다. */
 function isApplyPeriodOpen(applyPeriod: string, now = dayjs(todayKstDateString())) {

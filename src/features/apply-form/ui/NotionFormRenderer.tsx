@@ -87,9 +87,7 @@ function StudentIdField({ fieldApi, form }: { fieldApi: AnyFieldApi; form: AnyFo
 
   return (
     <div className="flex flex-col gap-4 md:gap-6">
-      <p className="typo-body1 typo-medium text-primary-950 md:typo-subheading">
-        학번을 입력해주세요
-      </p>
+      <p className="typo-subheading typo-medium text-primary-950">학번을 입력해주세요</p>
 
       <div className="flex flex-col gap-2">
         <TextField

@@ -17,7 +17,7 @@ function formatPhoneInput(value: string) {
 export function BasicInfoStep({ form }: BasicInfoStepProps) {
   return (
     <div className="flex flex-col gap-4 md:gap-6">
-      <p className="typo-body1 typo-medium text-primary-950 md:typo-subheading">
+      <p className="typo-subheading typo-medium text-primary-950">
         <span className="md:hidden">
           지원자님의
           <br />
