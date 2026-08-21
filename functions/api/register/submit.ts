@@ -1,59 +1,36 @@
 import { SubmitLockedError, withSubmitLock } from "../_lib/lock";
 import { createPage, type Env, queryDataSource, updatePage } from "../_lib/notion";
 import { verifyTurnstile } from "../_lib/turnstile";
-import { isHttpUrl, isValidPhone } from "../_lib/validate";
+import { isValidPaymentDate, isValidPhone, toIsoDate } from "../_lib/validate";
 
 type SubmitBody = {
   studentId?: string;
   name?: string;
   phone?: string;
-  major?: string;
-  grade?: string;
-  parts?: string[];
-  motivation?: string;
-  portfolioUrl?: string;
-  githubUrl?: string;
+  privacyConsent?: boolean;
+  paymentStatus?: string;
+  paymentDate?: string;
   turnstileToken?: string;
 };
 
-const GRADE_OPTIONS = ["1학년", "2학년", "3학년", "4학년 이상", "휴학"];
-const PART_OPTIONS = ["기획", "UX/UI 디자인", "프론트엔드", "백엔드", "기타"];
-const MAJOR_OPTIONS = [
-  "글로벌미디어학부",
-  "소프트웨어학부",
-  "전자정보공학부",
-  "컴퓨터학부",
-  "AI융합학부",
-  "디지털미디어학과",
-];
+const PAYMENT_STATUS_OPTIONS = ["입금 완료 했습니다", "군휴학생입니다"];
+const PAYMENT_COMPLETED = "입금 완료 했습니다";
 
-/** 프론트엔드 zod 스키마(src/components/register/validation.ts)와 동일한 규칙을 서버에서도 강제한다. */
+/** 프론트엔드 zod 스키마(src/features/register/model/validation.ts)와 동일한 규칙을 서버에서도 강제한다. */
 function validateBody(body: SubmitBody): string | null {
   if (!body.name || body.name.trim().length < 2) return "이름을 2자 이상 입력해주세요";
 
-  if (!isValidPhone(body.phone ?? "")) return "올바른 휴대폰 번호를 입력해주세요";
+  if (!isValidPhone(body.phone ?? "")) return "올바른 연락처를 입력해주세요";
 
-  if (!body.major || !MAJOR_OPTIONS.includes(body.major)) return "학과를 선택해주세요";
-  if (!body.grade || !GRADE_OPTIONS.includes(body.grade)) return "학년을 선택해주세요";
+  if (body.privacyConsent !== true) return "개인정보 수집 및 이용에 동의해주세요";
 
-  if (
-    !Array.isArray(body.parts) ||
-    body.parts.length === 0 ||
-    !body.parts.every((part) => typeof part === "string" && PART_OPTIONS.includes(part))
-  ) {
-    return "파트를 선택해주세요";
+  if (!body.paymentStatus || !PAYMENT_STATUS_OPTIONS.includes(body.paymentStatus)) {
+    return "입금 여부를 선택해주세요";
   }
 
-  const motivation = (body.motivation ?? "").trim();
-  if (motivation.length < 50 || motivation.length > 150) {
-    return "지원 계기는 50자 이상 150자 이내로 작성해주세요";
+  if (body.paymentStatus === PAYMENT_COMPLETED && !isValidPaymentDate(body.paymentDate ?? "")) {
+    return "회비 납부 날짜를 YYYY/MM/DD 형식으로 입력해주세요";
   }
-
-  const portfolioUrl = (body.portfolioUrl ?? "").trim();
-  const githubUrl = (body.githubUrl ?? "").trim();
-  if (portfolioUrl && !isHttpUrl(portfolioUrl)) return "올바른 포트폴리오 URL을 입력해주세요";
-  if (githubUrl && !isHttpUrl(githubUrl)) return "올바른 깃허브 URL을 입력해주세요";
-  if (!portfolioUrl && !githubUrl) return "포트폴리오 또는 깃허브 링크를 입력해주세요";
 
   return null;
 }
@@ -79,13 +56,10 @@ export async function onRequestPost(context: Context) {
     typeof body.studentId === "string" &&
     typeof body.name === "string" &&
     typeof body.turnstileToken === "string" &&
-    (body.parts === undefined || Array.isArray(body.parts)) &&
     isOptionalString(body.phone) &&
-    isOptionalString(body.major) &&
-    isOptionalString(body.grade) &&
-    isOptionalString(body.motivation) &&
-    isOptionalString(body.portfolioUrl) &&
-    isOptionalString(body.githubUrl);
+    isOptionalString(body.paymentStatus) &&
+    isOptionalString(body.paymentDate) &&
+    (body.privacyConsent === undefined || typeof body.privacyConsent === "boolean");
   if (!isValid) {
     return Response.json({ error: "요청 형식이 올바르지 않아요" }, { status: 400 });
   }
@@ -118,15 +92,17 @@ export async function onRequestPost(context: Context) {
         filter: { property: "학번", title: { equals: studentId } },
       });
 
+      const paymentDate =
+        body.paymentStatus === PAYMENT_COMPLETED && body.paymentDate
+          ? toIsoDate(body.paymentDate)
+          : null;
+
       const properties = {
         이름: { rich_text: [{ text: { content: body.name } }] },
         전화번호: { phone_number: body.phone ?? null },
-        학과: body.major ? { select: { name: body.major } } : { select: null },
-        학년: body.grade ? { select: { name: body.grade } } : { select: null },
-        파트: { multi_select: (body.parts ?? []).map((name) => ({ name })) },
-        지원동기: { rich_text: [{ text: { content: body.motivation ?? "" } }] },
-        포트폴리오링크: { url: body.portfolioUrl || null },
-        깃허브링크: { url: body.githubUrl || null },
+        개인정보동의: { checkbox: body.privacyConsent === true },
+        입금여부: body.paymentStatus ? { select: { name: body.paymentStatus } } : { select: null },
+        납부날짜: paymentDate ? { date: { start: paymentDate } } : { date: null },
         검토상태: { select: { name: "신규" } },
       };
 
