@@ -51,13 +51,13 @@ export function BasicInfoStep({ form }: BasicInfoStepProps) {
           const hasError = field.state.value !== "" && Boolean(message);
           return (
             <TextField
-              label="휴대폰 번호"
+              label="연락처"
               name="phone"
               type="tel"
               inputMode="numeric"
               autoComplete="tel"
               maxLength={13}
-              placeholder="휴대폰 번호를 입력해주세요"
+              placeholder="연락처를 입력해주세요"
               value={field.state.value}
               onChange={(e) => field.handleChange(formatPhoneInput(e.target.value))}
               hint={hasError ? message : undefined}

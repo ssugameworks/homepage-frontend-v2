@@ -1,18 +1,17 @@
+import { useStore } from "@tanstack/react-form";
 import { useNavigate } from "react-router-dom";
 import {
   BasicInfoStep,
+  ConsentStep,
   canProceedBasicInfo,
-  canProceedGrade,
-  canProceedMotivation,
-  canProceedPart,
-  canProceedPortfolio,
-  canProceedSchoolInfo,
-  GradeStep,
-  MotivationStep,
-  PartStep,
-  PortfolioStep,
+  canProceedConsent,
+  canProceedPaymentDate,
+  canProceedPaymentInfo,
+  canProceedStudentId,
+  PaymentDateStep,
+  PaymentInfoStep,
   type RegisterFormApi,
-  SchoolInfoStep,
+  StudentIdStep,
   submitRegisterForm,
   useRegisterForm,
 } from "@/features/register";
@@ -26,40 +25,45 @@ import {
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string;
 
-const REGISTER_STEPS: StepDefinition<RegisterFormApi>[] = [
-  {
-    id: "basic-info",
-    render: (form) => <BasicInfoStep form={form} />,
-    canProceed: canProceedBasicInfo,
-  },
-  {
-    id: "school-info",
-    render: (form) => <SchoolInfoStep form={form} />,
-    canProceed: canProceedSchoolInfo,
-  },
-  { id: "grade", render: (form) => <GradeStep form={form} />, canProceed: canProceedGrade },
-  { id: "part", render: (form) => <PartStep form={form} />, canProceed: canProceedPart },
-  {
-    id: "motivation",
-    render: (form) => <MotivationStep form={form} />,
-    canProceed: canProceedMotivation,
-  },
-  {
-    id: "portfolio",
-    render: (form) => <PortfolioStep form={form} />,
-    canProceed: canProceedPortfolio,
-  },
-  createCaptchaStep<RegisterFormApi>(TURNSTILE_SITE_KEY),
-];
-
 export default function RegisterPage() {
   const navigate = useNavigate();
   const form = useRegisterForm();
+  const paymentStatus = useStore(form.store, (state) => state.values.paymentStatus);
+
+  const steps: StepDefinition<RegisterFormApi>[] = [
+    { id: "consent", render: (f) => <ConsentStep form={f} />, canProceed: canProceedConsent },
+    {
+      id: "basic-info",
+      render: (f) => <BasicInfoStep form={f} />,
+      canProceed: canProceedBasicInfo,
+    },
+    {
+      id: "student-id",
+      render: (f) => <StudentIdStep form={f} />,
+      canProceed: canProceedStudentId,
+    },
+    {
+      id: "payment-info",
+      render: (f) => <PaymentInfoStep form={f} />,
+      canProceed: canProceedPaymentInfo,
+    },
+    // 군휴학생은 회비가 면제되므로 납부 날짜를 물어볼 필요가 없다.
+    ...(paymentStatus === "군휴학생입니다"
+      ? []
+      : [
+          {
+            id: "payment-date",
+            render: (f) => <PaymentDateStep form={f} />,
+            canProceed: canProceedPaymentDate,
+          } satisfies StepDefinition<RegisterFormApi>,
+        ]),
+    createCaptchaStep<RegisterFormApi>(TURNSTILE_SITE_KEY),
+  ];
 
   return (
     <FormWizard
       form={form}
-      steps={REGISTER_STEPS}
+      steps={steps}
       storageKey="register-form"
       title={
         <h1 className="text-center font-bold text-primary-950">

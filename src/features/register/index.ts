@@ -1,37 +1,35 @@
 export { submitRegisterForm } from "./api/registerApi";
 export {
-  GRADE_OPTIONS,
   INITIAL_REGISTER_FORM,
-  MAJOR_OPTIONS,
-  PART_OPTIONS,
+  PAYMENT_ACCOUNT_TEXT,
+  PAYMENT_AMOUNT_TEXT,
+  PAYMENT_STATUS_OPTIONS,
 } from "./model/constants";
 export type { RegisterForm } from "./model/types";
 export type { RegisterFormApi } from "./model/useRegisterForm";
 export { useRegisterForm } from "./model/useRegisterForm";
 export {
-  isValidMotivation,
+  formatPaymentDate,
+  formatStudentId,
   isValidName,
+  isValidPaymentDate,
   isValidPhone,
   isValidStudentId,
-  isValidUrl,
-  motivationSchema,
   nameSchema,
+  paymentDateSchema,
   phoneSchema,
   studentIdSchema,
-  urlSchema,
   validateRegisterField,
 } from "./model/validation";
 export {
   BasicInfoStep,
+  ConsentStep,
   canProceedBasicInfo,
-  canProceedGrade,
-  canProceedMotivation,
-  canProceedPart,
-  canProceedPortfolio,
-  canProceedSchoolInfo,
-  GradeStep,
-  MotivationStep,
-  PartStep,
-  PortfolioStep,
-  SchoolInfoStep,
+  canProceedConsent,
+  canProceedPaymentDate,
+  canProceedPaymentInfo,
+  canProceedStudentId,
+  PaymentDateStep,
+  PaymentInfoStep,
+  StudentIdStep,
 } from "./ui/steps";
