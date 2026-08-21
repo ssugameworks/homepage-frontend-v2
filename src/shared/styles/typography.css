@@ -1,0 +1,80 @@
+/**
+ * Type style utilities — Figma TYPESTYLE
+ * Usage: class="typo-hero" | "typo-heading2 typo-medium" | "typo-body1 typo-light"
+ */
+
+@utility typo-hero {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-hero);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+@utility typo-heading1 {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-heading1);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+@utility typo-heading2 {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-heading2);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+@utility typo-heading3 {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-heading3);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+@utility typo-subheading {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-subheading);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+@utility typo-body1 {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-body1);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+@utility typo-body2 {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-body2);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+@utility typo-caption {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-relaxed);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+@utility typo-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+@utility typo-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+@utility typo-light {
+  font-weight: var(--font-weight-light);
+}

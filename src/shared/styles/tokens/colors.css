@@ -1,0 +1,79 @@
+/**
+ * Gameworks Design Tokens — Colors
+ * Figma: Gray Scale, Blue Scale, Text (on white)
+ */
+
+:root {
+  /* Gray Scale — dark → light */
+  --color-gray-950: #0c0c0d;
+  --color-gray-900: #252628;
+  --color-gray-800: #3d3f42;
+  --color-gray-700: #56585d;
+  --color-gray-600: #6e7177;
+  --color-gray-500: #888b91;
+  --color-gray-400: #a2a5a9;
+  --color-gray-300: #bdbec2;
+  --color-gray-200: #d7d8da;
+  --color-gray-100: #f2f2f3;
+
+  /* Blue / Primary Scale — dark → light */
+  --color-primary-950: #000b1a;
+  --color-primary-900: #00204d;
+  --color-primary-800: #003580;
+  --color-primary-700: #004bb2;
+  --color-primary-600: #0060e5;
+  --color-primary-500: #1a7aff;
+  --color-primary-400: #4d97ff;
+  --color-primary-300: #80b5ff;
+  --color-primary-200: #b2d3ff;
+  --color-primary-100: #ffffff;
+
+  /* Alias: 강조 블루 (헤더 active 등). Figma `color/primary/300` = #b2d3ff */
+  --color-primary: var(--color-primary-200);
+
+  /* Base */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-logo: #ececec;
+  --color-surface-white: #fafafa;
+
+  /**
+   * Text on white background
+   * 규칙: #777777보다 연하면 안 됨
+   * gray-950 / gray-800 / gray-600
+   */
+  --color-text-primary: var(--color-gray-950);
+  --color-text-secondary: var(--color-gray-800);
+  --color-text-tertiary: var(--color-gray-600);
+
+  /* Semantic (dark UI default) */
+  --color-background: var(--color-primary-950);
+  --color-foreground: var(--color-surface-white);
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-overlay: rgba(255, 255, 255, 0.05);
+
+  /**
+   * Button — Figma button/primary-mixed, primary-mixed-hover, secondary-mixed
+   * layered gradients: color overlay on white
+   */
+  --color-button-primary:
+    linear-gradient(90deg, rgba(26, 122, 255, 0.9) 0%, rgba(26, 122, 255, 0.9) 100%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 100%);
+  --color-button-primary-hover:
+    linear-gradient(90deg, rgba(0, 96, 229, 0.9) 0%, rgba(0, 96, 229, 0.9) 100%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 100%);
+  --color-button-disabled:
+    linear-gradient(90deg, rgba(178, 211, 255, 0.4) 0%, rgba(178, 211, 255, 0.4) 100%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%);
+  --color-button-solid: var(--color-primary-500);
+  --color-button-solid-hover: var(--color-primary-600);
+  --color-button-outline: rgba(43, 132, 255, 0.97);
+  --color-button-disabled-text: rgba(255, 255, 255, 0.4);
+
+  /* Accent — form validation */
+  --color-accent-green: #228738;
+  --color-accent-red: #de3412;
+
+  /* Icon */
+  --color-icon-primary: #256ef4;
+}

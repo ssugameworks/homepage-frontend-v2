@@ -1,0 +1,247 @@
+/**
+ * HomePage 전용 스타일 — Figma 측정값 기반. 색상은 프로젝트 공용 토큰(colors.css)을
+ * 그대로 쓴다(Figma 컬러 변수와 1:1로 매핑됨. primary 계열은 라벨이 한 단계씩 밀려 있어
+ * 값 기준으로 매핑: 예) Figma primary/900 #003580 = 프로젝트 primary-800).
+ *
+ * font 변수(web/mobile): hero1 80/36 · hero2 60/28 · heading1 38/24 ·
+ *  heading2 28/20 · heading3 22/18 · subheading 18/16 · body1 16 · body2 14 · caption 12
+ *  heading~caption line-height 150%, hero 130% (letter-spacing -3%)
+ *
+ * gap 변수 (web/mobile): ssmall 4 · small 8 · medium 16 · large 24/16 · xlarge 32/24 · xxlarge 48/32
+ * radius 변수: medium 16 · large 32 / card 340(web) · 300(mobile)
+ *
+ * NOTE: 컴포넌트 클래스는 `@layer components`에 넣어야 Tailwind 유틸리티(lg:hidden, px-8 …)가
+ *       덮어쓸 수 있다. 레이어 밖에 두면 유틸리티보다 우선순위가 높아진다.
+ */
+
+@layer components {
+  /* ---------- Hero background ---------- */
+
+  /* 배경은 Figma `image 44` 에셋을 그대로 사용하고, 로딩 전/여백은 시안의 최암부로 채움 */
+  .home-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: #01040f;
+  }
+
+  /* Figma 노트: 계속 움직이는 배경 (prefers-reduced-motion 시 정지) */
+  .home-hero-image {
+    animation: home-hero-drift 24s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  /* ---------- Button/filled ---------- */
+
+  /**
+   * Figma `Button/filled` — primary/secondary가 배경·라벨 색만 다르고 나머지는 완전히 동일
+   * radius 32 · 효과 스타일 glass(GLASS blur 24 + 그림자 0 0 2 #000 20%)
+   * padding·gap은 web/mobile이 달라 유틸리티 클래스로 지정
+   */
+  .home-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 32px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    isolation: isolate;
+    cursor: pointer;
+  }
+
+  /**
+   * 글래스 가장자리 하이라이트 — GLASS 이펙트가 테두리에 만드는 1px 밝은 링
+   * 시안 측정값(히어로): 안쪽 #0043DB → 테두리 #0257EF · 안쪽 #7A94D7 → 테두리 #93AFF0
+   * 두 경우 모두 "흰색 10%를 더한(가산)" 값과 일치해서 plus-lighter로 합성한다.
+   */
+  .home-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: inherit;
+    mix-blend-mode: plus-lighter;
+    pointer-events: none;
+  }
+
+  /* button/primary-mixed: #1A7AFF 90% 위에 #FFFFFF 70% */
+  .home-btn-primary {
+    background-image:
+      linear-gradient(90deg, rgba(26, 122, 255, 0.9) 0%, rgba(26, 122, 255, 0.9) 100%),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 100%);
+  }
+
+  /* button/secondary-mixed: #B2D3FF 40% 위에 #FFFFFF 60% */
+  .home-btn-secondary {
+    background-image:
+      linear-gradient(90deg, rgba(178, 211, 255, 0.4) 0%, rgba(178, 211, 255, 0.4) 100%),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.6) 100%);
+  }
+
+  /**
+   * 어두운 배경(히어로 · 모바일 CTA) 위에 올라가는 Button/filled
+   *
+   * Figma의 GLASS 이펙트는 배경색에 따라 굴절·틴트가 달라져서, 흰색 레이어를 그냥 알파 합성하는
+   * CSS와 결과가 갈린다. 밝은 배경(활동 카드) 위에서는 위의 mixed 값이 시안과 정확히 일치하지만,
+   * 어두운 배경 위에서는 CSS 쪽만 흰색이 번져서 뿌옇게 뜬다.
+   *   히어로 배경 #002290 위 — Figma: primary #0044DC / secondary #7A95D6
+   *                            mixed 그대로: #2981FB / #A3B7E0 (둘 다 과하게 밝음)
+   *
+   * 그래서 어두운 배경용은 시안 렌더값을 역산한 단일 레이어로 맞춘다(투과 32%라 글래스는 유지).
+   *   0.68·S + 0.32·bg = 시안색  →  primary S=(0,84,255) · secondary S=(179,203,247)
+   */
+  .home-btn-on-dark.home-btn-primary {
+    background-image: none;
+    background-color: rgba(0, 84, 255, 0.68);
+  }
+
+  .home-btn-on-dark.home-btn-secondary {
+    background-image: none;
+    background-color: rgba(179, 203, 247, 0.68);
+  }
+
+  /* Figma: 라벨 그룹에 걸린 hard-light 블렌드 (gap 8) */
+  .home-btn-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    mix-blend-mode: hard-light;
+    white-space: nowrap;
+  }
+
+  /**
+   * hover sweep — 왼→오로 차오르는 인터랙션 (Hover.css - Sweep To Right)
+   * Figma 노트 기준 '모집 중인 활동 보기' 버튼에만 적용
+   */
+  .home-sweep {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .home-sweep::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--sweep-color, rgba(179, 203, 247, 0.95));
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.3s ease-out;
+  }
+
+  .home-sweep:hover::before,
+  .home-sweep:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  /* ---------- Intro 하이라이트 ---------- */
+
+  /**
+   * 기획 → 디자인 → 개발 이 한 흐름으로 이어지듯 하이라이트가 미끄러져 이동
+   * (단어 유지 0.9s / 전환 0.35s, 위치·너비는 JS 측정값을 --hx/--hw로 전달)
+   */
+  .home-intro-words {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .home-intro-highlight {
+    position: absolute;
+    inset: 0;
+    display: inline-flex;
+    pointer-events: none;
+    clip-path: inset(0 calc(100% - var(--hx, 0px) - var(--hw, 0px)) 0 var(--hx, 0px));
+    transition: clip-path 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /**
+   * 색상 스타일 linear/intro — primary/900 80% → primary/800 80% → primary/900 80%
+   *
+   * 두 가지를 지켜야 Figma와 색이 같아진다.
+   * 1) 그라디언트는 "단어 하나" 폭에 걸려 있다. 줄 전체에 걸면 단어마다 그라디언트의 다른
+   *    구간만 보여서 세 단어 색이 전부 달라진다.
+   * 2) 하이라이트 레이어는 gray-950 글자 위에 겹쳐지므로, 80% 알파를 그대로 쓰면 검은 글자 위에
+   *    합성돼 훨씬 어두워진다. 그래서 배경(#FAFAFA) 위에 미리 합성한 불투명 색을 쓴다.
+   *    rgba(0,53,128,.8) → #325C98 · rgba(0,75,178,.8) → #326EC0
+   */
+  .home-intro-word {
+    background-image: linear-gradient(90deg, #325c98 2.941%, #326ec0 51.471%, #325c98 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ---------- Activity 카드 (효과 스타일 activity: 0 2 5 #000 20%) ---------- */
+
+  .home-card {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  /* ---------- CTA 배경 (색상 스타일 linear/CTA: primary/900 → primary/800) ---------- */
+
+  .home-cta {
+    background: linear-gradient(90deg, #003580 0%, #004bb2 100%);
+  }
+
+  /* ---------- Activities carousel (mobile) ---------- */
+
+  .home-carousel {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .home-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ---------- Activity overlay (모달) ---------- */
+
+  /* 모달 내부 스크롤바 — 라운드 코너를 가리지 않도록 얇게 */
+  .home-overlay-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-gray-300) transparent;
+  }
+
+  .home-overlay-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .home-overlay-scroll::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--color-gray-300);
+  }
+
+  /**
+   * overlay/text (인물 카드) — 사진 위로 흰색이 차오르고 하단이 primary/500으로 물드는 그라디언트
+   */
+  .home-overlay-person-text {
+    background-image:
+      linear-gradient(0deg, #4d97ff 9.1346%, rgba(178, 211, 255, 0) 100%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0) 22.596%, #ffffff 65.173%);
+  }
+}
+
+@keyframes home-hero-drift {
+  from {
+    transform: scale(1.04) translate3d(-1%, -0.5%, 0);
+  }
+  to {
+    transform: scale(1.1) translate3d(1.5%, 1%, 0);
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-image {
+    animation: none;
+  }
+
+  .home-sweep::before,
+  .home-intro-highlight {
+    transition: none;
+  }
+}
