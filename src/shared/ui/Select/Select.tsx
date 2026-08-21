@@ -16,28 +16,23 @@ export type SelectProps = {
 const select = tv({
   slots: {
     base: "flex w-full flex-col items-start",
-    label: "px-2 py-1 typo-caption typo-medium text-primary-950 md:typo-body1",
+    label: "px-2 py-1 typo-body1 typo-medium text-primary-950",
     trigger: [
-      "flex w-full cursor-pointer items-center justify-between bg-surface-white text-left outline-none",
-      "h-auto rounded-[0.625rem] border border-solid border-gray-200 px-2 py-1.5 transition-colors duration-150",
-      "typo-caption",
-      "md:h-12.75 md:rounded-2xl md:border-2 md:px-4.25 md:py-0",
-      "md:typo-subheading md:typo-medium",
+      "flex h-12.75 w-full cursor-pointer items-center justify-between rounded-2xl border-2 border-solid border-gray-200 bg-surface-white px-4.25 py-0 text-left outline-none transition-colors duration-150",
+      "typo-subheading typo-medium",
       "hover:border-(--color-button-outline)/50 focus:border-(--color-button-outline)",
     ],
     chevron: "relative h-[0.67rem] w-3.25 shrink-0 overflow-clip text-gray-400",
     dropdown: [
-      "absolute top-0 left-0 z-30 w-full overflow-hidden border border-solid border-gray-200 bg-surface-white",
-      "rounded-[0.625rem] shadow-[0_8px_24px_rgba(0,0,0,0.12)] md:rounded-2xl md:border-2",
+      "absolute top-0 left-0 z-30 w-full overflow-hidden rounded-2xl border-2 border-solid border-gray-200 bg-surface-white",
+      "shadow-[0_8px_24px_rgba(0,0,0,0.12)]",
     ],
-    closeButton:
-      "flex h-auto w-full cursor-pointer items-center justify-between px-2 py-1.5 md:h-12.75 md:px-4.25 md:py-0",
+    closeButton: "flex h-12.75 w-full cursor-pointer items-center justify-between px-4.25 py-0",
     optionList:
       "m-0 max-h-[max(6rem,min(19.5rem,calc(100dvh-450px)))] list-none overflow-y-auto p-0",
     option: [
-      "flex h-auto w-full cursor-pointer items-center px-2 py-1.5 text-left",
-      "typo-caption",
-      "md:h-13 md:px-4.75 md:typo-subheading md:typo-medium",
+      "flex h-13 w-full cursor-pointer items-center px-4.75 text-left",
+      "typo-subheading typo-medium",
       "hover:bg-gray-100 hover:text-primary-950",
     ],
   },
@@ -161,9 +156,7 @@ export function Select({
                 onClick={() => setOpen(false)}
                 className={closeButton()}
               >
-                <span className="typo-caption text-gray-400 md:typo-subheading md:typo-medium">
-                  {label}
-                </span>
+                <span className="typo-subheading typo-medium text-gray-400">{label}</span>
                 <motion.span
                   aria-hidden
                   initial={{ rotate: 0 }}

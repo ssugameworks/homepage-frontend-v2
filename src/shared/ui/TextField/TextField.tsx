@@ -14,14 +14,11 @@ export type TextFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size">
 const textField = tv({
   slots: {
     base: "flex w-full flex-col items-start",
-    label: "px-2 py-1 typo-caption text-primary-950 md:typo-body1",
+    label: "px-2 py-1 typo-body1 text-primary-950",
     input: [
-      "w-full border-solid bg-transparent outline-none transition-colors duration-150",
-      "typo-caption text-primary-950",
+      "h-12.75 w-full rounded-2xl border-2 border-solid bg-transparent px-4.25 py-0 outline-none transition-colors duration-150",
+      "typo-subheading typo-medium text-primary-950",
       "placeholder:font-medium placeholder:text-gray-400",
-      "h-auto rounded-[0.625rem] border px-2 py-1.5",
-      "md:h-12.75 md:rounded-2xl md:border-2 md:px-4.25 md:py-0",
-      "md:typo-subheading md:typo-medium",
     ],
   },
   variants: {

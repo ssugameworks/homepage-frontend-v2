@@ -72,6 +72,21 @@ export async function onRequestPost(context: Context) {
     return Response.json({ error: "신청 기간이 아니에요" }, { status: 400 });
   }
 
+  // 프론트의 학번 확인 스텝은 우회 가능하므로, 제출을 실제로 기록하기 전에 서버에서도 검증한다.
+  const { results: memberResults } = await queryDataSource(
+    env,
+    env.NOTION_REGISTER_DATA_SOURCE_ID,
+    {
+      filter: { property: "학번", title: { equals: studentId } },
+    }
+  );
+  if (memberResults.length === 0) {
+    return Response.json(
+      { error: "가입 신청 내역이 없어 활동에 신청할 수 없어요" },
+      { status: 403 }
+    );
+  }
+
   const answerRichText = toRichText(JSON.stringify(answers));
   if (!answerRichText) {
     return Response.json({ error: "답변이 너무 길어요" }, { status: 400 });
