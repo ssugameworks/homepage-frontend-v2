@@ -4,24 +4,13 @@ export const INITIAL_REGISTER_FORM: RegisterForm = {
   name: "",
   phone: "",
   studentId: "",
-  major: "",
-  grade: null,
-  parts: [],
-  motivation: "",
-  portfolioUrl: "",
-  githubUrl: "",
+  privacyConsent: false,
+  paymentStatus: null,
+  paymentDate: "",
   turnstileToken: "",
 };
 
-export const GRADE_OPTIONS = ["1학년", "2학년", "3학년", "4학년 이상", "휴학"] as const;
+export const PAYMENT_STATUS_OPTIONS = ["입금 완료 했습니다", "군휴학생입니다"] as const;
 
-export const PART_OPTIONS = ["기획", "UX/UI 디자인", "프론트엔드", "백엔드", "기타"] as const;
-
-export const MAJOR_OPTIONS = [
-  "글로벌미디어학부",
-  "소프트웨어학부",
-  "전자정보공학부",
-  "컴퓨터학부",
-  "AI융합학부",
-  "디지털미디어학과",
-] as const;
+export const PAYMENT_AMOUNT_TEXT = "납부 금액: 20,000원";
+export const PAYMENT_ACCOUNT_TEXT = "입금 계좌: 신한은행 110619446488 (예금주: 박서영)";

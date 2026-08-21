@@ -23,12 +23,17 @@ export async function onRequestGet(context: Context) {
     if (err instanceof RateLimitedError) {
       return Response.json({ error: err.message }, { status: 429 });
     }
-    throw err;
+    console.error("register/check: rate limit check failed", err);
+    return Response.json({ error: "가입 여부를 확인하지 못했어요" }, { status: 503 });
   }
 
-  const { results } = await queryDataSource(env, env.NOTION_REGISTER_DATA_SOURCE_ID, {
-    filter: { property: "학번", title: { equals: studentId } },
-  });
-
-  return Response.json({ exists: results.length > 0 });
+  try {
+    const { results } = await queryDataSource(env, env.NOTION_REGISTER_DATA_SOURCE_ID, {
+      filter: { property: "학번", title: { equals: studentId } },
+    });
+    return Response.json({ exists: results.length > 0 });
+  } catch (err) {
+    console.error("register/check: Notion query failed", err);
+    return Response.json({ error: "가입 여부를 확인하지 못했어요" }, { status: 500 });
+  }
 }
