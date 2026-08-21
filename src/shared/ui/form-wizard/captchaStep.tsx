@@ -11,9 +11,7 @@ export function createCaptchaStep<TFormApi extends AnyFormApi>(
     includeInProgress: false,
     render: (f, ctx) => (
       <div className="flex flex-col items-center gap-4 py-4">
-        <p className="typo-body1 typo-medium text-primary-950 md:typo-subheading">
-          사람인지 확인해 주세요
-        </p>
+        <p className="typo-subheading typo-medium text-primary-950">사람인지 확인해 주세요</p>
         <Turnstile
           siteKey={siteKey}
           resetKey={ctx.retryCount}

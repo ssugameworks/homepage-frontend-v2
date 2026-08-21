@@ -8,7 +8,7 @@ import { glassButtonClass, glassButtonLabelClass } from "./glassButton";
 export function CtaSection() {
   return (
     <section
-      className="relative isolate overflow-hidden bg-gradient-to-r from-primary-800 to-primary-700"
+      className="relative isolate overflow-hidden bg-linear-to-r from-primary-800 to-primary-700"
       aria-label="가입 안내"
     >
       <img

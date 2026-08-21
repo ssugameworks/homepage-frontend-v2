@@ -83,7 +83,7 @@ export function ActivityOverlay({ overlay, onClose }: Props) {
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className="home-overlay-scroll relative flex max-h-full w-full max-w-85 flex-col gap-6 overflow-y-auto rounded-[32px] bg-surface-white px-6 py-7.5 lg:max-w-220 lg:gap-8 lg:px-17.5 lg:py-10"
+        className="home-overlay-scroll relative flex max-h-full w-full max-w-85 flex-col gap-6 overflow-y-auto rounded-4xl bg-surface-white px-6 py-7.5 lg:max-w-220 lg:gap-8 lg:px-17.5 lg:py-10"
       >
         <div className="flex flex-col gap-8 lg:gap-12">
           {/* overlay/title */}
@@ -340,9 +340,9 @@ function PersonCardView({ card }: { card: PersonCard }) {
       <img
         src={card.image}
         alt=""
-        className="h-47.75 w-37.5 rounded-[32px] object-cover lg:h-71.5 lg:w-56.25"
+        className="h-47.75 w-37.5 rounded-4xl object-cover lg:h-71.5 lg:w-56.25"
       />
-      <div className="home-overlay-person-text absolute bottom-0 left-0 flex w-37.5 flex-col gap-2.5 rounded-2xl p-5 lg:left-1/2 lg:w-57.25 lg:-translate-x-1/2">
+      <div className="home-overlay-person-text absolute bottom-0 left-0 flex w-37.5 flex-col gap-2.5 rounded-4xl p-5 lg:left-1/2 lg:w-57.25 lg:-translate-x-1/2">
         <Chip label={card.chip} />
         <p className="font-bold text-lg text-primary-950 leading-normal lg:typo-heading3">
           {card.name}
@@ -359,7 +359,7 @@ function ProjectCardView({ card }: { card: ProjectCard }) {
       <img
         src={card.image}
         alt=""
-        className="h-47.75 w-37.5 rounded-[32px] object-cover lg:h-71.5 lg:w-56.25"
+        className="h-47.75 w-37.5 rounded-4xl object-cover lg:h-71.5 lg:w-56.25"
       />
       <div className="flex flex-col gap-2.5 rounded-2xl px-2.5 py-5">
         <Chip label={card.chip} />
@@ -375,7 +375,7 @@ function ProjectCardView({ card }: { card: ProjectCard }) {
 
 function GalleryCardView({ card }: { card: GalleryCard }) {
   return (
-    <li className="flex w-full flex-col overflow-hidden rounded-[32px]">
+    <li className="flex w-full flex-col overflow-hidden rounded-4xl">
       <div className="flex flex-wrap gap-1">
         {card.images.map((src, index) => (
           <img
@@ -383,7 +383,7 @@ function GalleryCardView({ card }: { card: GalleryCard }) {
             key={index}
             src={src}
             alt=""
-            className="h-30 w-23.75 rounded-[32px] object-cover lg:h-47.75 lg:w-37.5"
+            className="h-30 w-23.75 rounded-4xl object-cover lg:h-47.75 lg:w-37.5"
           />
         ))}
       </div>
@@ -404,7 +404,7 @@ function LectureCardView({ card }: { card: LectureCard }) {
       <img
         src={card.image}
         alt=""
-        className="h-21.75 w-37.5 rounded-[32px] object-cover lg:h-32.5 lg:w-56.25"
+        className="h-21.75 w-37.5 rounded-4xl object-cover lg:h-32.5 lg:w-56.25"
       />
       <div className="px-2.5 py-5">
         <Body text={card.caption} />

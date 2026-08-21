@@ -35,7 +35,7 @@ export function Checkbox({ label: labelText, className, ...rest }: CheckboxProps
           <IconCheckmark aria-hidden className="absolute inset-0 block size-full max-w-none" />
         </span>
       </span>
-      <span className="typo-caption text-black md:typo-body1">{labelText}</span>
+      <span className="typo-body1 text-black">{labelText}</span>
     </label>
   );
 }

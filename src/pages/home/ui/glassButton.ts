@@ -15,12 +15,17 @@ const glassButton = tv({
       true: "",
       false: "",
     },
-    /** '모집 중인 활동 보기'에만 쓰는 좌→우 hover sweep. */
+    /**
+     * '모집 중인 활동 보기'에만 쓰는 좌→우 hover sweep.
+     * transform: scaleX()로 채우면 radius(둥근 모서리)까지 가로로 같이 눌려 찌그러지고,
+     * Safari에서는 overflow-hidden 클리핑까지 깨진다. 대신 clip-path로 드러나는 폭만
+     * 바꾼다 — 도형 자체는 늘어나지 않으니 버튼의 고정된 radius가 그대로 유지된다.
+     */
     sweep: {
       true: [
-        "overflow-hidden before:absolute before:inset-0 before:-z-10 before:origin-left before:scale-x-0",
-        "before:bg-[rgba(179,203,247,0.95)] before:transition-transform before:duration-300 before:ease-out",
-        "hover:before:scale-x-100 focus-visible:before:scale-x-100 motion-reduce:before:transition-none",
+        "overflow-hidden before:absolute before:inset-0 before:bg-[rgba(179,203,247,0.95)]",
+        "before:[clip-path:inset(0_100%_0_0)] before:transition-[clip-path] before:duration-300 before:ease-out",
+        "hover:before:[clip-path:inset(0_0%_0_0)] focus-visible:before:[clip-path:inset(0_0%_0_0)] motion-reduce:before:transition-none",
       ],
       false: "",
     },

@@ -79,7 +79,7 @@ function singleChoiceRenderer(field: AnyFieldApi, spec: FieldSpec) {
   const labelId = `${spec.id}-label`;
   return (
     <div className="flex flex-col gap-6">
-      <p id={labelId} className="typo-body1 typo-medium text-primary-950 md:typo-subheading">
+      <p id={labelId} className="typo-subheading typo-medium text-primary-950">
         {spec.label}
       </p>
       <div role="radiogroup" aria-labelledby={labelId} className="flex flex-col gap-4 md:gap-6.75">
@@ -110,7 +110,7 @@ function multiChoiceRenderer(field: AnyFieldApi, spec: FieldSpec) {
   const values: string[] = field.state.value ?? [];
   return (
     <div className="flex flex-col gap-6">
-      <p id={labelId} className="typo-body1 typo-medium text-primary-950 md:typo-subheading">
+      <p id={labelId} className="typo-subheading typo-medium text-primary-950">
         {spec.label}
       </p>
       <fieldset

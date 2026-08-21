@@ -18,10 +18,10 @@ function readProgress(storageKey: string): PersistedProgress | null {
 }
 
 const mobileCtaClass =
-  "max-md:h-auto max-md:min-h-0 max-md:w-full max-md:rounded-[0.625rem] max-md:px-6 max-md:py-2.25 max-md:typo-body1 max-md:typo-bold";
+  "max-md:h-13 max-md:min-h-0 max-md:w-full max-md:rounded-2xl max-md:px-6 max-md:py-3 max-md:typo-subheading max-md:typo-bold";
 
 const mobilePairClass =
-  "max-md:h-auto max-md:min-h-0 max-md:w-auto max-md:flex-1 max-md:rounded-[0.625rem] max-md:px-4 max-md:py-2.25 max-md:typo-body1 max-md:typo-bold";
+  "max-md:h-13 max-md:min-h-0 max-md:w-auto max-md:flex-1 max-md:rounded-2xl max-md:px-4 max-md:py-3 max-md:typo-subheading max-md:typo-bold";
 
 const stepVariants = {
   enter: (direction: 1 | -1) => ({ opacity: 0, x: direction * 16 }),
@@ -177,7 +177,7 @@ export function FormWizard<TFormApi extends AnyFormApi>({
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-5 py-16 short:md:py-8 md:px-6 md:py-22">
-      <div className="flex w-full max-w-82 flex-col items-center gap-6 short:md:gap-4 md:max-w-130 md:gap-6.75">
+      <div className="flex w-full max-w-82 flex-col items-center gap-6 short:md:gap-4 md:max-w-130 md:gap-4">
         {title}
 
         <FormCard

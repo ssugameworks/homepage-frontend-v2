@@ -39,7 +39,7 @@ export function Radio({ label: labelText, className, ...rest }: RadioProps) {
           className="pointer-events-none absolute inset-0 rounded-full peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-600"
         />
       </span>
-      <span className="typo-caption text-black md:typo-body1">{labelText}</span>
+      <span className="typo-body1 text-black">{labelText}</span>
     </label>
   );
 }

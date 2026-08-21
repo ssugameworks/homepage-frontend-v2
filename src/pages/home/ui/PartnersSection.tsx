@@ -1,5 +1,6 @@
 import crycheeseburgerLogo from "@/shared/assets/partners/crycheeseburger.png";
 import flowLogo from "@/shared/assets/partners/flow.png";
+import monsterLogo from "@/shared/assets/partners/monster.png";
 
 /**
  * Figma spec (web 1440×500 · mobile 390×292)
@@ -12,6 +13,7 @@ import flowLogo from "@/shared/assets/partners/flow.png";
 const PARTNERS = [
   { name: "FLOW", logo: flowLogo, logoWidth: 80 },
   { name: "크라이치즈버거", logo: crycheeseburgerLogo, logoWidth: 100 },
+  { name: "Monster Energy", logo: monsterLogo, logoWidth: 34 },
 ];
 
 export function PartnersSection() {
