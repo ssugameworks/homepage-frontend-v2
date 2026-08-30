@@ -1,9 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { useId, useState } from "react";
 import { Link } from "react-router-dom";
 import { tv } from "tailwind-variants";
-import { IconExternalArrow } from "@/shared/assets";
 import { ROUTES } from "@/shared/config";
 import { SectionHeading } from "@/shared/ui";
 
@@ -123,7 +122,7 @@ export function FaqSection() {
           >
             <span className="flex items-center gap-2 font-medium text-base leading-normal">
               직접 문의하기
-              <IconExternalArrow className="-rotate-135" />
+              <ArrowUpRight className="size-4.5" />
             </span>
             <span aria-hidden="true" className="block h-px w-full bg-current" />
           </Link>
