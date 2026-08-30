@@ -6,64 +6,15 @@ import person3 from "@/shared/assets/activity-overlay/person-3.png";
 import project1 from "@/shared/assets/activity-overlay/project-1.png";
 import project2 from "@/shared/assets/activity-overlay/project-2.png";
 import project3 from "@/shared/assets/activity-overlay/project-3.png";
-
-export type ActivityId = "coffeechat" | "buddy" | "mentoring" | "ideathon" | "flow" | "mt";
-
-/** 인물 카드 — 이미지 위에 텍스트가 겹쳐 올라감 (커피챗) */
-export type PersonCard = {
-  image: string;
-  chip: string;
-  name: string;
-  details: string[];
-};
-
-/** 프로젝트 카드 — 이미지 아래에 텍스트 (아이디어톤 · Flow) */
-export type ProjectCard = {
-  image: string;
-  chip: string;
-  name: string;
-  details?: string[];
-  body?: string;
-};
-
-/** 갤러리 카드 — 사진 여러 장 + 아래 설명 (짝선짝후 · MT) */
-export type GalleryCard = {
-  images: string[];
-  name: string;
-  details?: string[];
-  body?: string;
-};
-
-/** 강의 카드 — 썸네일 + 한 줄 캡션 (멘토링) */
-export type LectureCard = {
-  image: string;
-  caption: string;
-};
-
-/**
- * 하나의 소제목 아래 놓이는 카드 묶음.
- * web은 `groups`를 각각 한 덩어리(grid)로 쌓고, mobile은 전체를 하나의 스와이프 캐러셀로 합침.
- */
-export type OverlaySection<Card> = {
-  /** 없으면 소제목 없이 카드만 노출 (Figma: content_2처럼 제목이 붙지 않는 묶음) */
-  title?: string;
-  groups: Card[][];
-};
-
-type OverlayBase = {
-  id: ActivityId;
-  title: string;
-  description: string;
-};
-
-export type ActivityOverlay =
-  | (OverlayBase & { variant: "person"; sections: OverlaySection<PersonCard>[] })
-  | (OverlayBase & { variant: "project"; sections: OverlaySection<ProjectCard>[] })
-  | (OverlayBase & { variant: "gallery"; sections: OverlaySection<GalleryCard>[] })
-  | (OverlayBase & { variant: "lecture"; sections: OverlaySection<LectureCard>[] });
-
-// TODO: 소제목/본문 라이팅 확정 필요 (Figma 시안이 `content_title` 플레이스홀더 상태)
-const PLACEHOLDER_TITLE = "content_title";
+import { ACTIVITY_META } from "./activityMeta";
+import type {
+  ActivityId,
+  ActivityOverlay,
+  GalleryCard,
+  LectureCard,
+  PersonCard,
+  ProjectCard,
+} from "./types";
 
 const COFFEECHAT_PEOPLE: PersonCard[] = [
   {
@@ -132,66 +83,57 @@ const MENTORING_LECTURES: LectureCard[] = [
  *   설명 body2-500(14)
  * - 소제목: heading3-700(22 · mobile 18) / 블록 간 간격 48(web) · 32(mobile)
  * - mobile: 소제목 아래 pagination bar(트랙 100×5) + 카드 가로 스와이프
+ *
+ * 소제목(section.title)은 라이팅이 아직 확정되지 않아 생략한다 — Section이 title 없는
+ * 섹션도 캐러셀/그리드만으로 정상 렌더링한다.
  */
 export const ACTIVITY_OVERLAYS: Record<ActivityId, ActivityOverlay> = {
   coffeechat: {
     id: "coffeechat",
-    title: "커피챗",
+    title: ACTIVITY_META.coffeechat.label,
     description: "현업 이야기를 들어요",
     variant: "person",
     sections: [
-      { title: PLACEHOLDER_TITLE, groups: [COFFEECHAT_PEOPLE, COFFEECHAT_PEOPLE] },
-      { title: PLACEHOLDER_TITLE, groups: [COFFEECHAT_PEOPLE] },
+      { groups: [COFFEECHAT_PEOPLE, COFFEECHAT_PEOPLE] },
+      { groups: [COFFEECHAT_PEOPLE] },
     ],
   },
   buddy: {
     id: "buddy",
-    title: "짝선짝후",
+    title: ACTIVITY_META.buddy.label,
     description: "함께 만들어온 추억들이에요",
     variant: "gallery",
-    sections: [
-      { title: PLACEHOLDER_TITLE, groups: [[GALLERY_DATE]] },
-      { title: PLACEHOLDER_TITLE, groups: [[GALLERY_DATE], [GALLERY_MT]] },
-    ],
+    sections: [{ groups: [[GALLERY_DATE]] }, { groups: [[GALLERY_DATE], [GALLERY_MT]] }],
   },
   mentoring: {
     id: "mentoring",
-    title: "멘토링",
+    title: ACTIVITY_META.mentoring.label,
     description: "경험을 공유하고 함께 성장해요",
     variant: "lecture",
     sections: [
-      { title: PLACEHOLDER_TITLE, groups: [[...MENTORING_LECTURES, ...MENTORING_LECTURES]] },
-      { title: PLACEHOLDER_TITLE, groups: [[...MENTORING_LECTURES, ...MENTORING_LECTURES]] },
+      { groups: [[...MENTORING_LECTURES, ...MENTORING_LECTURES]] },
+      { groups: [[...MENTORING_LECTURES, ...MENTORING_LECTURES]] },
     ],
   },
   ideathon: {
     id: "ideathon",
-    title: "아이디어톤",
+    title: ACTIVITY_META.ideathon.label,
     description: "지금까지 총 3회의 아이디어톤이 개최되었어요",
     variant: "project",
-    sections: [
-      { title: PLACEHOLDER_TITLE, groups: [AWARD_PROJECTS] },
-      { title: PLACEHOLDER_TITLE, groups: [AWARD_PROJECTS] },
-    ],
+    sections: [{ groups: [AWARD_PROJECTS] }, { groups: [AWARD_PROJECTS] }],
   },
   flow: {
     id: "flow",
-    title: "Flow",
+    title: ACTIVITY_META.flow.label,
     description: "지금까지 총 3회의 flow가 개최되었어요",
     variant: "project",
-    sections: [
-      { title: PLACEHOLDER_TITLE, groups: [AWARD_PROJECTS] },
-      { title: PLACEHOLDER_TITLE, groups: [AWARD_PROJECTS] },
-    ],
+    sections: [{ groups: [AWARD_PROJECTS] }, { groups: [AWARD_PROJECTS] }],
   },
   mt: {
     id: "mt",
-    title: "MT",
+    title: ACTIVITY_META.mt.label,
     description: "함께 만들어온 추억들이에요",
     variant: "gallery",
-    sections: [
-      { title: PLACEHOLDER_TITLE, groups: [[GALLERY_DATE]] },
-      { title: PLACEHOLDER_TITLE, groups: [[GALLERY_DATE], [GALLERY_MT]] },
-    ],
+    sections: [{ groups: [[GALLERY_DATE]] }, { groups: [[GALLERY_DATE], [GALLERY_MT]] }],
   },
 };
