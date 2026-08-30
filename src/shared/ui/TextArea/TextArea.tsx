@@ -1,11 +1,17 @@
-import { type ChangeEvent, type TextareaHTMLAttributes, useId, useState } from "react";
+import {
+  type ChangeEvent,
+  type ReactNode,
+  type TextareaHTMLAttributes,
+  useId,
+  useState,
+} from "react";
 import { tv } from "tailwind-variants";
 import { FieldHint } from "../FieldHint";
 
 export type TextAreaState = "default" | "error";
 
 export type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
-  label?: string;
+  label?: ReactNode;
   state?: TextAreaState;
   /** 도움말 또는 에러 메시지. textarea의 `aria-describedby`에 자동 연결된다. */
   hint?: string;

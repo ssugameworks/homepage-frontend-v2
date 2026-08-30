@@ -1,14 +1,16 @@
-import { type InputHTMLAttributes, useId } from "react";
+import { type InputHTMLAttributes, type ReactNode, useId } from "react";
 import { tv } from "tailwind-variants";
 import { FieldHint } from "../FieldHint";
 
 export type TextFieldState = "default" | "error";
 
 export type TextFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
-  label?: string;
+  label?: ReactNode;
   state?: TextFieldState;
   /** 도움말 또는 에러 메시지. input의 `aria-describedby`에 자동 연결된다. */
   hint?: string;
+  /** 인풋 오른쪽에 붙는 버튼 등 보조 요소. */
+  addon?: ReactNode;
 };
 
 const textField = tv({
@@ -47,6 +49,7 @@ export function TextField({
   label,
   state = "default",
   hint,
+  addon,
   className,
   id,
   ...rest
@@ -56,6 +59,16 @@ export function TextField({
   const hintId = hint ? `${fieldId}-hint` : undefined;
   const { base, label: labelClass, input } = textField({ state });
 
+  const inputElement = (
+    <input
+      id={fieldId}
+      aria-invalid={state === "error" || undefined}
+      aria-describedby={hintId}
+      className={input()}
+      {...rest}
+    />
+  );
+
   return (
     <div className={base({ className })}>
       {label ? (
@@ -63,13 +76,14 @@ export function TextField({
           {label}
         </label>
       ) : null}
-      <input
-        id={fieldId}
-        aria-invalid={state === "error" || undefined}
-        aria-describedby={hintId}
-        className={input()}
-        {...rest}
-      />
+      {addon ? (
+        <div className="flex w-full min-w-0 items-stretch gap-2">
+          <div className="min-w-0 flex-1">{inputElement}</div>
+          {addon}
+        </div>
+      ) : (
+        inputElement
+      )}
       <FieldHint id={hintId} state={state}>
         {hint}
       </FieldHint>

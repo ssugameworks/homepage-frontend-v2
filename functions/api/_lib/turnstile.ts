@@ -3,6 +3,11 @@ export async function verifyTurnstile(
   token: string,
   ip: string | null
 ): Promise<boolean> {
+  if (!secretKey) {
+    console.error("[Turnstile] TURNSTILE_SECRET_KEY is missing or empty in environment variables.");
+    return false;
+  }
+
   const body = new URLSearchParams({ secret: secretKey, response: token });
   if (ip) body.set("remoteip", ip);
 
@@ -11,10 +16,21 @@ export async function verifyTurnstile(
       method: "POST",
       body,
     });
-    const result = (await res.json()) as { success: boolean };
+    const result = (await res.json()) as {
+      success: boolean;
+      "error-codes"?: string[];
+      messages?: string[];
+    };
+    if (!result.success) {
+      console.error("[Turnstile] Verification failed:", {
+        errorCodes: result["error-codes"],
+        messages: result.messages,
+      });
+    }
     return result.success;
-  } catch {
-    // 네트워크/파싱 실패도 "검증 안 됨"으로 취급 — 호출자가 항상 일관된 실패 응답을 주게 한다.
+  } catch (err) {
+    console.error("[Turnstile] Network or parse error during siteverify:", err);
     return false;
   }
 }
+

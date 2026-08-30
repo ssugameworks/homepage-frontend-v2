@@ -1,7 +1,13 @@
+import dayjs from "dayjs";
 import type { ActivityListItem } from "../model/types";
 
-// 날짜 포맷 헬퍼 ("2026-08-01" -> "2026.08.01")
-export const formatDate = (dateStr: string) => dateStr.replace(/-/g, ".");
+const WEEKDAY_KO = ["일", "월", "화", "수", "목", "금", "토"];
+
+// 날짜 포맷 헬퍼 ("2026-08-01" -> "08/01 (금)")
+export const formatDate = (dateStr: string) => {
+  const [, month, day] = dateStr.split("-");
+  return `${month}/${day} (${WEEKDAY_KO[dayjs(dateStr).day()]})`;
+};
 export const formatPeriod = (start: string, end: string) =>
   `${formatDate(start)} ~ ${formatDate(end)}`;
 

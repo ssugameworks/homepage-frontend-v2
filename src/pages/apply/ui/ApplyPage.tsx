@@ -228,7 +228,11 @@ export default function ApplyPage() {
 
   if (started) {
     // 폼 필드는 preloadedActivity에 없으므로, 진짜 신청 폼으로 넘어갈 때는 schema가 필요하다.
-    return schema ? <NotionFormRenderer schema={schema} /> : <ActivityIntroSkeleton />;
+    return schema ? (
+      <NotionFormRenderer schema={schema} onExit={() => setStarted(false)} />
+    ) : (
+      <ActivityIntroSkeleton />
+    );
   }
 
   if (!title || !activityInfo) {

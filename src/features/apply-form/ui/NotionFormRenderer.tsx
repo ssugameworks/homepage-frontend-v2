@@ -100,6 +100,7 @@ function StudentIdField({ fieldApi, form }: { fieldApi: AnyFieldApi; form: AnyFo
           onChange={(e) => fieldApi.handleChange(formatStudentId(e.target.value))}
           hint={formatError ? message : membershipHint}
           state={formatError || status === "not-found" || status === "error" ? "error" : "default"}
+          autoFocus
         />
 
         {status === "not-found" ? (
@@ -133,9 +134,11 @@ function defaultValueFor(kind: NotionFormSchema["fields"][number]["kind"]): Fiel
 
 type NotionFormRendererProps = {
   schema: NotionFormSchema;
+  /** 첫 스텝에서 "이전"을 누르면 호출된다 (예: 활동 소개 화면으로 복귀). */
+  onExit: () => void;
 };
 
-export function NotionFormRenderer({ schema }: NotionFormRendererProps) {
+export function NotionFormRenderer({ schema, onExit }: NotionFormRendererProps) {
   const navigate = useNavigate();
 
   const defaultValues: NotionFormValues = {
@@ -214,7 +217,7 @@ export function NotionFormRenderer({ schema }: NotionFormRendererProps) {
         });
       }}
       onFinish={() => navigate(ROUTES.HOME)}
-      onExit={() => navigate(ROUTES.HOME)}
+      onExit={onExit}
     />
   );
 }
