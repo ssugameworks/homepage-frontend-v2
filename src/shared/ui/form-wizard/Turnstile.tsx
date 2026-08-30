@@ -9,7 +9,7 @@ declare global {
           sitekey: string;
           callback: (token: string) => void;
           "expired-callback"?: () => void;
-          "error-callback"?: () => void;
+          "error-callback"?: (error?: unknown) => void;
         }
       ) => string;
       remove: (widgetId: string) => void;
@@ -69,6 +69,12 @@ export function Turnstile({ siteKey, onVerify, resetKey }: TurnstileProps) {
     let cancelled = false;
     setFailed(false);
 
+    if (!siteKey) {
+      console.error("[Turnstile] VITE_TURNSTILE_SITE_KEY is empty or not configured!");
+      setFailed(true);
+      return;
+    }
+
     loadTurnstileScript()
       .then(() => {
         if (cancelled || !containerRef.current || !window.turnstile) return;
@@ -76,11 +82,18 @@ export function Turnstile({ siteKey, onVerify, resetKey }: TurnstileProps) {
         widgetIdRef.current = window.turnstile.render(containerRef.current, {
           sitekey: siteKey,
           callback: (token) => onVerifyRef.current(token),
-          "expired-callback": clearToken,
-          "error-callback": clearToken,
+          "expired-callback": () => {
+            console.warn("[Turnstile] Token expired");
+            clearToken();
+          },
+          "error-callback": (error) => {
+            console.error("[Turnstile] Widget error code:", error);
+            clearToken();
+          },
         });
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error("[Turnstile] Failed to load script:", err);
         if (!cancelled) setFailed(true);
       });
 
