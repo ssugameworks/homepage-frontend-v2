@@ -166,10 +166,20 @@ export function FormWizard<TFormApi extends AnyFormApi>({
       </Button>
     ) : (
       <div className="flex items-center justify-between gap-3 md:gap-4">
-        <Button size="lg" variant="outline" className={mobilePairClass} onClick={goPrev}>
+        <Button
+          size="lg"
+          variant="outline"
+          className={`${mobilePairClass} font-bold`}
+          onClick={goPrev}
+        >
           이전
         </Button>
-        <Button size="lg" className={mobilePairClass} disabled={!nextEnabled} onClick={goNext}>
+        <Button
+          size="lg"
+          className={`${mobilePairClass} font-bold`}
+          disabled={!nextEnabled}
+          onClick={goNext}
+        >
           {nextLabel}
         </Button>
       </div>
