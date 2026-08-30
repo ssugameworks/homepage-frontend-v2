@@ -1,6 +1,7 @@
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { tv } from "tailwind-variants";
+import { smoothScrollTo } from "@/shared/lib";
 
 type Mode = "down" | "up";
 
@@ -72,11 +73,7 @@ export function ScrollIndicator() {
   }, []);
 
   const handleClick = () => {
-    if (mode === "down") {
-      window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    smoothScrollTo(mode === "down" ? window.innerHeight : 0);
   };
 
   const { button, icon } = indicator({ mode });

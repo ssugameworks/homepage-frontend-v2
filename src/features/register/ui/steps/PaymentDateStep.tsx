@@ -1,5 +1,5 @@
 import { Check, Copy } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { todayKstDateString } from "@/shared/lib";
 import { Button, TextField } from "@/shared/ui";
 import {
@@ -14,12 +14,15 @@ import { formatPaymentDate, isValidPaymentDate, paymentDateSchema } from "../../
 
 function CopyAccountButton() {
   const [copied, setCopied] = useState(false);
+  const copiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(PAYMENT_ACCOUNT_COPY_TEXT);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      // 복사 상태 해제 전 다시 복사하면, 먼저 걸린 타이머가 이번 복사 상태를 조기에 꺼버리지 않도록 갱신한다.
+      if (copiedTimerRef.current !== null) clearTimeout(copiedTimerRef.current);
+      copiedTimerRef.current = setTimeout(() => setCopied(false), 1500);
     } catch {
       // 클립보드 접근이 막힌 환경(권한 거부 등) — 조용히 무시, 사용자가 직접 선택해 복사할 수 있다.
     }

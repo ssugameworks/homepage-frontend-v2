@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { IconArrowRight } from "@/shared/assets";
 import heroBackground from "@/shared/assets/backgrounds/hero.png";
 import { ROUTES } from "@/shared/config";
+import { smoothScrollTo } from "@/shared/lib";
 import { glassButtonClass, glassButtonLabelClass } from "./glassButton";
 
 /** TODO: 추후 API/데이터 연동으로 교체. 0이면 문구를 숨기고 버튼만 노출한다. */
@@ -67,7 +68,7 @@ export function HeroSection() {
           fixed로 고정하지 않고 히어로 안에 두어, 첫 화면을 벗어나면 스크롤과 함께 자연스럽게 사라진다. */}
       <button
         type="button"
-        onClick={() => window.scrollTo({ top: window.innerHeight, behavior: "smooth" })}
+        onClick={() => smoothScrollTo(window.innerHeight)}
         aria-label="아래로 스크롤"
         className="-translate-x-1/2 absolute bottom-10 left-1/2 flex cursor-pointer items-center justify-center border-0 bg-transparent p-2 md:hidden"
       >

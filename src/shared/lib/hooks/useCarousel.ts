@@ -6,8 +6,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
  */
 function getItems(container: HTMLElement): HTMLElement[] {
   const children = Array.from(container.children) as HTMLElement[];
-  if (children.length === 1 && children[0]!.children.length > 0) {
-    return Array.from(children[0]!.children) as HTMLElement[];
+  const [first] = children;
+  if (children.length === 1 && first && first.children.length > 0) {
+    return Array.from(first.children) as HTMLElement[];
   }
   return children;
 }
@@ -64,7 +65,9 @@ export function useCarousel(count: number) {
     const [first] = getItems(el);
     if (!first) return;
 
-    const gap = Number.parseFloat(getComputedStyle(el).columnGap || "0");
+    // gap이 없는 컨테이너는 columnGap이 "normal"이라 parseFloat가 NaN을 반환한다 — 0으로 대체한다.
+    const parsedGap = Number.parseFloat(getComputedStyle(el).columnGap);
+    const gap = Number.isFinite(parsedGap) ? parsedGap : 0;
     const stepSize = first.getBoundingClientRect().width + gap;
     el.scrollBy({ left: direction === "next" ? stepSize : -stepSize, behavior: "smooth" });
   }, []);
