@@ -1,4 +1,5 @@
-import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
+import { useCarousel } from "@/shared/lib";
 
 /**
  * mobile 전용 가로 스와이프 캐러셀 + pagination bar
@@ -9,46 +10,7 @@ import { type ReactNode, useCallback, useEffect, useRef, useState } from "react"
  * - 전체가 1개면 숨김
  */
 export function Carousel({ count, children }: { count: number; children: ReactNode }) {
-  const scrollerRef = useRef<HTMLDivElement | null>(null);
-  const [page, setPage] = useState(1);
-  const [scrollable, setScrollable] = useState(false);
-
-  const sync = useCallback(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-
-    const max = el.scrollWidth - el.clientWidth;
-    setScrollable(max > 1);
-
-    const track = el.firstElementChild;
-    if (max <= 1 || count <= 1 || !track) {
-      setPage(1);
-      return;
-    }
-
-    // 좌우 패딩 때문에 scrollLeft가 0에서 시작하지 않으므로, 스크롤 시작점에 가장 가까운 카드를 현재 카드로 본다
-    const start =
-      el.getBoundingClientRect().left + (Number.parseFloat(getComputedStyle(el).paddingLeft) || 0);
-    let nearest = 0;
-    let shortest = Number.POSITIVE_INFINITY;
-
-    Array.from(track.children).forEach((item, index) => {
-      const distance = Math.abs(item.getBoundingClientRect().left - start);
-      if (distance < shortest) {
-        shortest = distance;
-        nearest = index;
-      }
-    });
-
-    setPage(Math.min(nearest + 1, count));
-  }, [count]);
-
-  useEffect(() => {
-    sync();
-    window.addEventListener("resize", sync);
-    return () => window.removeEventListener("resize", sync);
-  }, [sync]);
-
+  const { scrollerRef, page, scrollable, onScroll } = useCarousel(count);
   const showPagination = scrollable && count > 1;
 
   return (
@@ -69,7 +31,7 @@ export function Carousel({ count, children }: { count: number; children: ReactNo
 
       <div
         ref={scrollerRef}
-        onScroll={sync}
+        onScroll={onScroll}
         className="home-carousel -mx-6 flex snap-x snap-mandatory overflow-x-auto px-6 scroll-pl-6 scroll-pr-6"
       >
         {children}

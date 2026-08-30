@@ -125,3 +125,63 @@ const DUMMY_EXECUTIVES: Executive[] = [
 export async function fetchExecutives(): Promise<Executive[]> {
   return DUMMY_EXECUTIVES;
 }
+
+function pastExecutive(id: string, name: string, role: string, studentId: string): Executive {
+  return {
+    id,
+    name,
+    role,
+    department: "글로벌미디어학부",
+    studentId,
+    photoUrl: null,
+    // 과거 연도 명단도 실제 카드 이미지가 없어 임시로 홍준우 이미지를 채워뒀다.
+    frontImageUrl: hongJunwooFront,
+    backImageUrl: hongJunwooBack,
+    contact: null,
+    isContactPublic: false,
+  };
+}
+
+/**
+ * 과거 연도 임원진 목데이터 — 로스터 캐러셀 동작 확인용 테스트 데이터.
+ * TODO: 실제 역대 임원진 명단이 확정되면 이 더미를 교체(또는 API 연동)한다.
+ */
+const DUMMY_PAST_ROSTERS: { year: number; executives: Executive[] }[] = [
+  {
+    year: 2025,
+    executives: [
+      pastExecutive("past-2025-01", "김도윤", "회장", "23학번"),
+      pastExecutive("past-2025-02", "박서연", "부회장", "23학번"),
+      pastExecutive("past-2025-03", "최민준", "운영진", "23학번"),
+      pastExecutive("past-2025-04", "정하은", "운영진", "24학번"),
+      pastExecutive("past-2025-05", "오지훈", "총무", "23학번"),
+    ],
+  },
+  {
+    year: 2024,
+    executives: [
+      pastExecutive("past-2024-01", "박서연", "회장", "22학번"),
+      pastExecutive("past-2024-02", "최민준", "부회장", "22학번"),
+      pastExecutive("past-2024-03", "강태양", "운영진", "23학번"),
+      pastExecutive("past-2024-04", "윤소율", "운영진", "23학번"),
+      pastExecutive("past-2024-05", "임재현", "총무", "22학번"),
+    ],
+  },
+  {
+    year: 2023,
+    executives: [
+      pastExecutive("past-2023-01", "최민준", "회장", "21학번"),
+      pastExecutive("past-2023-02", "강태양", "부회장", "21학번"),
+      pastExecutive("past-2023-03", "이수아", "운영진", "22학번"),
+      pastExecutive("past-2023-04", "배준혁", "총무", "21학번"),
+    ],
+  },
+];
+
+/**
+ * 과거 연도 임원진 로스터를 가져온다 (현재 연도는 fetchExecutives가 담당).
+ * TODO: Notion API 연동 시 아래 구현을 실제 API 호출로 교체.
+ */
+export async function fetchPastRosters(): Promise<{ year: number; executives: Executive[] }[]> {
+  return DUMMY_PAST_ROSTERS;
+}

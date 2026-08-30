@@ -31,7 +31,7 @@ export function ConsentStep({ form }: { form: RegisterFormApi }) {
             name="privacyConsent"
             checked={field.state.value}
             onChange={(e) => field.handleChange(e.target.checked)}
-            label="본인은 위의 동의서 내용을 충분히 숙지하였으며, 개인정보 수집, 이용, 제공하는 것에 동의합니다."
+            label="동의합니다"
           />
         )}
       </form.Field>

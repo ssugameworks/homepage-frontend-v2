@@ -67,12 +67,9 @@ export default function RegisterPage() {
       steps={steps}
       storageKey="register-form"
       title={
-        <h1 className="text-center font-bold text-primary-950">
-          <span className="typo-heading2 md:hidden">GAMEWORKS에 지원하기</span>
-          <span className="hidden flex-wrap items-center justify-center md:flex">
-            <span className="typo-heading1">GAMEWORKS</span>
-            <span className="text-4xl leading-normal">에 지원하기</span>
-          </span>
+        <h1 className="flex flex-wrap items-center justify-center text-center font-bold text-primary-950">
+          <span className="typo-heading2 md:typo-heading1">GAMEWORKS</span>
+          <span className="typo-heading3 md:text-4xl md:leading-normal">에 지원하기</span>
         </h1>
       }
       completeSlot={<CompleteStep />}
