@@ -143,37 +143,89 @@ function pastExecutive(id: string, name: string, role: string, studentId: string
 }
 
 /**
- * 과거 연도 임원진 목데이터 — 로스터 캐러셀 동작 확인용 테스트 데이터.
- * TODO: 실제 역대 임원진 명단이 확정되면 이 더미를 교체(또는 API 연동)한다.
+ * 과거 연도 임원진 실제 명단. 이름 앞 숫자는 학번(기수) — 예: "17 장현준" = 17학번 장현준.
+ * "기타"는 그 해의 정식 역할은 아니지만 함께 기록해둔 특이사항(예: 차기 회장/총무 내정)이다.
  */
 const DUMMY_PAST_ROSTERS: { year: number; executives: Executive[] }[] = [
   {
     year: 2025,
     executives: [
-      pastExecutive("past-2025-01", "김도윤", "회장", "23학번"),
-      pastExecutive("past-2025-02", "박서연", "부회장", "23학번"),
-      pastExecutive("past-2025-03", "최민준", "운영진", "23학번"),
-      pastExecutive("past-2025-04", "정하은", "운영진", "24학번"),
-      pastExecutive("past-2025-05", "오지훈", "총무", "23학번"),
+      pastExecutive("past-2025-01", "이나현", "회장", "24학번"),
+      pastExecutive("past-2025-02", "이재범", "총무", "24학번"),
+      pastExecutive("past-2025-03", "강우현", "부회장", "24학번"),
+      pastExecutive("past-2025-04", "홍준우", "부회장", "24학번"),
+      pastExecutive("past-2025-05", "이가은", "부회장", "24학번"),
     ],
   },
   {
     year: 2024,
     executives: [
-      pastExecutive("past-2024-01", "박서연", "회장", "22학번"),
-      pastExecutive("past-2024-02", "최민준", "부회장", "22학번"),
-      pastExecutive("past-2024-03", "강태양", "운영진", "23학번"),
-      pastExecutive("past-2024-04", "윤소율", "운영진", "23학번"),
-      pastExecutive("past-2024-05", "임재현", "총무", "22학번"),
+      pastExecutive("past-2024-01", "문세종", "회장", "20학번"),
+      pastExecutive("past-2024-02", "민경민", "총무", "22학번"),
+      pastExecutive("past-2024-03", "최원재", "부회장", "21학번"),
+      pastExecutive("past-2024-04", "강민지", "부회장", "23학번"),
     ],
   },
   {
     year: 2023,
     executives: [
-      pastExecutive("past-2023-01", "최민준", "회장", "21학번"),
-      pastExecutive("past-2023-02", "강태양", "부회장", "21학번"),
-      pastExecutive("past-2023-03", "이수아", "운영진", "22학번"),
-      pastExecutive("past-2023-04", "배준혁", "총무", "21학번"),
+      pastExecutive("past-2023-01", "유재준", "회장", "19학번"),
+      pastExecutive("past-2023-02", "조태현", "총무", "20학번"),
+      pastExecutive("past-2023-03", "이지희", "부회장", "19학번"),
+      pastExecutive("past-2023-04", "유윤상", "부회장", "20학번"),
+      pastExecutive("past-2023-05", "문세종(차기 회장)", "기타", "20학번"),
+    ],
+  },
+  {
+    year: 2022,
+    executives: [
+      pastExecutive("past-2022-01", "이지희", "회장", "19학번"),
+      pastExecutive("past-2022-02", "김가영", "총무", "19학번"),
+      pastExecutive("past-2022-03", "변우진", "부회장", "21학번"),
+      pastExecutive("past-2022-04", "임정하", "부회장", "21학번"),
+    ],
+  },
+  {
+    year: 2021,
+    executives: [
+      pastExecutive("past-2021-01", "장현준", "회장", "17학번"),
+      pastExecutive("past-2021-02", "방지훈", "총무", "19학번"),
+      pastExecutive("past-2021-03", "김세환", "부회장", "20학번"),
+      pastExecutive("past-2021-04", "박희선", "부회장", "20학번"),
+    ],
+  },
+  {
+    year: 2020,
+    executives: [
+      pastExecutive("past-2020-01", "장현준", "회장", "17학번"),
+      pastExecutive("past-2020-02", "이시은", "총무", "18학번"),
+      pastExecutive("past-2020-03", "이경모", "부회장", "19학번"),
+    ],
+  },
+  {
+    year: 2019,
+    executives: [
+      pastExecutive("past-2019-01", "신동호", "회장", "15학번"),
+      pastExecutive("past-2019-02", "전수현", "총무", "18학번"),
+      pastExecutive("past-2019-03", "김세찬", "부회장", "16학번"),
+    ],
+  },
+  {
+    year: 2018,
+    executives: [
+      pastExecutive("past-2018-01", "이인", "회장", "13학번"),
+      pastExecutive("past-2018-02", "장현준", "총무", "17학번"),
+      pastExecutive("past-2018-03", "정은서", "부회장", "17학번"),
+      pastExecutive("past-2018-04", "전수현(차기 총무)", "기타", "18학번"),
+    ],
+  },
+  {
+    year: 2017,
+    executives: [
+      pastExecutive("past-2017-01", "전민수", "회장", "13학번"),
+      pastExecutive("past-2017-02", "권준상", "총무", "16학번"),
+      pastExecutive("past-2017-03", "방소윤", "부회장", "16학번"),
+      pastExecutive("past-2017-04", "장현준(차기 총무)", "기타", "17학번"),
     ],
   },
 ];
