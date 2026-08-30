@@ -1,6 +1,9 @@
+import { Check, Copy } from "lucide-react";
+import { useRef, useState } from "react";
 import { todayKstDateString } from "@/shared/lib";
 import { Button, TextField } from "@/shared/ui";
 import {
+  PAYMENT_ACCOUNT_COPY_TEXT,
   PAYMENT_ACCOUNT_HOLDER_TEXT,
   PAYMENT_ACCOUNT_TEXT,
   PAYMENT_AMOUNT_TEXT,
@@ -8,6 +11,36 @@ import {
 import type { RegisterForm } from "../../model/types";
 import type { RegisterFormApi } from "../../model/useRegisterForm";
 import { formatPaymentDate, isValidPaymentDate, paymentDateSchema } from "../../model/validation";
+
+function CopyAccountButton() {
+  const [copied, setCopied] = useState(false);
+  const copiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(PAYMENT_ACCOUNT_COPY_TEXT);
+      setCopied(true);
+      // 복사 상태 해제 전 다시 복사하면, 먼저 걸린 타이머가 이번 복사 상태를 조기에 꺼버리지 않도록 갱신한다.
+      if (copiedTimerRef.current !== null) clearTimeout(copiedTimerRef.current);
+      copiedTimerRef.current = setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // 클립보드 접근이 막힌 환경(권한 거부 등) — 조용히 무시, 사용자가 직접 선택해 복사할 수 있다.
+    }
+  };
+
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      size="xs"
+      aria-label={copied ? "계좌 복사됨" : "계좌 복사"}
+      className="h-auto w-auto min-w-0 shrink-0 self-center rounded-lg border-gray-300 bg-transparent p-2 text-gray-500 hover:enabled:border-transparent hover:enabled:bg-gray-600 hover:enabled:text-white hover:enabled:after:opacity-0"
+      onClick={handleCopy}
+    >
+      {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+    </Button>
+  );
+}
 
 export function PaymentDateStep({ form }: { form: RegisterFormApi }) {
   return (
@@ -21,11 +54,14 @@ export function PaymentDateStep({ form }: { form: RegisterFormApi }) {
 
       <div className="flex flex-col gap-1.5 rounded-2xl border-2 border-solid border-gray-200 p-4.25">
         <p className="typo-body1 typo-bold text-primary-950">{PAYMENT_AMOUNT_TEXT}</p>
-        <p className="typo-body2 text-gray-700">
-          {PAYMENT_ACCOUNT_TEXT}
-          <br />
-          {PAYMENT_ACCOUNT_HOLDER_TEXT}
-        </p>
+        <div className="flex items-center justify-between gap-2">
+          <p className="typo-body2 text-gray-700">
+            {PAYMENT_ACCOUNT_TEXT}
+            <br />
+            {PAYMENT_ACCOUNT_HOLDER_TEXT}
+          </p>
+          <CopyAccountButton />
+        </div>
       </div>
 
       <form.Field name="paymentDate" validators={{ onChange: paymentDateSchema }}>

@@ -1,12 +1,13 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { useId, useState } from "react";
 import { Link } from "react-router-dom";
 import { tv } from "tailwind-variants";
-import { IconExternalArrow, IconQnaChevron } from "@/shared/assets";
 import { ROUTES } from "@/shared/config";
+import { SectionHeading } from "@/shared/ui";
 
 const chevron = tv({
-  base: "text-primary-950 transition-transform duration-300",
+  base: "size-4 text-primary-950 transition-transform duration-300",
   variants: {
     open: {
       true: "rotate-180",
@@ -22,15 +23,16 @@ const chevron = tv({
 const FAQ_ITEMS = [
   {
     question: "가입 대상은 어떻게 되나요?",
-    answer: "답변 내용이 확정되면 채워질 예정이에요.",
+    answer: "숭실대학교 재학생이라면 전공과 학년에 상관없이 누구나 가입할 수 있어요.",
   },
   {
-    question: "가입 대상은 어떻게 되나요?",
-    answer: "답변 내용이 확정되면 채워질 예정이에요.",
+    question: "활동은 얼마나 자주 하나요?",
+    answer:
+      "학기 중에는 스터디와 멘토링을 정기적으로 진행하고, 방학에는 아이디어톤·MT 같은 오프라인 활동을 진행해요.",
   },
   {
-    question: "가입 대상은 어떻게 되나요?",
-    answer: "답변 내용이 확정되면 채워질 예정이에요.",
+    question: "회비는 얼마인가요?",
+    answer: "학기당 20,000원이며, 군휴학생은 회비가 면제돼요.",
   },
 ];
 
@@ -58,12 +60,7 @@ export function FaqSection() {
       aria-label="자주 묻는 질문"
     >
       <div className="mx-auto flex w-full max-w-360 flex-col gap-6 px-6 lg:gap-8 lg:px-37.5">
-        <div className="flex flex-col gap-2">
-          <p className="font-medium text-base text-gray-400 leading-normal">FAQ</p>
-          <h2 className="font-bold text-2xl text-gray-950 leading-normal lg:typo-heading1">
-            자주 묻는 질문
-          </h2>
-        </div>
+        <SectionHeading eyebrow="FAQ" title="자주 묻는 질문" />
 
         <div className="flex flex-col items-end gap-4">
           <ul className="flex w-full flex-col">
@@ -92,7 +89,7 @@ export function FaqSection() {
                           {item.question}
                         </span>
                         <span className="flex size-5 shrink-0 items-center justify-center">
-                          <IconQnaChevron className={chevron({ open: isOpen })} />
+                          <ChevronDown className={chevron({ open: isOpen })} />
                         </span>
                       </span>
                     </button>
@@ -125,7 +122,7 @@ export function FaqSection() {
           >
             <span className="flex items-center gap-2 font-medium text-base leading-normal">
               직접 문의하기
-              <IconExternalArrow className="-rotate-135" />
+              <ArrowUpRight className="size-4.5" />
             </span>
             <span aria-hidden="true" className="block h-px w-full bg-current" />
           </Link>

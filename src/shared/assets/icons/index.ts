@@ -1,5 +1,4 @@
 export { default as IconChatFill } from "./chat-fill.svg?react";
-export { default as IconChevronRight } from "./chevron-right.svg?react";
 export { default as IconDiscord } from "./discord.svg?react";
 export { default as IconGithub } from "./github.svg?react";
 export { default as IconInstagram } from "./instagram.svg?react";
@@ -14,10 +13,6 @@ export { default as IconCheckmark } from "./register/checkmark.svg?react";
 export { default as IconLogoMarkDark } from "./register/logo-mark-dark.svg?react";
 export { default as IconRadioChecked } from "./register/radio-checked.svg?react";
 export { default as IconRadioDot } from "./register/radio-dot.svg?react";
-export { default as IconSelectChevron } from "./register/select-chevron.svg?react";
 export { default as IconWarning } from "./register/warning.svg?react";
 export { default as IconArrowRight } from "./home/arrow-right.svg?react";
-export { default as IconExternalArrow } from "./home/external-arrow.svg?react";
 export { default as IconPlus } from "./home/plus.svg?react";
-export { default as IconQnaChevron } from "./home/qna-chevron.svg?react";
-export { default as IconScrollChevron } from "./home/scroll-chevron.svg?react";

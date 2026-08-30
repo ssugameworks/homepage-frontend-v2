@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { tv } from "tailwind-variants";
-import { IconSelectChevron } from "@/shared/assets";
 
 /** 커스텀 드롭다운 select. 네이티브 `<select>`가 아니라 role="listbox" 마크업이다. */
 export type SelectProps = {
@@ -130,10 +130,7 @@ export function Select({
         >
           <span>{value || placeholder}</span>
           <span className={chevron()}>
-            <IconSelectChevron
-              aria-hidden
-              className="absolute inset-0 block size-full max-w-none"
-            />
+            <ChevronDown aria-hidden className="absolute inset-0 block size-full max-w-none" />
           </span>
         </button>
 
@@ -164,7 +161,7 @@ export function Select({
                   transition={{ duration: 0.2, ease: "easeOut" }}
                   className={chevron()}
                 >
-                  <IconSelectChevron
+                  <ChevronDown
                     aria-hidden
                     className="absolute inset-0 block size-full max-w-none"
                   />

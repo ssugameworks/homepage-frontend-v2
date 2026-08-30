@@ -6,6 +6,8 @@ export type { FieldHintProps, FieldHintState } from "./FieldHint";
 export { FieldHint } from "./FieldHint";
 export type { RadioProps } from "./Radio";
 export { Radio } from "./Radio";
+export type { SectionHeadingProps } from "./SectionHeading";
+export { SectionHeading } from "./SectionHeading";
 export type { SelectProps } from "./Select";
 export { Select } from "./Select";
 export type { TextAreaProps, TextAreaState } from "./TextArea";
