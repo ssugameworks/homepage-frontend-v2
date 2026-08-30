@@ -1,7 +1,7 @@
 import crycheeseburgerLogo from "@/shared/assets/partners/crycheeseburger.png";
 import flowLogo from "@/shared/assets/partners/flow.png";
 import monsterLogo from "@/shared/assets/partners/monster.png";
-import { SectionHeading } from "./SectionHeading";
+import { SectionHeading } from "@/shared/ui";
 
 /**
  * Figma spec (web 1440×500 · mobile 390×292)

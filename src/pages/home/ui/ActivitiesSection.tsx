@@ -13,7 +13,7 @@ import {
   useActivityOverlayParam,
 } from "./activity-overlay";
 import { glassButtonClass } from "./glassButton";
-import { SectionHeading } from "./SectionHeading";
+import { SectionHeading } from "@/shared/ui";
 
 type Activity = {
   id: ActivityId;

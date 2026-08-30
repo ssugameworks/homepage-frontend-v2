@@ -1,13 +1,14 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import { useId, useState } from "react";
 import { Link } from "react-router-dom";
 import { tv } from "tailwind-variants";
-import { IconExternalArrow, IconQnaChevron } from "@/shared/assets";
+import { IconExternalArrow } from "@/shared/assets";
 import { ROUTES } from "@/shared/config";
-import { SectionHeading } from "./SectionHeading";
+import { SectionHeading } from "@/shared/ui";
 
 const chevron = tv({
-  base: "text-primary-950 transition-transform duration-300",
+  base: "size-4 text-primary-950 transition-transform duration-300",
   variants: {
     open: {
       true: "rotate-180",
@@ -89,7 +90,7 @@ export function FaqSection() {
                           {item.question}
                         </span>
                         <span className="flex size-5 shrink-0 items-center justify-center">
-                          <IconQnaChevron className={chevron({ open: isOpen })} />
+                          <ChevronDown className={chevron({ open: isOpen })} />
                         </span>
                       </span>
                     </button>

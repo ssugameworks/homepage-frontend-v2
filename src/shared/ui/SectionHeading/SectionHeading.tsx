@@ -1,10 +1,10 @@
-type SectionHeadingProps = {
+export type SectionHeadingProps = {
   eyebrow: string;
   title: string;
   align?: "left" | "center";
 };
 
-/** History/FAQ/Partners/Activities 섹션이 공유하는 "eyebrow 라벨 + 제목" 헤더. */
+/** 여러 페이지가 공유하는 "eyebrow 라벨 + 제목" 섹션 헤더. */
 export function SectionHeading({ eyebrow, title, align = "left" }: SectionHeadingProps) {
   return (
     <div

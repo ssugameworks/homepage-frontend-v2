@@ -1,6 +1,6 @@
+import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { tv } from "tailwind-variants";
-import { IconScrollChevron } from "@/shared/assets";
 
 type Mode = "down" | "up";
 
@@ -10,22 +10,19 @@ const indicator = tv({
   slots: {
     button: [
       // mobile은 히어로 안에 별도로 고정 없이 보여주므로(HeroSection 참고) 여기선 태블릿(md) 이상만 담당한다.
-      "fixed right-10 bottom-13.25 z-40 hidden size-15 cursor-pointer items-center justify-center rounded-full border-0 bg-white/5 p-0 transition-opacity duration-300 md:flex",
+      "fixed right-10 bottom-13.25 z-40 hidden size-15 cursor-pointer items-center justify-center rounded-full border-0 p-0 shadow-[0_4px_16px_rgba(0,0,0,0.18)] transition-colors duration-300 md:flex",
     ],
-    icon: "block text-gray-200 transition-transform duration-300 md:h-6.75 md:w-11.75",
+    icon: "block transition-transform duration-300 motion-reduce:animate-none md:size-6.75",
   },
   variants: {
-    visible: {
-      true: { button: "opacity-100" },
-      false: { button: "pointer-events-none opacity-0" },
-    },
     mode: {
-      down: {},
-      up: { icon: "rotate-180" },
+      // 최상단(down 모드) — 어두운 히어로 위라 반투명 배경 + 흰 아이콘, 애니메이션으로 스크롤을 유도한다.
+      down: { button: "bg-white/15 backdrop-blur-sm", icon: "text-white animate-bounce" },
+      // 스크롤한 뒤(up 모드) — 밝은 배경 위를 지나가므로 채워진 흰 배경 + 진한 아이콘으로 대비를 확보한다.
+      up: { button: "bg-white", icon: "text-primary-950 rotate-180" },
     },
   },
   defaultVariants: {
-    visible: true,
     mode: "down",
   },
 });
@@ -33,46 +30,31 @@ const indicator = tv({
 /**
  * Figma 노트:
  * - [⬇ down-filled] 히어로에서 노출
- * - [⬆ top-filled] position: fixed, down-filled와 동일한 위치
- *   - 기본: 화면에 고정되어 나타남
- *   - 천천히/조금 스크롤 업 → 그대로 유지
- *   - 빠르게/크게 스크롤 업 → 숨김 (Fade-out)
- *   - 다시 아래로 스크롤 다운 → 다시 나타남 (Fade-in)
+ * - [⬆ top-filled] position: fixed, down-filled와 동일한 위치, 항상 노출
  *
  * 문서 하단(푸터) 근처에서는 fixed 위치를 유지하면 푸터 위에 겹쳐 보이므로,
- * 그 구간에서는 absolute로 전환해 푸터 바로 위에 도킹시킨다(사라지지 않음).
+ * 그 구간에서는 absolute로 전환해 푸터 바로 위에 도킹시킨다.
  */
 export function ScrollIndicator() {
   const [mode, setMode] = useState<Mode>("down");
-  const [visible, setVisible] = useState(true);
   const [dockTop, setDockTop] = useState<number | null>(null);
-  const lastY = useRef(0);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    lastY.current = window.scrollY;
-
     const onScroll = () => {
       const y = window.scrollY;
-      const delta = y - lastY.current;
-      lastY.current = y;
-
-      if (y < window.innerHeight * 0.5) {
-        setMode("down");
-        setVisible(true);
-      } else {
-        setMode("up");
-        if (delta < -60) {
-          // 빠르게/크게 스크롤 업 → 숨김
-          setVisible(false);
-        } else if (delta > 0) {
-          // 다시 아래로 스크롤 다운 → 다시 나타남
-          setVisible(true);
-        }
+      const button = buttonRef.current;
+      const hero = document.querySelector<HTMLElement>('[aria-label="게임웍스 소개"]');
+      // 버튼이 실제로 화면에 그려지는 위치(rect)를 기준으로, 그 지점이 아직 히어로
+      // (어두운 배경) 안인지 이미 벗어났는지를 직접 비교한다 — 스크롤 위치와 뷰포트
+      // 높이로 근사하면 버튼의 실제 화면상 위치(bottom-13.25 오프셋)와 어긋난다.
+      if (hero && button) {
+        const heroBottom = hero.getBoundingClientRect().bottom;
+        const buttonTop = button.getBoundingClientRect().top;
+        setMode(heroBottom > buttonTop ? "down" : "up");
       }
 
       const footer = document.querySelector("footer");
-      const button = buttonRef.current;
       if (footer && button) {
         const footerTop = footer.getBoundingClientRect().top + y;
         const wouldOverlapFooter = y + window.innerHeight >= footerTop + button.offsetHeight;
@@ -97,7 +79,7 @@ export function ScrollIndicator() {
     }
   };
 
-  const { button, icon } = indicator({ visible, mode });
+  const { button, icon } = indicator({ mode });
 
   return (
     <button
@@ -108,7 +90,7 @@ export function ScrollIndicator() {
       style={dockTop !== null ? { position: "absolute", top: dockTop, bottom: "auto" } : undefined}
       className={button()}
     >
-      <IconScrollChevron className={icon()} />
+      <ChevronDown className={icon()} />
     </button>
   );
 }

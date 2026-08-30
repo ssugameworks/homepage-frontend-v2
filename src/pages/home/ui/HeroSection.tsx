@@ -1,5 +1,6 @@
+import { ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
-import { IconArrowRight, IconScrollChevron } from "@/shared/assets";
+import { IconArrowRight } from "@/shared/assets";
 import heroBackground from "@/shared/assets/backgrounds/hero.png";
 import { ROUTES } from "@/shared/config";
 import { glassButtonClass, glassButtonLabelClass } from "./glassButton";
@@ -70,7 +71,7 @@ export function HeroSection() {
         aria-label="아래로 스크롤"
         className="-translate-x-1/2 absolute bottom-10 left-1/2 flex cursor-pointer items-center justify-center border-0 bg-transparent p-2 md:hidden"
       >
-        <IconScrollChevron className="block text-gray-200" />
+        <ChevronDown className="block size-9 animate-bounce text-gray-200 motion-reduce:animate-none" />
       </button>
     </section>
   );

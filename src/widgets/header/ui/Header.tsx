@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { ChevronRight } from "lucide-react";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { tv } from "tailwind-variants";
-import { IconChevronRight, IconLogoMark, IconMenuBar, IconMenuClose } from "@/shared/assets";
+import { IconLogoMark, IconMenuBar, IconMenuClose } from "@/shared/assets";
 import { ROUTES } from "@/shared/config";
 import type { HeaderProps, NavItemId } from "./Header.types";
 
@@ -185,7 +186,7 @@ export function Header({ className, activeItem }: HeaderProps) {
                       {item.label}
                     </span>
                     <span className="relative flex h-3 w-1.75 shrink-0 items-center justify-center text-gray-700">
-                      <IconChevronRight aria-hidden className="block size-full max-w-none" />
+                      <ChevronRight aria-hidden className="block size-full max-w-none" />
                     </span>
                   </Link>
                 ))}

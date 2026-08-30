@@ -1,5 +1,5 @@
 import { useCountUp, useInView } from "@/shared/lib";
-import { SectionHeading } from "./SectionHeading";
+import { SectionHeading } from "@/shared/ui";
 
 const STATS = [
   { value: 25, suffix: "년", label: "역사" },
