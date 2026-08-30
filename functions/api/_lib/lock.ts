@@ -19,10 +19,15 @@ const LOCK_TTL_SECONDS = 30;
  * 크게 좁혀, 동시 제출로 인한 Notion 중복 페이지 생성 가능성을 실질적으로 낮춘다.
  */
 export async function withSubmitLock<T>(
-  kv: KVNamespace,
+  kv: KVNamespace | undefined | null,
   key: string,
   fn: () => Promise<T>
 ): Promise<T> {
+  if (!kv) {
+    console.warn("[Lock] SUBMIT_LOCKS KV namespace is not bound. Proceeding without distributed lock.");
+    return await fn();
+  }
+
   const lockKey = `submit-lock:${key}`;
   const existing = await kv.get(lockKey);
   if (existing) throw new SubmitLockedError();
@@ -34,3 +39,4 @@ export async function withSubmitLock<T>(
     await kv.delete(lockKey);
   }
 }
+
