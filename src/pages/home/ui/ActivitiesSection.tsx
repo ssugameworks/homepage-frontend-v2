@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { IconPlus } from "@/shared/assets";
 import iconBuddy from "@/shared/assets/icons/activity/buddy.png";
 import iconCoffeechat from "@/shared/assets/icons/activity/coffeechat.png";
@@ -6,15 +5,19 @@ import iconFlow from "@/shared/assets/icons/activity/flow.png";
 import iconIdeathon from "@/shared/assets/icons/activity/ideathon.png";
 import iconMentoring from "@/shared/assets/icons/activity/mentoring.png";
 import iconMt from "@/shared/assets/icons/activity/mt.png";
-import { ActivityOverlay } from "./ActivityOverlay";
-import { ACTIVITY_OVERLAYS, type ActivityId } from "./activityOverlays";
+import {
+  ACTIVITY_META,
+  ACTIVITY_OVERLAYS,
+  type ActivityId,
+  ActivityOverlay,
+  useActivityOverlayParam,
+} from "./activity-overlay";
 import { glassButtonClass } from "./glassButton";
 
 type Activity = {
   id: ActivityId;
-  chip: string;
   icon: string;
-  title: string;
+  headline: string;
   description: string;
   buttonLabel: string;
 };
@@ -23,52 +26,46 @@ type Activity = {
 const ACTIVITIES: Activity[] = [
   {
     id: "coffeechat",
-    chip: "커피챗",
     icon: iconCoffeechat,
-    title: "현업 이야기를 들어요",
+    headline: "현업 이야기를 들어요",
     description:
       "현업에서 일하는 선배의 경험을 직접 들어요\n취업과 진로에 대한 고민도 편하게 나눌 수 있어요",
     buttonLabel: "프로그램 보기",
   },
   {
     id: "buddy",
-    chip: "짝선짝후",
     icon: iconBuddy,
-    title: "미션으로 가까워져요",
+    headline: "미션으로 가까워져요",
     description:
       "선배·후배가 한 팀이 되어 미션을 함께해요\n처음 만난 사람과도 자연스럽게 가까워져요",
     buttonLabel: "활동 사진 보기",
   },
   {
     id: "mentoring",
-    chip: "멘토링",
     icon: iconMentoring,
-    title: "경험을 공유하고 배워요",
+    headline: "경험을 공유하고 배워요",
     description: "학교 생활, 전공, 소모임까지 —\n먼저 경험한 멘토에게 편하게 질문할 수 있어요",
     buttonLabel: "프로그램 보기",
   },
   {
     id: "ideathon",
-    chip: "아이디어톤",
     icon: iconIdeathon,
-    title: "아이디어를 구체화해요",
+    headline: "아이디어를 구체화해요",
     description: "팀과 함께 서비스 아이디어를 기획하고,\n멘토와 심사위원에게 직접 피드백을 받아요",
     buttonLabel: "수상작 보기",
   },
   {
     id: "flow",
-    chip: "Flow",
     icon: iconFlow,
-    title: "서비스로 만들어요",
+    headline: "서비스로 만들어요",
     description:
       "1박 2일 동안 함께 시간을 보내며, 학기 중엔 나누지 못했던 이야기까지 편하게 나눠요.",
     buttonLabel: "수상작 보기",
   },
   {
     id: "mt",
-    chip: "MT",
     icon: iconMt,
-    title: "추억을 함께 만들어요",
+    headline: "추억을 함께 만들어요",
     description:
       "1박 2일 동안 함께 시간을 보내며,\n학기 중엔 나누지 못했던 이야기까지 편하게 나눠요",
     buttonLabel: "활동 사진 보기",
@@ -77,7 +74,7 @@ const ACTIVITIES: Activity[] = [
 
 /** 주요 활동 카드 목록. 카드를 누르면 활동 상세 모달(overlay/main)이 열린다. */
 export function ActivitiesSection() {
-  const [openId, setOpenId] = useState<ActivityId | null>(null);
+  const { openId, open, close } = useActivityOverlayParam();
 
   return (
     <section
@@ -94,18 +91,12 @@ export function ActivitiesSection() {
 
         <ul className="-mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 scrollbar-none [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:snap-none md:justify-items-center md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 lg:gap-8">
           {ACTIVITIES.map((activity) => (
-            <ActivityCard
-              key={activity.id}
-              activity={activity}
-              onOpen={() => setOpenId(activity.id)}
-            />
+            <ActivityCard key={activity.id} activity={activity} onOpen={() => open(activity.id)} />
           ))}
         </ul>
       </div>
 
-      {openId ? (
-        <ActivityOverlay overlay={ACTIVITY_OVERLAYS[openId]} onClose={() => setOpenId(null)} />
-      ) : null}
+      {openId ? <ActivityOverlay overlay={ACTIVITY_OVERLAYS[openId]} onClose={close} /> : null}
     </section>
   );
 }
@@ -118,13 +109,13 @@ function ActivityCard({ activity, onOpen }: { activity: Activity; onOpen: () => 
           <span className="flex items-center gap-2 rounded-2xl bg-gray-100 px-2 py-1">
             <img src={activity.icon} alt="" className="size-3.75" />
             <span className="font-medium text-base text-gray-600 leading-normal">
-              {activity.chip}
+              {ACTIVITY_META[activity.id].label}
             </span>
           </span>
 
           <div className="flex flex-col gap-2">
             <h3 className="font-bold text-xl text-primary-950 leading-normal lg:typo-heading2">
-              {activity.title}
+              {activity.headline}
             </h3>
             <p className="whitespace-pre-line font-light text-base text-primary-950 leading-normal tracking-dense">
               {activity.description}
