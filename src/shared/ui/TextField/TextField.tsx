@@ -1,11 +1,11 @@
-import { type InputHTMLAttributes, useId } from "react";
+import { type InputHTMLAttributes, type ReactNode, useId } from "react";
 import { tv } from "tailwind-variants";
 import { FieldHint } from "../FieldHint";
 
 export type TextFieldState = "default" | "error";
 
 export type TextFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
-  label?: string;
+  label?: ReactNode;
   state?: TextFieldState;
   /** 도움말 또는 에러 메시지. input의 `aria-describedby`에 자동 연결된다. */
   hint?: string;

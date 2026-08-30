@@ -8,7 +8,6 @@ export function createCaptchaStep<TFormApi extends AnyFormApi>(
 ): StepDefinition<TFormApi> {
   return {
     id: "captcha",
-    includeInProgress: false,
     render: (f, ctx) => (
       <div className="flex flex-col gap-4 md:gap-6">
         <p className="typo-subheading typo-medium text-primary-950">사람인지 확인해 주세요</p>

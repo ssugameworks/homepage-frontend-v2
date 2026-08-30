@@ -1,10 +1,6 @@
 import { useId } from "react";
 import { Radio } from "@/shared/ui";
-import {
-  PAYMENT_ACCOUNT_TEXT,
-  PAYMENT_AMOUNT_TEXT,
-  PAYMENT_STATUS_OPTIONS,
-} from "../../model/constants";
+import { MILITARY_LEAVE, PAYMENT_COMPLETED } from "../../model/constants";
 import type { RegisterForm } from "../../model/types";
 import type { RegisterFormApi } from "../../model/useRegisterForm";
 
@@ -13,14 +9,11 @@ export function PaymentInfoStep({ form }: { form: RegisterFormApi }) {
 
   return (
     <div className="flex flex-col gap-4 md:gap-6">
-      <p id={labelId} className="typo-subheading typo-medium text-primary-950">
-        회비를 납부해주세요
-      </p>
-
-      <div className="flex flex-col gap-1 rounded-2xl border-2 border-solid border-gray-200 p-4.25">
-        <p className="typo-body1 typo-medium text-primary-950">{PAYMENT_AMOUNT_TEXT}</p>
-        <p className="typo-body1 text-gray-700">{PAYMENT_ACCOUNT_TEXT}</p>
-        <p className="typo-body2 text-gray-500">단, 군휴학생의 경우 회비 면제 (0원)</p>
+      <div className="flex flex-col gap-2">
+        <p id={labelId} className="typo-subheading typo-medium text-primary-950">
+          군휴학생이신가요?
+        </p>
+        <p className="typo-body2 typo-light text-gray-500">군휴학생은 회비가 면제돼요 (0원)</p>
       </div>
 
       <form.Field name="paymentStatus">
@@ -30,16 +23,20 @@ export function PaymentInfoStep({ form }: { form: RegisterFormApi }) {
             aria-labelledby={labelId}
             className="flex flex-col gap-4 md:gap-6.75"
           >
-            {PAYMENT_STATUS_OPTIONS.map((option) => (
-              <Radio
-                key={option}
-                name="paymentStatus"
-                value={option}
-                label={option}
-                checked={field.state.value === option}
-                onChange={() => field.handleChange(option)}
-              />
-            ))}
+            <Radio
+              name="paymentStatus"
+              value={PAYMENT_COMPLETED}
+              label="아니요, 회비를 납부할게요"
+              checked={field.state.value === PAYMENT_COMPLETED}
+              onChange={() => field.handleChange(PAYMENT_COMPLETED)}
+            />
+            <Radio
+              name="paymentStatus"
+              value={MILITARY_LEAVE}
+              label="네, 군휴학생이에요"
+              checked={field.state.value === MILITARY_LEAVE}
+              onChange={() => field.handleChange(MILITARY_LEAVE)}
+            />
           </div>
         )}
       </form.Field>

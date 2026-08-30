@@ -8,6 +8,7 @@ import {
   canProceedPaymentDate,
   canProceedPaymentInfo,
   canProceedStudentId,
+  MILITARY_LEAVE,
   PaymentDateStep,
   PaymentInfoStep,
   type RegisterFormApi,
@@ -48,7 +49,7 @@ export default function RegisterPage() {
       canProceed: canProceedPaymentInfo,
     },
     // 군휴학생은 회비가 면제되므로 납부 날짜를 물어볼 필요가 없다.
-    ...(paymentStatus === "군휴학생입니다"
+    ...(paymentStatus === MILITARY_LEAVE
       ? []
       : [
           {
