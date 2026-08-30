@@ -13,6 +13,7 @@ import {
   useActivityOverlayParam,
 } from "./activity-overlay";
 import { glassButtonClass } from "./glassButton";
+import { SectionHeading } from "./SectionHeading";
 
 type Activity = {
   id: ActivityId;
@@ -82,12 +83,7 @@ export function ActivitiesSection() {
       aria-label="주요 활동"
     >
       <div className="mx-auto flex w-full max-w-360 flex-col gap-6 px-6 lg:gap-8 lg:px-37.5">
-        <div className="flex flex-col gap-2">
-          <p className="font-medium text-base text-gray-400 leading-normal">Activities</p>
-          <h2 className="font-bold text-2xl text-gray-950 leading-normal lg:typo-heading1">
-            한 해동안 함께할 주요 활동이에요.
-          </h2>
-        </div>
+        <SectionHeading eyebrow="Activities" title="한 해동안 함께할 주요 활동이에요." />
 
         <ul className="-mx-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 scrollbar-none [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:snap-none md:justify-items-center md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3 lg:gap-8">
           {ACTIVITIES.map((activity) => (

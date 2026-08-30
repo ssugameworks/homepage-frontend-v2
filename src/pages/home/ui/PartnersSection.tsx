@@ -1,6 +1,7 @@
 import crycheeseburgerLogo from "@/shared/assets/partners/crycheeseburger.png";
 import flowLogo from "@/shared/assets/partners/flow.png";
 import monsterLogo from "@/shared/assets/partners/monster.png";
+import { SectionHeading } from "./SectionHeading";
 
 /**
  * Figma spec (web 1440×500 · mobile 390×292)
@@ -23,12 +24,7 @@ export function PartnersSection() {
       aria-label="파트너"
     >
       <div className="mx-auto flex w-full max-w-360 flex-col items-center gap-6 px-6 text-center lg:gap-8 lg:px-27.5">
-        <div className="flex flex-col items-center gap-2">
-          <p className="font-medium text-base text-gray-400 leading-normal">Partners</p>
-          <h2 className="font-bold text-2xl text-gray-950 leading-normal lg:typo-heading1">
-            게임웍스와 함께하는 분들
-          </h2>
-        </div>
+        <SectionHeading eyebrow="Partners" title="게임웍스와 함께하는 분들" align="center" />
 
         <ul className="flex flex-wrap items-start justify-center gap-x-12.5 gap-y-8 lg:gap-x-25">
           {PARTNERS.map((partner) => (

@@ -1,4 +1,5 @@
 import { useCountUp, useInView } from "@/shared/lib";
+import { SectionHeading } from "./SectionHeading";
 
 const STATS = [
   { value: 25, suffix: "년", label: "역사" },
@@ -26,12 +27,7 @@ export function HistorySection() {
       aria-label="게임웍스가 걸어온 시간"
     >
       <div className="mx-auto flex w-full max-w-360 flex-col items-center gap-6 px-6 text-center lg:gap-8">
-        <div className="flex flex-col items-center gap-2">
-          <p className="font-medium text-base text-gray-400 leading-normal">History</p>
-          <h2 className="font-bold text-2xl text-black leading-normal lg:typo-heading1">
-            함께 걸어온 시간
-          </h2>
-        </div>
+        <SectionHeading eyebrow="History" title="함께 걸어온 시간" align="center" />
 
         <div ref={ref} className="flex justify-center gap-7.5 rounded-2xl p-4 lg:gap-25">
           {STATS.map((stat) => (
@@ -60,9 +56,9 @@ function StatItem({
     <div className="flex flex-col items-center">
       {/* Figma: 숫자·접미사 모두 hero1의 letter-spacing(-3% of 80 = -2.4px · mobile -1.08px) 상속 */}
       <p className="font-bold text-primary-800 tracking-dense">
-        <span className="text-4xl leading-tight lg:text-[80px]">{current}</span>
+        <span className="text-4xl leading-tight md:text-6xl lg:text-[80px]">{current}</span>
         {/* 상위 p의 tracking(-3%, 숫자 크기 기준)을 그대로 물려받아야 해서 typo-* 토큰(자체 tracking 포함) 대신 크기만 지정한다 */}
-        <span className="text-heading2 leading-normal lg:text-heading1">{suffix}</span>
+        <span className="text-heading2 leading-normal md:text-3xl lg:text-heading1">{suffix}</span>
       </p>
       <p className="font-light text-base text-gray-600 leading-normal tracking-dense">{label}</p>
     </div>

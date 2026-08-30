@@ -9,10 +9,10 @@ const DOCK_MARGIN = 40;
 const indicator = tv({
   slots: {
     button: [
-      // mobile: 하단 중앙(아이콘만) / desktop: 하단 우측 원형 버튼 (Figma web·mobile 시안 차이)
-      "-translate-x-1/2 fixed bottom-10 left-1/2 z-40 flex cursor-pointer items-center justify-center border-0 bg-transparent p-2 transition-opacity duration-300 lg:right-10 lg:bottom-13.25 lg:left-auto lg:size-15 lg:translate-x-0 lg:rounded-full lg:bg-white/5 lg:p-0",
+      // mobile은 히어로 안에 별도로 고정 없이 보여주므로(HeroSection 참고) 여기선 태블릿(md) 이상만 담당한다.
+      "fixed right-10 bottom-13.25 z-40 hidden size-15 cursor-pointer items-center justify-center rounded-full border-0 bg-white/5 p-0 transition-opacity duration-300 md:flex",
     ],
-    icon: "block text-gray-200 transition-transform duration-300 lg:h-6.75 lg:w-11.75",
+    icon: "block text-gray-200 transition-transform duration-300 md:h-6.75 md:w-11.75",
   },
   variants: {
     visible: {
