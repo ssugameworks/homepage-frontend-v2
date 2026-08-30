@@ -21,7 +21,7 @@ const row = tv({
   variants: {
     isLastInMonth: {
       true: "",
-      false: "border-b border-gray-200",
+      false: "border-b-2 border-gray-200",
     },
   },
   defaultVariants: {
@@ -56,7 +56,7 @@ export default function ActivityCard({
     <div className="w-full">
       {/* 모바일 전용 상단 월 바: '2026 08'와 우측 필터 탭 (데스크톱에서는 숨김, 데스크톱 월 레이블은 ActivityPage에서 그룹 단위로 렌더링) */}
       {showDateHeader && (
-        <div className="mb-4 flex items-end justify-between border-b border-gray-200 pb-2 lg:hidden">
+        <div className="flex items-end justify-between border-b border-gray-200 pb-2 lg:hidden">
           <div className="flex items-baseline gap-2">
             <span className="typo-body2 typo-light text-text-tertiary">{year}</span>
             <span className="typo-heading1 text-primary-950 leading-none">{month}</span>
@@ -68,9 +68,9 @@ export default function ActivityCard({
       <div className={row({ isLastInMonth })}>
         <div className="flex w-full min-w-0 items-center justify-between gap-4">
           {/* 썸네일 & 텍스트 콘텐츠: 데스크톱에서는 이미지 높이에 텍스트 컨테이너를 맞춘다(items-stretch) */}
-          <div className="flex min-w-0 flex-1 items-start gap-3 md:gap-4 lg:items-stretch lg:gap-6">
+          <div className="flex min-w-0 flex-1 items-center gap-3 md:gap-4 lg:items-stretch lg:gap-6">
             {/* 포스터 이미지: 인스타그램 게시물 비율(4:5). 포스터가 없으면 빈 배경만 표시한다. */}
-            <div className="aspect-4/5 w-21 shrink-0 overflow-hidden rounded-lg bg-gray-100 shadow-sm md:w-32 lg:w-56.75 lg:rounded-[0.625rem]">
+            <div className="aspect-4/5 w-21 shrink-0 overflow-hidden rounded-lg bg-gray-100 outline outline-1 -outline-offset-1 outline-gray-200 md:w-32 lg:w-56.75 lg:rounded-[0.625rem]">
               {activity.imageUrl && (
                 <img
                   src={activity.imageUrl}

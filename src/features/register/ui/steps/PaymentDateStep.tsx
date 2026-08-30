@@ -1,4 +1,9 @@
 import { TextField } from "@/shared/ui";
+import {
+  PAYMENT_ACCOUNT_HOLDER_TEXT,
+  PAYMENT_ACCOUNT_TEXT,
+  PAYMENT_AMOUNT_TEXT,
+} from "../../model/constants";
 import type { RegisterForm } from "../../model/types";
 import type { RegisterFormApi } from "../../model/useRegisterForm";
 import { formatPaymentDate, isValidPaymentDate, paymentDateSchema } from "../../model/validation";
@@ -6,7 +11,21 @@ import { formatPaymentDate, isValidPaymentDate, paymentDateSchema } from "../../
 export function PaymentDateStep({ form }: { form: RegisterFormApi }) {
   return (
     <div className="flex flex-col gap-4 md:gap-6">
-      <p className="typo-subheading typo-medium text-primary-950">회비 납부 날짜를 입력해주세요</p>
+      <div className="flex flex-col gap-2">
+        <p className="typo-subheading typo-medium text-primary-950">회비를 납부해주세요</p>
+        <p className="typo-body2 typo-light text-gray-500">
+          아래 계좌로 입금 후, 납부한 날짜를 입력해주세요
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-1.5 rounded-2xl border-2 border-solid border-gray-200 p-4.25">
+        <p className="typo-body1 typo-bold text-primary-950">{PAYMENT_AMOUNT_TEXT}</p>
+        <p className="typo-body2 text-gray-700">
+          {PAYMENT_ACCOUNT_TEXT}
+          <br />
+          {PAYMENT_ACCOUNT_HOLDER_TEXT}
+        </p>
+      </div>
 
       <form.Field name="paymentDate" validators={{ onChange: paymentDateSchema }}>
         {(field) => {

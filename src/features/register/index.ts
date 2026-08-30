@@ -1,9 +1,11 @@
 export { submitRegisterForm } from "./api/registerApi";
 export {
   INITIAL_REGISTER_FORM,
+  MILITARY_LEAVE,
+  PAYMENT_ACCOUNT_HOLDER_TEXT,
   PAYMENT_ACCOUNT_TEXT,
   PAYMENT_AMOUNT_TEXT,
-  PAYMENT_STATUS_OPTIONS,
+  PAYMENT_COMPLETED,
 } from "./model/constants";
 export type { RegisterForm } from "./model/types";
 export type { RegisterFormApi } from "./model/useRegisterForm";

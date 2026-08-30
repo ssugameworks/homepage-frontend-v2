@@ -57,7 +57,7 @@ function ActivityCardSkeleton({
     <div className="w-full">
       {/* 모바일 전용 상단 월 바 — 실제 ActivityCard와 동일한 자리, 진한 검정 대신 스켈레톤 톤의 구분선을 쓴다 */}
       {showMonthHeader && (
-        <div className="mb-4 flex items-end justify-between border-b border-gray-200 pb-2 lg:hidden">
+        <div className="flex items-end justify-between border-b border-gray-200 pb-2 lg:hidden">
           <div className="flex items-baseline gap-2">
             <span className="typo-body2 typo-light text-text-tertiary">{currentYear}</span>
             <span className={`typo-heading1 leading-none ${skeletonBar}`}>08</span>
@@ -66,9 +66,9 @@ function ActivityCardSkeleton({
         </div>
       )}
 
-      <div className={`w-full min-w-0 py-3 lg:py-6 ${isLast ? "" : "border-b border-gray-200"}`}>
+      <div className={`w-full min-w-0 py-3 lg:py-6 ${isLast ? "" : "border-b-2 border-gray-200"}`}>
         <div className="flex w-full min-w-0 items-center justify-between gap-4">
-          <div className="flex min-w-0 flex-1 items-start gap-3 md:gap-4 lg:items-stretch lg:gap-6">
+          <div className="flex min-w-0 flex-1 items-center gap-3 md:gap-4 lg:items-stretch lg:gap-6">
             {/* 중앙의 이미지 섹션 */}
             <div
               className={`aspect-4/5 w-21 shrink-0 overflow-hidden rounded-lg shadow-sm md:w-32 lg:w-56.75 lg:rounded-[0.625rem] ${skeletonBar}`}
@@ -183,7 +183,7 @@ function ActivitiesListSkeleton({ filterTabs }: { filterTabs: ReactNode }) {
   return (
     <>
       <div className="flex items-end justify-between gap-4 pb-3">
-        <h2 className="typo-heading2">
+        <h2 className="typo-heading3 lg:typo-heading2">
           <span className="typo-medium text-primary-950">지금 참여할 수 있는 활동이 </span>
           <span className="inline-block animate-pulse rounded-md bg-primary-200 text-transparent select-none">
             0
@@ -195,7 +195,8 @@ function ActivitiesListSkeleton({ filterTabs }: { filterTabs: ReactNode }) {
         <div className="hidden lg:block">{filterTabs}</div>
       </div>
 
-      <div className="hidden h-px w-full bg-gray-200 lg:block" />
+      {/* 메인 디바이더 */}
+      <div className="hidden h-0.5 w-full bg-primary-950 lg:block" />
 
       <div className="mt-3 lg:mt-6 lg:flex lg:items-start lg:justify-between lg:gap-6">
         {/* 좌측의 달 (데스크톱 전용 월 레이블). 연도는 API와 무관하니 실제 올해 연도를 그대로 보여준다. */}
@@ -211,7 +212,8 @@ function ActivitiesListSkeleton({ filterTabs }: { filterTabs: ReactNode }) {
         <div className="min-w-0 lg:max-w-5xl lg:flex-1">
           <ActivityCardSkeleton isLast showMonthHeader filterTabs={filterTabs} />
 
-          <div className="hidden h-px w-full bg-gray-200 lg:block" />
+          {/* 게시물간 디바이더 */}
+          <div className="hidden h-0.5 w-full bg-gray-200 lg:block" />
         </div>
       </div>
     </>
@@ -317,7 +319,7 @@ export default function ActivitiesPage() {
           <>
             {/* 상단 개수 안내 + 필터 탭 */}
             <div className="flex items-end justify-between gap-4 pb-3">
-              <h2 className="typo-heading2">
+              <h2 className="typo-heading3 lg:typo-heading2">
                 <span className="typo-medium text-primary-950">지금 참여할 수 있는 활동이 </span>
                 <span className="text-primary-600">{upcomingCount}개</span>
                 <span className="typo-medium text-primary-950"> 있어요</span>
@@ -326,18 +328,25 @@ export default function ActivitiesPage() {
               <div className="hidden lg:block">{FilterTabs}</div>
             </div>
 
-            <div className="hidden h-px w-full bg-gray-200 lg:block" />
+            {/* 메인 디바이더 */}
+            <div className="hidden h-0.5 w-full bg-primary-950 lg:block" />
 
             {/* 활동 타임라인 리스트 */}
             {filteredActivities.length === 0 ? (
-              <>
-                {/* 카드가 없어 모바일/태블릿 월바에 탭을 끼워 넣을 자리가 없을 때의 대체 위치 */}
-                <div className="flex justify-end pt-3 pr-1 pb-2 lg:hidden">{FilterTabs}</div>
-                <div className="h-px w-full bg-gray-200 lg:hidden" />
-                <div className="typo-body1 py-20 text-center text-text-tertiary">
-                  {filter === "upcoming" ? "현재 예정된 활동이 없습니다." : "활동 내역이 없습니다."}
+              <div className="mt-3 lg:mt-6 lg:flex lg:items-start lg:justify-between lg:gap-6">
+                {/* 데스크톱 전용 월 레이블 자리 — 활동이 있을 때와 동일한 폭을 유지해 탭 전환 시 레이아웃 시프트를 막는다 */}
+                <div className="hidden shrink-0 pt-1 lg:block lg:w-28" />
+
+                <div className="min-w-0 lg:max-w-5xl lg:flex-1">
+                  {/* 카드가 없어 모바일/태블릿 월바에 탭을 끼워 넣을 자리가 없을 때의 대체 위치 */}
+                  <div className="flex justify-end pt-3 pr-1 pb-2 lg:hidden">{FilterTabs}</div>
+                  {/* 메인 디바이더(모바일) */}
+                  <div className="h-0.5 w-full bg-primary-950 lg:hidden" />
+                  <div className="typo-body1 py-20 text-center text-text-tertiary">
+                    {filter === "upcoming" ? "현재 예정된 활동이 없습니다." : "활동 내역이 없습니다."}
+                  </div>
                 </div>
-              </>
+              </div>
             ) : (
               <div className="mt-3 lg:mt-6">
                 {groupByMonth(filteredActivities).map((group, groupIndex) => (
@@ -366,8 +375,8 @@ export default function ActivitiesPage() {
                         />
                       ))}
 
-                      {/* 월 그룹의 마지막 카드 뒤 구분선 */}
-                      <div className="hidden h-px w-full bg-gray-200 lg:block" />
+                      {/* 게시물간 디바이더 */}
+                      <div className="hidden h-0.5 w-full bg-gray-200 lg:block" />
                     </div>
                   </div>
                 ))}
