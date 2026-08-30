@@ -1,4 +1,5 @@
-import { TextField } from "@/shared/ui";
+import { todayKstDateString } from "@/shared/lib";
+import { Button, TextField } from "@/shared/ui";
 import {
   PAYMENT_ACCOUNT_HOLDER_TEXT,
   PAYMENT_ACCOUNT_TEXT,
@@ -42,6 +43,19 @@ export function PaymentDateStep({ form }: { form: RegisterFormApi }) {
               onChange={(e) => field.handleChange(formatPaymentDate(e.target.value))}
               hint={hasError ? message : undefined}
               state={hasError ? "error" : "default"}
+              addon={
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="md"
+                  className="h-12.75 w-auto min-w-0 shrink-0 rounded-2xl px-4"
+                  onClick={() =>
+                    field.handleChange(todayKstDateString().replaceAll("-", "/"))
+                  }
+                >
+                  오늘
+                </Button>
+              }
             />
           );
         }}
