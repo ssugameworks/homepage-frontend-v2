@@ -144,7 +144,6 @@ function pastExecutive(id: string, name: string, role: string, studentId: string
 
 /**
  * 과거 연도 임원진 실제 명단. 이름 앞 숫자는 학번(기수) — 예: "17 장현준" = 17학번 장현준.
- * 이름의 괄호는 그 해에 함께 기록해둔 특이사항(예: 차기 회장/총무 내정)이다.
  */
 const DUMMY_PAST_ROSTERS: { year: number; executives: Executive[] }[] = [
   {
@@ -173,7 +172,6 @@ const DUMMY_PAST_ROSTERS: { year: number; executives: Executive[] }[] = [
       pastExecutive("past-2023-02", "조태현", "총무", "20학번"),
       pastExecutive("past-2023-03", "이지희", "부회장", "19학번"),
       pastExecutive("past-2023-04", "유윤상", "부회장", "20학번"),
-      pastExecutive("past-2023-05", "문세종(차기 회장)", "부회장", "20학번"),
     ],
   },
   {
@@ -216,7 +214,6 @@ const DUMMY_PAST_ROSTERS: { year: number; executives: Executive[] }[] = [
       pastExecutive("past-2018-01", "이인", "회장", "13학번"),
       pastExecutive("past-2018-02", "장현준", "총무", "17학번"),
       pastExecutive("past-2018-03", "정은서", "부회장", "17학번"),
-      pastExecutive("past-2018-04", "전수현(차기 총무)", "부회장", "18학번"),
     ],
   },
   {
@@ -225,7 +222,6 @@ const DUMMY_PAST_ROSTERS: { year: number; executives: Executive[] }[] = [
       pastExecutive("past-2017-01", "전민수", "회장", "13학번"),
       pastExecutive("past-2017-02", "권준상", "총무", "16학번"),
       pastExecutive("past-2017-03", "방소윤", "부회장", "16학번"),
-      pastExecutive("past-2017-04", "장현준(차기 총무)", "부회장", "17학번"),
     ],
   },
 ];
