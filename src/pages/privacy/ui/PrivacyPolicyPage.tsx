@@ -84,23 +84,27 @@ const SECTIONS: PolicySection[] = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="mx-auto flex w-full max-w-220 flex-col gap-10 px-5 py-16 lg:px-0 lg:py-20">
-      <div className="flex flex-col gap-2">
-        <h1 className="typo-heading2 text-text-primary lg:typo-heading1">개인정보처리방침</h1>
-        <p className="typo-body2 text-text-tertiary">시행일자: {EFFECTIVE_DATE}</p>
-      </div>
+    // RootLayout 자체 배경이 어두운 primary-950라, 이 페이지만 밝은 배경으로 감싸지 않으면
+    // 아래 어두운 배경용 텍스트 색(text-text-primary 등)이 거의 안 보인다.
+    <div className="min-h-screen bg-surface-white">
+      <div className="mx-auto flex w-full max-w-220 flex-col gap-10 px-5 py-16 lg:px-0 lg:py-20">
+        <div className="flex flex-col gap-2">
+          <h1 className="typo-heading2 text-text-primary lg:typo-heading1">개인정보처리방침</h1>
+          <p className="typo-body2 text-text-tertiary">시행일자: {EFFECTIVE_DATE}</p>
+        </div>
 
-      <div className="flex flex-col gap-8">
-        {SECTIONS.map((section) => (
-          <section key={section.title} className="flex flex-col gap-2">
-            <h2 className="typo-subheading typo-bold text-text-primary">{section.title}</h2>
-            {section.body.map((paragraph) => (
-              <p key={paragraph} className="typo-body2 whitespace-pre-line text-text-secondary">
-                {paragraph}
-              </p>
-            ))}
-          </section>
-        ))}
+        <div className="flex flex-col gap-8">
+          {SECTIONS.map((section) => (
+            <section key={section.title} className="flex flex-col gap-2">
+              <h2 className="typo-subheading typo-bold text-text-primary">{section.title}</h2>
+              {section.body.map((paragraph) => (
+                <p key={paragraph} className="typo-body2 whitespace-pre-line text-text-secondary">
+                  {paragraph}
+                </p>
+              ))}
+            </section>
+          ))}
+        </div>
       </div>
     </div>
   );
