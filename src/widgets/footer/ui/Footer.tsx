@@ -62,6 +62,9 @@ export default function Footer() {
         <div className="w-full text-center text-body2 font-light leading-normal tracking-dense text-white">
           <p>© 2026 GAMEWORKS, All rights reserved.</p>
           <p>26년의 역사를 이어온 종합 학술 소모임, GAMEWORKS</p>
+          <Link to={ROUTES.PRIVACY} className="underline underline-offset-2">
+            개인정보처리방침
+          </Link>
         </div>
       </div>
     </footer>

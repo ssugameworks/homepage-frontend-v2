@@ -1,4 +1,6 @@
-import { useCountUp, useInView } from "@/shared/lib";
+import NumberFlow from "@number-flow/react";
+import { useEffect, useState } from "react";
+import { useInView } from "@/shared/lib";
 import { SectionHeading } from "@/shared/ui";
 
 const STATS = [
@@ -6,6 +8,9 @@ const STATS = [
   { value: 160, suffix: "명+", label: "누적 부원 수" },
   { value: 30, suffix: "개+", label: "프로그램" },
 ] as const;
+
+/** 항목 간 카운트업 시작 시점 간격 — 왼쪽부터 차례로 시작하게 만든다. */
+const STAGGER_MS = 200;
 
 /**
  * Figma spec (web 1440×500 · mobile 390×200)
@@ -30,8 +35,8 @@ export function HistorySection() {
         <SectionHeading eyebrow="History" title="함께 걸어온 시간" align="center" />
 
         <div ref={ref} className="flex justify-center gap-7.5 rounded-2xl p-4 lg:gap-25">
-          {STATS.map((stat) => (
-            <StatItem key={stat.label} {...stat} start={inView} />
+          {STATS.map((stat, index) => (
+            <StatItem key={stat.label} {...stat} start={inView} delayMs={index * STAGGER_MS} />
           ))}
         </div>
       </div>
@@ -44,19 +49,32 @@ function StatItem({
   suffix,
   label,
   start,
+  delayMs,
 }: {
   value: number;
   suffix: string;
   label: string;
   start: boolean;
+  delayMs: number;
 }) {
-  const current = useCountUp(value, start);
+  // start가 true여도 delayMs만큼 기다렸다가 카운트업을 시작해, 항목이 순서대로 돈다.
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    if (!start) return;
+    const timer = setTimeout(() => setActive(true), delayMs);
+    return () => clearTimeout(timer);
+  }, [start, delayMs]);
 
   return (
     <div className="flex flex-col items-center">
       {/* Figma: 숫자·접미사 모두 hero1의 letter-spacing(-3% of 80 = -2.4px · mobile -1.08px) 상속 */}
       <p className="font-bold text-primary-800 tracking-dense">
-        <span className="text-4xl leading-tight md:text-6xl lg:text-[80px]">{current}</span>
+        <NumberFlow
+          value={active ? value : 0}
+          transformTiming={{ duration: 1200, easing: "cubic-bezier(0.33, 1, 0.68, 1)" }}
+          className="text-4xl leading-tight md:text-6xl lg:text-[80px]"
+        />
         {/* 상위 p의 tracking(-3%, 숫자 크기 기준)을 그대로 물려받아야 해서 typo-* 토큰(자체 tracking 포함) 대신 크기만 지정한다 */}
         <span className="text-heading2 leading-normal md:text-3xl lg:text-heading1">{suffix}</span>
       </p>

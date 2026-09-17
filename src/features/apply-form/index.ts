@@ -1,7 +1,7 @@
 export { fetchFormSchema, submitFormAnswers } from "./api/applyFormApi";
-export type { FieldKind } from "./model/fieldKinds";
 export { canProceedField, FIELD_KINDS } from "./model/fieldKinds";
 export type {
+  FieldKind,
   FieldSpec,
   NotionActivityInfo,
   NotionFieldSpec,

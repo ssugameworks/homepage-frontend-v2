@@ -109,13 +109,14 @@ export function Header({ className, activeItem }: HeaderProps) {
           </nav>
         </div>
 
-        {/* Mobile bar */}
+        {/* Mobile bar — 로고 크기는 데스크톱 바와 맞추되, 높이는 고정값을 써서 메뉴를 열었을 때(아래 오버레이 상단 바)와
+            로고 위치가 어긋나지 않게 한다. */}
         <div className="flex h-16 w-full items-center justify-between px-6 lg:hidden">
           <Link to={ROUTES.HOME} className="flex items-center overflow-hidden px-1 py-1.5">
-            <span className="relative size-5 shrink-0 overflow-clip text-logo">
+            <span className="relative size-6.5 shrink-0 overflow-clip text-logo">
               <IconLogoMark aria-hidden className="absolute inset-0 block size-full max-w-none" />
             </span>
-            <span className="flex flex-col justify-center text-center font-bold text-heading3 tracking-dense text-logo whitespace-nowrap">
+            <span className="flex flex-col justify-center text-center font-bold text-3xl leading-tight text-logo whitespace-nowrap">
               AMEWORKS
             </span>
           </Link>
@@ -154,7 +155,7 @@ export function Header({ className, activeItem }: HeaderProps) {
                   className="flex items-center overflow-hidden px-1 py-1.5"
                   onClick={() => setMenuOpen(false)}
                 >
-                  <span className="relative size-5 shrink-0 overflow-clip text-logo">
+                  <span className="relative size-6.5 shrink-0 overflow-clip text-logo">
                     <IconLogoMark
                       aria-hidden
                       className="absolute inset-0 block size-full max-w-none"

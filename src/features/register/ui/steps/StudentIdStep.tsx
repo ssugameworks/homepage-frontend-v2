@@ -5,10 +5,10 @@ import { formatStudentId, isValidStudentId, studentIdSchema } from "../../model/
 
 export function StudentIdStep({ form }: { form: RegisterFormApi }) {
   return (
-    <div className="flex flex-col gap-4 md:gap-6">
-      <p className="typo-subheading typo-medium text-primary-950">학번을 입력해주세요</p>
+    <div className="flex flex-col gap-6">
+      <p className="typo-heading3 typo-bold text-primary-950">학번을 입력해주세요</p>
 
-      <form.Field name="studentId" validators={{ onChange: studentIdSchema }}>
+      <form.Field name="studentId" validators={{ onBlur: studentIdSchema }}>
         {(field) => {
           const message = field.state.meta.errors[0]?.message;
           const hasError = field.state.value !== "" && Boolean(message);
@@ -21,6 +21,7 @@ export function StudentIdStep({ form }: { form: RegisterFormApi }) {
               placeholder="학번 8자리를 입력해주세요"
               value={field.state.value}
               onChange={(e) => field.handleChange(formatStudentId(e.target.value))}
+              onBlur={field.handleBlur}
               hint={hasError ? message : undefined}
               state={hasError ? "error" : "default"}
             />

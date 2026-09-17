@@ -12,7 +12,7 @@ export type FieldHintProps = {
 };
 
 const hint = tv({
-  base: "mt-1 px-2 typo-body2 typo-light",
+  base: "mt-1 px-2 typo-body2",
   variants: {
     state: {
       default: "text-primary-600",

@@ -1,1 +1,1 @@
-export { apiGet, apiPost } from "./client";
+export { apiGet, apiGetValidated, apiPost } from "./client";

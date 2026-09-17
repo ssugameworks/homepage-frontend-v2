@@ -1,8 +1,31 @@
 import { Link } from "react-router-dom";
-import { IconArrowRight } from "@/shared/assets";
-import ctaPattern from "@/shared/assets/backgrounds/cta-pattern.svg";
+import { IconArrowRight, IconLogoMark } from "@/shared/assets";
 import { ROUTES } from "@/shared/config";
 import { glassButtonClass, glassButtonLabelClass } from "./glassButton";
+
+/** 한 벌에 들어가는 로고 개수 — 가장 넓은 화면에서도 왼쪽으로 흐를 때 빈틈이 안 보일 만큼 넉넉하게 둔다. */
+const LOGO_COUNT_PER_SET = 14;
+
+/** 배경에 깔리는, 왼쪽으로 무한히 흐르는 로고 패턴. 콘텐츠를 통째로 2벌 이어붙여 -50%만큼 옮기는
+ * 방식이라, 로고 사이 간격은 이 컴포넌트의 gap/크기 값만 바꾸면 되고 별도 이미지 에셋을 건드릴 필요가 없다. */
+function CtaLogoMarquee() {
+  const logos = Array.from({ length: LOGO_COUNT_PER_SET });
+
+  return (
+    <div aria-hidden="true" className="-z-10 absolute inset-0 overflow-hidden">
+      <div className="flex h-full w-max animate-marquee-left items-center motion-reduce:animate-none">
+        {[0, 1].map((setIndex) => (
+          <div key={setIndex} className="flex shrink-0 items-center gap-x-14 px-7">
+            {logos.map((_, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: 순서가 바뀌지 않는 순수 장식용 반복이라 인덱스로 충분하다.
+              <IconLogoMark key={i} className="size-32 shrink-0 py-4 text-white/5" />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 /** 가입 유도 CTA 섹션. 모바일은 Button/filled, 데스크톱은 밑줄 Button/text로 시안이 다르다. */
 export function CtaSection() {
@@ -11,12 +34,7 @@ export function CtaSection() {
       className="relative isolate overflow-hidden bg-linear-to-r from-primary-800 to-primary-700"
       aria-label="가입 안내"
     >
-      <img
-        src={ctaPattern}
-        alt=""
-        aria-hidden="true"
-        className="-translate-x-1/2 -translate-y-1/2 -z-10 absolute top-1/2 left-1/2 h-45.75 w-366 max-w-none"
-      />
+      <CtaLogoMarquee />
 
       <div className="mx-auto flex min-h-44 max-w-360 items-center justify-center px-6 py-7.5 lg:min-h-42.5 lg:px-27.5 lg:py-5">
         <div className="flex flex-col items-center gap-5 lg:items-start lg:gap-2">

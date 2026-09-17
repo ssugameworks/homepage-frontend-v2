@@ -8,21 +8,17 @@ export function PaymentInfoStep({ form }: { form: RegisterFormApi }) {
   const labelId = useId();
 
   return (
-    <div className="flex flex-col gap-4 md:gap-6">
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <p id={labelId} className="typo-subheading typo-medium text-primary-950">
+        <p id={labelId} className="typo-heading3 typo-bold text-primary-950">
           군휴학생이신가요?
         </p>
-        <p className="typo-body2 typo-light text-gray-500">군휴학생은 회비가 면제돼요 (0원)</p>
+        <p className="typo-body2 text-gray-500">군휴학생은 회비가 면제돼요 (0원)</p>
       </div>
 
       <form.Field name="paymentStatus">
         {(field) => (
-          <div
-            role="radiogroup"
-            aria-labelledby={labelId}
-            className="flex flex-col gap-4 md:gap-6.75"
-          >
+          <div role="radiogroup" aria-labelledby={labelId} className="flex flex-col gap-6.75">
             <Radio
               name="paymentStatus"
               value={PAYMENT_COMPLETED}

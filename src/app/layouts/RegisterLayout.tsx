@@ -1,19 +1,13 @@
 import { Link, Outlet } from "react-router-dom";
 import { IconLogoMarkDark } from "@/shared/assets";
 import { ROUTES } from "@/shared/config";
-import { Footer } from "@/widgets/footer";
-import { Header } from "@/widgets/header";
+import { ErrorBoundary } from "@/shared/ui";
 
 export default function RegisterLayout() {
   return (
     <div className="flex min-h-screen flex-col bg-surface-white">
-      {/* Mobile: shared dark header */}
-      <div className="lg:hidden">
-        <Header />
-      </div>
-
-      {/* Desktop: logo-only light header */}
-      <header className="hidden w-full bg-surface-white lg:block">
+      {/* 가입/신청 폼에서는 화면 크기와 무관하게 로고만 보이는 헤더를 쓴다 (전체 사이트 내비게이션은 노출하지 않음). */}
+      <header className="w-full bg-surface-white">
         <div className="mx-auto flex w-full max-w-360 items-center px-6 py-3.75 short:py-2 lg:px-20">
           <Link
             to={ROUTES.HOME}
@@ -52,11 +46,11 @@ export default function RegisterLayout() {
           aria-hidden
         />
         <div className="relative z-1 flex flex-1 flex-col">
-          <Outlet />
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

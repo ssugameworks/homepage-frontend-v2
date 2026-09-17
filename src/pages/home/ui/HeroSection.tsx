@@ -1,16 +1,21 @@
+import NumberFlow from "@number-flow/react";
 import { ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useActivities } from "@/entities/activity";
 import { IconArrowRight } from "@/shared/assets";
 import heroBackground from "@/shared/assets/backgrounds/hero.png";
 import { ROUTES } from "@/shared/config";
-import { smoothScrollTo } from "@/shared/lib";
+import { smoothScrollTo, todayKstDateString } from "@/shared/lib";
 import { glassButtonClass, glassButtonLabelClass } from "./glassButton";
-
-/** TODO: 추후 API/데이터 연동으로 교체. 0이면 문구를 숨기고 버튼만 노출한다. */
-const RECRUITING_COUNT = 3;
 
 /** 게임웍스 소개 히어로 섹션. */
 export function HeroSection() {
+  const { data: activities } = useActivities();
+  // 지금 참여할 수 있는(신청 마감 전) 활동 수. 로딩 중이거나 실패 시 null로 두어 문구를 숨긴다.
+  const recruitingCount = activities
+    ? activities.filter((activity) => activity.applyEndDate >= todayKstDateString()).length
+    : null;
+
   return (
     <section
       className="relative isolate flex h-[calc(100svh-45px)] min-h-140 items-center overflow-hidden bg-[#01040f] md:h-[calc(100svh-84px)] md:min-h-160"
@@ -30,10 +35,13 @@ export function HeroSection() {
         </h1>
 
         <div className="flex flex-col gap-6 md:gap-8">
-          {RECRUITING_COUNT > 0 ? (
+          {recruitingCount !== null && recruitingCount > 0 ? (
             <p className="font-bold text-xl text-gray-100 leading-normal md:typo-heading2">
               지금 참여할 수 있는 활동이{" "}
-              <span className="text-primary-400">{RECRUITING_COUNT}개</span> 있어요
+              <span className="text-primary-400">
+                <NumberFlow value={recruitingCount} suffix="개" />
+              </span>{" "}
+              있어요
             </p>
           ) : null}
 

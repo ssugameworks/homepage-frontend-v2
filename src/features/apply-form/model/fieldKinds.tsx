@@ -3,11 +3,16 @@ import type { ReactNode } from "react";
 import { z } from "zod";
 import { emailSchema, phoneSchema, urlSchema } from "@/shared/lib";
 import { Checkbox, FieldHint, Radio, TextArea, TextField } from "@/shared/ui";
-import type { FieldSpec } from "./types";
+import type { FieldKind, FieldSpec } from "./types";
 
 type FieldKindDef = {
   render: (field: AnyFieldApi, spec: FieldSpec) => ReactNode;
   schema: (spec: FieldSpec) => z.ZodType;
+  /**
+   * 텍스트 입력형(short_text 등)은 타이핑 중 실시간으로 에러가 뜨면 거슬리므로 blur 시점에 검증한다.
+   * 선택형(단일/다중 선택)은 클릭 한 번으로 값이 바로 확정되므로 change 시점에 검증해도 문제없다.
+   */
+  validateOn: "change" | "blur";
 };
 
 /** 필수 질문의 라벨에 빨간 별표를 덧붙인다. */
@@ -30,6 +35,7 @@ function shortTextRenderer(field: AnyFieldApi, spec: FieldSpec) {
       placeholder="내용을 입력해 주세요"
       value={field.state.value ?? ""}
       onChange={(e) => field.handleChange(e.target.value)}
+      onBlur={field.handleBlur}
       hint={hasError ? message : spec.hint}
       state={hasError ? "error" : "default"}
       autoFocus
@@ -53,6 +59,7 @@ function longTextRenderer(field: AnyFieldApi, spec: FieldSpec) {
       placeholder="내용을 입력해 주세요"
       value={value}
       onChange={(e) => field.handleChange(e.target.value)}
+      onBlur={field.handleBlur}
       hint={hasError ? message : spec.hint}
       state={hasError ? "error" : "default"}
       maxLength={spec.maxLength}
@@ -94,9 +101,9 @@ function singleChoiceRenderer(field: AnyFieldApi, spec: FieldSpec) {
   const hintText = hasError ? message : spec.hint;
   const hintId = hintText ? `${spec.id}-hint` : undefined;
   return (
-    <div className="flex flex-col gap-4 md:gap-6">
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col">
-        <p id={labelId} className="typo-subheading typo-medium text-primary-950">
+        <p id={labelId} className="typo-heading3 typo-bold text-primary-950">
           {fieldLabel(spec)}
         </p>
         <FieldHint id={hintId} state={hasError ? "error" : "default"}>
@@ -107,7 +114,7 @@ function singleChoiceRenderer(field: AnyFieldApi, spec: FieldSpec) {
         role="radiogroup"
         aria-labelledby={labelId}
         aria-describedby={hintId}
-        className="flex flex-col gap-4 md:gap-6.75"
+        className="flex flex-col gap-6.75"
       >
         {(spec.options ?? []).map((option, index) => (
           <Radio
@@ -149,9 +156,9 @@ function multiChoiceRenderer(field: AnyFieldApi, spec: FieldSpec) {
   const hintText = hasError ? message : spec.hint;
   const hintId = hintText ? `${spec.id}-hint` : undefined;
   return (
-    <div className="flex flex-col gap-4 md:gap-6">
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col">
-        <p id={labelId} className="typo-subheading typo-medium text-primary-950">
+        <p id={labelId} className="typo-heading3 typo-bold text-primary-950">
           {fieldLabel(spec)}
         </p>
         <FieldHint id={hintId} state={hasError ? "error" : "default"}>
@@ -161,7 +168,7 @@ function multiChoiceRenderer(field: AnyFieldApi, spec: FieldSpec) {
       <fieldset
         aria-labelledby={labelId}
         aria-describedby={hintId}
-        className="m-0 flex flex-col gap-4 border-0 p-0 md:gap-6.75"
+        className="m-0 flex flex-col gap-6.75 border-0 p-0"
       >
         {(spec.options ?? []).map((option, index) => {
           const checked = values.includes(option);
@@ -203,17 +210,17 @@ function emailFieldSchema(spec: FieldSpec) {
   return spec.required ? emailSchema : z.union([z.literal(""), emailSchema]);
 }
 
+// Record<FieldKind, ...>로 못박아 두어, FIELD_KIND_VALUES(model/types.ts)에 종류를 추가/삭제하고
+// 여기 구현을 맞춰주지 않으면 타입 에러로 바로 드러난다 (기존 Record<string, ...>는 이걸 못 잡았다).
 export const FIELD_KINDS = {
-  short_text: { render: shortTextRenderer, schema: shortTextSchema },
-  long_text: { render: longTextRenderer, schema: longTextSchema },
-  single_choice: { render: singleChoiceRenderer, schema: choiceSchema },
-  multi_choice: { render: multiChoiceRenderer, schema: multiChoiceSchema },
-  url: { render: shortTextRenderer, schema: urlFieldSchema },
-  phone: { render: shortTextRenderer, schema: phoneFieldSchema },
-  email: { render: shortTextRenderer, schema: emailFieldSchema },
-} satisfies Record<string, FieldKindDef>;
-
-export type FieldKind = keyof typeof FIELD_KINDS;
+  short_text: { render: shortTextRenderer, schema: shortTextSchema, validateOn: "blur" },
+  long_text: { render: longTextRenderer, schema: longTextSchema, validateOn: "blur" },
+  single_choice: { render: singleChoiceRenderer, schema: choiceSchema, validateOn: "change" },
+  multi_choice: { render: multiChoiceRenderer, schema: multiChoiceSchema, validateOn: "change" },
+  url: { render: shortTextRenderer, schema: urlFieldSchema, validateOn: "blur" },
+  phone: { render: shortTextRenderer, schema: phoneFieldSchema, validateOn: "blur" },
+  email: { render: shortTextRenderer, schema: emailFieldSchema, validateOn: "blur" },
+} satisfies Record<FieldKind, FieldKindDef>;
 
 export function canProceedField(kind: FieldKind, spec: FieldSpec, value: unknown) {
   return FIELD_KINDS[kind].schema(spec).safeParse(value).success;

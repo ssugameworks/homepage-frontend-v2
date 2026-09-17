@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/shared/config";
 import { formatStudentId, studentIdSchema } from "@/shared/lib";
-import { TextField } from "@/shared/ui";
+import { PrivacyConsentField, TextField } from "@/shared/ui";
 import {
   CompleteStep,
   createCaptchaStep,
@@ -17,8 +17,10 @@ import type { NotionFormSchema } from "../model/types";
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string;
 
-type FieldValue = string | string[] | null;
+type FieldValue = string | string[] | boolean | null;
 type NotionFormValues = Record<string, FieldValue> & {
+  consentGiven: boolean;
+  overseasTransferConsent: boolean;
   studentId: string;
   /** 가입 신청 DB 조회에 성공한 학번. studentId와 일치할 때만 다음 단계로 넘어갈 수 있다. */
   verifiedStudentId: string;
@@ -65,6 +67,73 @@ function useMembershipCheck(studentId: string, onResult: (verifiedId: string | n
   return { status, retry: () => setRetryKey((n) => n + 1) };
 }
 
+/** 활동 신청 시 수집하는 개인정보 고지 + 동의. 활동마다 수집 항목/목적이 달라 스키마 기반으로 문구를 채운다. */
+function ApplyConsentField({
+  consentField,
+  transferField,
+  schema,
+}: {
+  consentField: AnyFieldApi;
+  transferField: AnyFieldApi;
+  schema: NotionFormSchema;
+}) {
+  const collectedItems = ["학번", ...schema.fields.map((field) => field.label)].join(", ");
+
+  const policyItems = [
+    ["개인정보 관리 책임", "게임웍스 회장"],
+    ["수집 항목", collectedItems],
+    ["수집 및 이용 목적", `${schema.title} 참가 신청 접수, 회원 여부 확인 및 결과 안내`],
+    [
+      "개인정보 보유 및 이용기간",
+      "수집·이용 동의일로부터 개인정보의 수집·이용목적을 달성할 때까지",
+    ],
+    [
+      "동의 거부 권리 및 불이익",
+      "동의를 거부할 권리가 있으며, 거부 시 해당 활동 신청이 제한됩니다",
+    ],
+  ] as const;
+
+  // 게임웍스는 회원/신청 정보 관리를 위해 Notion(운영사: Notion Labs, Inc., 미국)을 쓰고 있어,
+  // 가정이 아니라 실제로 지금 이 정보가 국외로 이전된다. 그래서 필수 동의 항목으로 분리해서 안내한다.
+  const overseasTransferItems = [
+    ["이전되는 항목", collectedItems],
+    ["이전받는 자", "Notion Labs, Inc."],
+    ["이전되는 국가", "미국"],
+    ["이전 일시 및 방법", "활동 신청 시 네트워크를 통해 실시간 전송"],
+    [
+      "이용목적 및 보유기간",
+      "활동 신청 관리 목적으로, 위 개인정보 보유 및 이용기간과 동일하게 보유",
+    ],
+    [
+      "동의 거부 권리 및 불이익",
+      "동의를 거부할 권리가 있으나, Notion을 통한 신청 정보 관리가 서비스 운영에 필수적이라 거부 시 활동 신청이 제한됩니다",
+    ],
+  ] as const;
+
+  return (
+    <div className="flex flex-col gap-6">
+      <p className="typo-heading3 typo-bold text-primary-950">
+        개인정보 수집 및 이용에 동의해주세요
+      </p>
+
+      <PrivacyConsentField
+        policyItems={policyItems}
+        checked={Boolean(consentField.state.value)}
+        onCheckedChange={consentField.handleChange}
+      />
+
+      <PrivacyConsentField
+        title="개인정보 국외 이전 동의"
+        checkboxLabel="개인정보 국외 이전에 동의합니다"
+        name="overseasTransferConsent"
+        policyItems={overseasTransferItems}
+        checked={Boolean(transferField.state.value)}
+        onCheckedChange={transferField.handleChange}
+      />
+    </div>
+  );
+}
+
 function StudentIdField({ fieldApi, form }: { fieldApi: AnyFieldApi; form: AnyFormApi }) {
   const value = (fieldApi.state.value as string | null) ?? "";
   const message = fieldApi.state.meta.errors[0] as string | undefined;
@@ -86,8 +155,8 @@ function StudentIdField({ fieldApi, form }: { fieldApi: AnyFieldApi; form: AnyFo
             : undefined;
 
   return (
-    <div className="flex flex-col gap-4 md:gap-6">
-      <p className="typo-subheading typo-medium text-primary-950">학번을 입력해주세요</p>
+    <div className="flex flex-col gap-6">
+      <p className="typo-heading3 typo-bold text-primary-950">학번을 입력해주세요</p>
 
       <div className="flex flex-col gap-2">
         <TextField
@@ -98,6 +167,7 @@ function StudentIdField({ fieldApi, form }: { fieldApi: AnyFieldApi; form: AnyFo
           placeholder="학번 8자리를 입력해주세요"
           value={value}
           onChange={(e) => fieldApi.handleChange(formatStudentId(e.target.value))}
+          onBlur={fieldApi.handleBlur}
           hint={formatError ? message : membershipHint}
           state={formatError || status === "not-found" || status === "error" ? "error" : "default"}
           autoFocus
@@ -142,6 +212,8 @@ export function NotionFormRenderer({ schema, onExit }: NotionFormRendererProps) 
   const navigate = useNavigate();
 
   const defaultValues: NotionFormValues = {
+    consentGiven: false,
+    overseasTransferConsent: false,
     studentId: "",
     verifiedStudentId: "",
     turnstileToken: "",
@@ -151,13 +223,33 @@ export function NotionFormRenderer({ schema, onExit }: NotionFormRendererProps) 
   }
   const form = useForm({ defaultValues });
 
+  const consentStep: StepDefinition<typeof form> = {
+    id: "consent",
+    render: (f) => (
+      <f.Field name="consentGiven">
+        {(consentField) => (
+          <f.Field name="overseasTransferConsent">
+            {(transferField) => (
+              <ApplyConsentField
+                consentField={consentField}
+                transferField={transferField}
+                schema={schema}
+              />
+            )}
+          </f.Field>
+        )}
+      </f.Field>
+    ),
+    canProceed: (values) => values.consentGiven === true && values.overseasTransferConsent === true,
+  };
+
   const studentIdStep: StepDefinition<typeof form> = {
     id: "student-id",
     render: (f) => (
       <f.Field
         name="studentId"
         validators={{
-          onChange: ({ value }) => studentIdSchema.safeParse(value).error?.issues[0]?.message,
+          onBlur: ({ value }) => studentIdSchema.safeParse(value).error?.issues[0]?.message,
         }}
       >
         {(fieldApi) => <StudentIdField fieldApi={fieldApi} form={f} />}
@@ -169,26 +261,30 @@ export function NotionFormRenderer({ schema, onExit }: NotionFormRendererProps) 
       values.studentId === values.verifiedStudentId,
   };
 
-  const notionQuestionSteps: StepDefinition<typeof form>[] = schema.fields.map((field) => ({
-    id: field.id,
-    render: (f) => (
-      <f.Field
-        name={field.id}
-        validators={{
-          onChange: ({ value }) =>
-            FIELD_KINDS[field.kind].schema(field).safeParse(value).error?.issues[0]?.message,
-        }}
-      >
-        {(fieldApi) => FIELD_KINDS[field.kind].render(fieldApi, field)}
-      </f.Field>
-    ),
-    canProceed: (values) => canProceedField(field.kind, field, values[field.id]),
-  }));
+  const notionQuestionSteps: StepDefinition<typeof form>[] = schema.fields.map((field) => {
+    const validateField = ({ value }: { value: unknown }) =>
+      FIELD_KINDS[field.kind].schema(field).safeParse(value).error?.issues[0]?.message;
+    // 텍스트 입력형은 타이핑 중이 아니라 blur 시점에, 선택형은 클릭 즉시(change)에 검증한다.
+    const validators =
+      FIELD_KINDS[field.kind].validateOn === "blur"
+        ? { onBlur: validateField }
+        : { onChange: validateField };
 
-  // 활동 신청의 고정 요구사항은 학번뿐이다. 노션 질문은 0개 이상이며,
+    return {
+      id: field.id,
+      render: (f) => (
+        <f.Field name={field.id} validators={validators}>
+          {(fieldApi) => FIELD_KINDS[field.kind].render(fieldApi, field)}
+        </f.Field>
+      ),
+      canProceed: (values) => canProceedField(field.kind, field, values[field.id]),
+    };
+  });
+
+  // 활동 신청의 고정 요구사항은 개인정보 수집 동의와 학번뿐이다. 노션 질문은 0개 이상이며,
   // 질문 DB가 없는 활동은 학번 입력 후 바로 제출 인증으로 진행한다.
   const captchaStep = createCaptchaStep<typeof form>(TURNSTILE_SITE_KEY);
-  const steps = [studentIdStep, ...notionQuestionSteps, captchaStep];
+  const steps = [consentStep, studentIdStep, ...notionQuestionSteps, captchaStep];
 
   return (
     <FormWizard
@@ -208,7 +304,7 @@ export function NotionFormRenderer({ schema, onExit }: NotionFormRendererProps) 
         const answers: Record<string, string | string[]> = {};
         for (const field of schema.fields) {
           const value = values[field.id];
-          if (value != null) answers[field.id] = value;
+          if (value != null && typeof value !== "boolean") answers[field.id] = value;
         }
         await submitFormAnswers(schema.slug, {
           studentId: values.studentId,
