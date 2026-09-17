@@ -12,8 +12,7 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTES.INTRODUCE.slice(1),
-        lazy: () => import("@/pages/placeholder").then((m) => ({ Component: m.default })),
-        loader: () => ({ title: "소개" }),
+        lazy: () => import("@/pages/introduce").then((m) => ({ Component: m.default })),
       },
       {
         path: ROUTES.ACTIVITIES.slice(1),
