@@ -3,6 +3,8 @@
 @import "../shared/styles/tokens/typography.css";
 @import "../shared/styles/typography.css";
 @import "../shared/styles/base.css";
+/* shadcn(Radix) 컴포넌트의 open/close 트랜지션(animate-in/out)에 필요한 유틸리티만 가져온다. */
+@import "tw-animate-css";
 
 /**
  * 화면 "높이"가 낮을 때만 적용되는 커스텀 variant (노트북 저해상도 대응).
@@ -82,6 +84,7 @@
   --animate-card-slide-prev: card-slide-prev 0.32s cubic-bezier(0.22, 1, 0.36, 1);
   --animate-hero-drift: hero-drift 24s ease-in-out infinite alternate;
   --animate-bounce-y: bounce-y 1.6s ease-in-out infinite;
+  --animate-marquee-left: marquee-left 28s linear infinite;
 }
 
 @keyframes card-slide-next {
@@ -122,5 +125,16 @@
   }
   50% {
     transform: translateY(10px);
+  }
+}
+
+/* 로고 패턴이 왼쪽으로 무한히 흐르는 마퀴 효과. 콘텐츠를 2번 이어붙인 뒤 정확히 절반(-50%)만큼
+   옮기면, 두 번째 사본이 첫 번째가 있던 자리에 그대로 겹쳐서 이음매 없이 반복된다. */
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }

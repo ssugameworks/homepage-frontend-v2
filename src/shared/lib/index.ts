@@ -1,5 +1,5 @@
 export { todayKstDateString } from "./date";
-export { useCarousel, useCountUp, useInView } from "./hooks";
+export { useCarousel, useInView } from "./hooks";
 export { smoothScrollTo } from "./scroll";
 export {
   formatPaymentDate,

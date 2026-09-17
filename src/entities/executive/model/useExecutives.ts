@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { fetchExecutives } from "../api/executiveApi";
 import type { Executive } from "./types";
 
@@ -12,23 +12,10 @@ type UseExecutivesResult = {
  * fetchExecutives 내부에 캡슐화되어 있어 이 훅과 사용처는 변경할 필요가 없다.
  */
 export function useExecutives(): UseExecutivesResult {
-  const [executives, setExecutives] = useState<Executive[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data, isLoading } = useQuery({
+    queryKey: ["executives"],
+    queryFn: fetchExecutives,
+  });
 
-  useEffect(() => {
-    let cancelled = false;
-
-    setIsLoading(true);
-    fetchExecutives().then((data) => {
-      if (cancelled) return;
-      setExecutives(data);
-      setIsLoading(false);
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return { executives, isLoading };
+  return { executives: data ?? [], isLoading };
 }

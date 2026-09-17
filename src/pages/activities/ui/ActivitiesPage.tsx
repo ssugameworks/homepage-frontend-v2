@@ -1,6 +1,7 @@
+import NumberFlow from "@number-flow/react";
 import dayjs from "dayjs";
-import { type ReactNode, useEffect, useState } from "react";
-import { ActivityCard, type ActivityListItem, fetchActivities } from "@/entities/activity";
+import { type ReactNode, useState } from "react";
+import { ActivityCard, type ActivityListItem, useActivities } from "@/entities/activity";
 import Logo3D from "@/shared/assets/icons/logo-mark-3d.png";
 import { todayKstDateString } from "@/shared/lib";
 import { Button } from "@/shared/ui";
@@ -221,32 +222,19 @@ function ActivitiesListSkeleton({ filterTabs }: { filterTabs: ReactNode }) {
 }
 
 export default function ActivitiesPage() {
-  const [activities, setActivities] = useState<ActivityListItem[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { data: activities, error } = useActivities();
   const [filter, setFilter] = useState<"upcoming" | "past">("upcoming");
   // 개발 중 DevPreviewFab으로만 켜지는 오버라이드. null이면 실제 API 상태를 그대로 보여준다.
   const [devPreview, setDevPreview] = useState<DevPreviewMode | null>(null);
   const todayStr = todayKstDateString();
 
-  useEffect(() => {
-    let cancelled = false;
-
-    fetchActivities()
-      .then((result) => {
-        if (!cancelled) setActivities(result);
-      })
-      .catch((err: unknown) => {
-        if (!cancelled) {
-          setError(err instanceof Error ? err.message : "활동 목록을 불러오지 못했어요");
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  const displayError = devPreview ? null : error;
+  const displayError = devPreview
+    ? null
+    : error
+      ? error instanceof Error
+        ? error.message
+        : "활동 목록을 불러오지 못했어요"
+      : null;
   const displayActivities =
     devPreview === "data" ? DUMMY_ACTIVITIES : devPreview === "skeleton" ? null : activities;
 
@@ -321,7 +309,9 @@ export default function ActivitiesPage() {
             <div className="flex items-end justify-between gap-4 pb-3">
               <h2 className="typo-heading3 lg:typo-heading2">
                 <span className="typo-medium text-primary-950">지금 참여할 수 있는 활동이 </span>
-                <span className="text-primary-600">{upcomingCount}개</span>
+                <span className="text-primary-600">
+                  <NumberFlow value={upcomingCount} suffix="개" />
+                </span>
                 <span className="typo-medium text-primary-950"> 있어요</span>
               </h2>
 
@@ -343,7 +333,9 @@ export default function ActivitiesPage() {
                   {/* 메인 디바이더(모바일) */}
                   <div className="h-0.5 w-full bg-primary-950 lg:hidden" />
                   <div className="typo-body1 py-20 text-center text-text-tertiary">
-                    {filter === "upcoming" ? "현재 예정된 활동이 없습니다." : "활동 내역이 없습니다."}
+                    {filter === "upcoming"
+                      ? "현재 예정된 활동이 없습니다."
+                      : "활동 내역이 없습니다."}
                   </div>
                 </div>
               </div>

@@ -6,6 +6,7 @@ export const ROUTES = {
   REGISTER: "/register",
   APPLY_FORM: "/apply/:slug",
   CONTACT: "/contact",
+  PRIVACY: "/privacy",
 } as const;
 
 export type RoutePath = (typeof ROUTES)[keyof typeof ROUTES];

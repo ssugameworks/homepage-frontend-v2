@@ -3,6 +3,7 @@ export type RegisterForm = {
   phone: string;
   studentId: string;
   privacyConsent: boolean;
+  overseasTransferConsent: boolean;
   paymentStatus: string | null;
   paymentDate: string;
   turnstileToken: string;

@@ -44,12 +44,10 @@ function CopyAccountButton() {
 
 export function PaymentDateStep({ form }: { form: RegisterFormApi }) {
   return (
-    <div className="flex flex-col gap-4 md:gap-6">
+    <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <p className="typo-subheading typo-medium text-primary-950">회비를 납부해주세요</p>
-        <p className="typo-body2 typo-light text-gray-500">
-          아래 계좌로 입금 후, 납부한 날짜를 입력해주세요
-        </p>
+        <p className="typo-heading3 typo-bold text-primary-950">회비를 납부해주세요</p>
+        <p className="typo-body2 text-gray-500">아래 계좌로 입금 후, 납부한 날짜를 입력해주세요</p>
       </div>
 
       <div className="flex flex-col gap-1.5 rounded-2xl border-2 border-solid border-gray-200 p-4.25">
@@ -64,7 +62,7 @@ export function PaymentDateStep({ form }: { form: RegisterFormApi }) {
         </div>
       </div>
 
-      <form.Field name="paymentDate" validators={{ onChange: paymentDateSchema }}>
+      <form.Field name="paymentDate" validators={{ onBlur: paymentDateSchema }}>
         {(field) => {
           const message = field.state.meta.errors[0]?.message;
           const hasError = field.state.value !== "" && Boolean(message);
@@ -77,6 +75,7 @@ export function PaymentDateStep({ form }: { form: RegisterFormApi }) {
               placeholder="YYYY/MM/DD"
               value={field.state.value}
               onChange={(e) => field.handleChange(formatPaymentDate(e.target.value))}
+              onBlur={field.handleBlur}
               hint={hasError ? message : undefined}
               state={hasError ? "error" : "default"}
               addon={
@@ -85,9 +84,7 @@ export function PaymentDateStep({ form }: { form: RegisterFormApi }) {
                   variant="outline"
                   size="md"
                   className="h-12.75 w-auto min-w-0 shrink-0 rounded-2xl px-4"
-                  onClick={() =>
-                    field.handleChange(todayKstDateString().replaceAll("-", "/"))
-                  }
+                  onClick={() => field.handleChange(todayKstDateString().replaceAll("-", "/"))}
                 >
                   오늘
                 </Button>
