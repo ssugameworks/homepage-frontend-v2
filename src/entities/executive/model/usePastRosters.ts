@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { fetchPastRosters } from "../api/executiveApi";
 import type { Executive } from "./types";
 
@@ -14,23 +14,10 @@ type UsePastRostersResult = {
  * fetchPastRosters 내부에 캡슐화되어 있어 이 훅과 사용처는 변경할 필요가 없다.
  */
 export function usePastRosters(): UsePastRostersResult {
-  const [pastRosters, setPastRosters] = useState<PastRoster[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data, isLoading } = useQuery({
+    queryKey: ["pastRosters"],
+    queryFn: fetchPastRosters,
+  });
 
-  useEffect(() => {
-    let cancelled = false;
-
-    setIsLoading(true);
-    fetchPastRosters().then((data) => {
-      if (cancelled) return;
-      setPastRosters(data);
-      setIsLoading(false);
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return { pastRosters, isLoading };
+  return { pastRosters: data ?? [], isLoading };
 }

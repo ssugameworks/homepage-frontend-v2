@@ -9,8 +9,8 @@ export function createCaptchaStep<TFormApi extends AnyFormApi>(
   return {
     id: "captcha",
     render: (f, ctx) => (
-      <div className="flex flex-col gap-4 md:gap-6">
-        <p className="typo-subheading typo-medium text-primary-950">사람인지 확인해 주세요</p>
+      <div className="flex flex-col gap-6">
+        <p className="typo-heading3 typo-bold text-primary-950">사람인지 확인해 주세요</p>
         <div className="flex flex-col items-center gap-4 py-4">
           <Turnstile
             siteKey={siteKey}

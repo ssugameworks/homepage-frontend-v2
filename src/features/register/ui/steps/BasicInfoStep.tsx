@@ -16,8 +16,8 @@ function formatPhoneInput(value: string) {
 
 export function BasicInfoStep({ form }: BasicInfoStepProps) {
   return (
-    <div className="flex flex-col gap-4 md:gap-6">
-      <p className="typo-subheading typo-medium text-primary-950">
+    <div className="flex flex-col gap-6">
+      <p className="typo-heading3 typo-bold text-primary-950">
         <span className="md:hidden">
           지원자님의
           <br />
@@ -26,7 +26,7 @@ export function BasicInfoStep({ form }: BasicInfoStepProps) {
         <span className="hidden md:inline">지원자님의 기본 정보를 알려주세요</span>
       </p>
 
-      <form.Field name="name" validators={{ onChange: nameSchema }}>
+      <form.Field name="name" validators={{ onBlur: nameSchema }}>
         {(field) => {
           const message = field.state.meta.errors[0]?.message;
           const hasError = field.state.value !== "" && Boolean(message);
@@ -38,6 +38,7 @@ export function BasicInfoStep({ form }: BasicInfoStepProps) {
               placeholder="이름을 입력해주세요"
               value={field.state.value}
               onChange={(e) => field.handleChange(e.target.value)}
+              onBlur={field.handleBlur}
               hint={hasError ? message : undefined}
               state={hasError ? "error" : "default"}
             />
@@ -45,7 +46,7 @@ export function BasicInfoStep({ form }: BasicInfoStepProps) {
         }}
       </form.Field>
 
-      <form.Field name="phone" validators={{ onChange: phoneSchema }}>
+      <form.Field name="phone" validators={{ onBlur: phoneSchema }}>
         {(field) => {
           const message = field.state.meta.errors[0]?.message;
           const hasError = field.state.value !== "" && Boolean(message);
@@ -60,6 +61,7 @@ export function BasicInfoStep({ form }: BasicInfoStepProps) {
               placeholder="연락처를 입력해주세요"
               value={field.state.value}
               onChange={(e) => field.handleChange(formatPhoneInput(e.target.value))}
+              onBlur={field.handleBlur}
               hint={hasError ? message : undefined}
               state={hasError ? "error" : "default"}
             />

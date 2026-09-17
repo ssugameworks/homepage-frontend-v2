@@ -5,6 +5,7 @@ export const INITIAL_REGISTER_FORM: RegisterForm = {
   phone: "",
   studentId: "",
   privacyConsent: false,
+  overseasTransferConsent: false,
   paymentStatus: null,
   paymentDate: "",
   turnstileToken: "",
